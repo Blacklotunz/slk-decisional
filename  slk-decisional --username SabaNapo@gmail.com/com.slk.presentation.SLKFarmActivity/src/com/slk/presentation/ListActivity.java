@@ -180,13 +180,14 @@ public class ListActivity extends Activity{
 			txt_nome.setText(p.getNome());
 			txt_nome.setGravity(Gravity.CENTER);
 			txt_nome.setTextAppearance(getApplicationContext(), R.style.ButtonTextMedium);
+			txt_nome.setTextColor(getResources().getColor(R.color.Black));
 			LL_info.addView(txt_nome);
 
 			TextView txt_price = new TextView(ListActivity.this);
 			txt_price.setText("Price: "+p.getPrezzo()+" $");
 			txt_price.setGravity(Gravity.CENTER);
 			txt_price.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
-
+			txt_price.setTextColor(getResources().getColor(R.color.Black));
 			LL_info.addView(txt_price);
 
 			LL.addView(LL_info);
