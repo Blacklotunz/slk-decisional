@@ -1,119 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <style name="ButtonTextMedium">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#ffffff</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:shadowColor">#000000</item>
-    <item name="android:shadowDx">1</item>
-    <item name="android:shadowDy">1</item>
-    <item name="android:shadowRadius">2</item>
- 	</style>
- 	
-    <style name="ButtonTextSmall">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#ffffff</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">12dp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:shadowColor">#000000</item>
-    <item name="android:shadowDx">1</item>
-    <item name="android:shadowDy">1</item>
-    <item name="android:shadowRadius">2</item>
- 	</style>
- 	
-    <style name="TextSmall">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#000000</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">12dp</item>
-    <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
     </style>
-    
+
+    <style name="ButtonTextSmall">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="TextSmall">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextMedium">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#000000</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">18dp</item>
-    <item name="android:textStyle">bold</item>
-    </style>    
-      
-    
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <string-array name="quantities_array">
-		<item>Up to 100</item>
-		<item>100-500</item>
-		<item>500-1000</item>
-		<item>1000-1500</item>
-		<item>1500-3000</item>
-		<item>More than 3000</item>
-		</string-array>
+        <item>Up to 100</item>
+        <item>100-500</item>
+        <item>500-1000</item>
+        <item>1000-1500</item>
+        <item>1500-3000</item>
+        <item>More than 3000</item>
+    </string-array>
 
     <string name="hello">Hello World, SLKActivity!</string>
     <string name="app_name">SLK</string>
     <string name="home">Home</string>
     <string name="back">Back</string>
-    
     <string name="confronta">Compare</string>
     <string name="prezzo">AVG Price: </string>
-    
     <string name="patata">POTATOS</string>
     <string name="prezzo_patata">AVG Price: 3,0$</string>
+
     <color name="colore_patata">#006500</color>
-    
+
     <string name="pomodoro">TOMATOES</string>
     <string name="prezzo_pomodoro">AVG Price: 1,5$</string>
+
     <color name="colore_pomodoro">#008400</color>
-    
+
     <string name="banana">BANANAS</string>
     <string name="prezzo_banana">AVG Price: 2,0$</string>
+
     <color name="colore_banana">#009100</color>
-    
+
     <string name="cetriolo">CUCUMBER</string>
     <string name="prezzo_cetriolo">AVG Price: 2,5$</string>
+
     <color name="colore_cetriolo">#009F00</color>
-    
+
     <string name="cipolla">ONION</string>
     <string name="prezzo_cipolla">AVG Price: 1,0$</string>
+
     <color name="colore_cipolla">#00A400</color>
-    
-	<string name="pisello">PEA</string>
+
+    <string name="pisello">PEA</string>
     <string name="prezzo_pisello">AVG Price: 2,0$</string>
+
     <color name="colore_pisello">#00B000</color>
-	
+
     <string name="peperone">PEPPER</string>
     <string name="prezzo_peperone">AVG Price: 3,5$</string>
+
     <color name="colore_peperone">#00BE00</color>
-    
+
     <string name="melanzana">EGGPLANT</string>
     <string name="prezzo_melanzana">AVG Price: 2,0$</string>
+
     <color name="colore_melanzana">#00CE00</color>
-    
+
     <string name="lattuga">LETTUCE</string>
     <string name="prezzo_lattuga">AVG Price: 2,5$</string>
+
     <color name="colore_lattuga">#00DA00</color>
-    
+
     <string name="cavolo">CABBAGE</string>
     <string name="prezzo_cavolo">AVG Price: 1,5$</string>
+
     <color name="colore_cavolo">#00E800</color>
-    
+
     <string name="carota">CARROT</string>
     <string name="prezzo_carota">AVG Price: 2,0$</string>
+
     <color name="colore_carota">#00FF00</color>
+
     <string name="OK">OkString</string>
+
     <color name="White">#FFF</color>
     <color name="Black">#000</color>
+
     <string name="Undersupply">Undersupply</string>
-    <string name="Search">   Search product...</string>  
-    
+    <string name="Search">   Search product...</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_menu_view">MenuView</string>
+
 </resources>
