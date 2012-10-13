@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/sezione_prodotto"
+        style="@style/ButtonTextSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="3sp"
+        android:layout_weight="1"
+        android:background="@color/White"
+        android:orientation="vertical"
+        android:padding="5sp" >
+
+        <RelativeLayout
+            android:id="@+id/prodotto"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="12sp"
+            android:layout_weight="1"
+            android:padding="3sp" >
+
+            <RelativeLayout
+                android:id="@+id/sfondo_prodotto"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="2sp"
+                android:background="@color/White"
+                android:padding="5sp" >
+ 				<ImageView
+                    android:id="@+id/immagine_prodotto"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    />
+                
+                <TextView
+                    android:id="@+id/nome"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/Black"
+                    android:text=""
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/info1"
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nome"
+                    android:layout_centerHorizontal="true"
+                    android:shadowColor="@color/White"
+                    android:textSize="14dp" />
+
+               
+                <TextView
+                    android:id="@+id/info2"
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/info1"
+                    android:layout_centerHorizontal="true"
+                    android:text=""
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/info3"
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/info2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="21dp"
+                    android:text=""
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/info4"
+                    style="@style/ButtonTextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/info3"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="18dp"
+                    android:shadowColor="@color/White"
+                    android:textColor="@color/Black"
+                    android:textSize="14px" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/set_quantity"
+            style="@style/ButtonTextMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blackbuttons"
+            android:text="> Select quantity to grow &lt;" />
+
+        <TextView
+            android:id="@+id/previsione"
+            style="@style/ButtonTextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/White"
+            android:shadowColor="@color/White"
+            android:text="Your prevision is:"
+            android:textColor="@color/Black"
+            android:textSize="16px" />
+
+        <TextView
+            android:id="@+id/last"
+            style="@style/ButtonTextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:shadowColor="@color/White"
+            android:text="Last production: 300kg - 1000kg"
+            android:textColor="@color/Black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0" >
+
+        <Button
+            android:id="@+id/home"
+            style="@style/ButtonTextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:background="@drawable/blackbuttons"
+            android:text="@string/home"
+            android:textColor="@color/White" />
+
+        <Button
+            android:id="@+id/Conferma"
+            style="@style/ButtonTextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:background="@drawable/blackbuttons"
+            android:text="OK" />
+
+    </LinearLayout>
+
+</LinearLayout>
