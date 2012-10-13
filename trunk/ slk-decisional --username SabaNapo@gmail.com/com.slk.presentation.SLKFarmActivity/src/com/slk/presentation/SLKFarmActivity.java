@@ -39,7 +39,7 @@ public class SLKFarmActivity extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.decidinglist);
 
 		slk_utility = new SLKApplication(getApplicationContext());
 
