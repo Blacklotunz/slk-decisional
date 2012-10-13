@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/White" >
+
+    <RelativeLayout
+        android:id="@+id/controlli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/White" >
+
+        <Button
+            android:id="@+id/home"
+            style="@style/ButtonTextMedium"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/blackbuttons"
+            android:text="@string/home"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sezione_controlli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/controlli"
+        android:layout_margin="2sp"
+        android:background="@color/White" >
+
+        <Button
+            android:id="@+id/up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2sp"
+            android:background="@android:drawable/arrow_up_float" />
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout_esterno"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/down"
+            android:layout_below="@+id/up"
+            android:background="@color/White" >
+
+            <LinearLayout
+                android:id="@+id/LinearLayout_riga"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="#FFFFFF"
+                android:orientation="vertical" >
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2sp"
+            android:background="@android:drawable/arrow_down_float" />
+    </RelativeLayout>
+
+</RelativeLayout>
