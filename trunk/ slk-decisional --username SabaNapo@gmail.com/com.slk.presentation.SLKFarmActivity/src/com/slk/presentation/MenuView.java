@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +25,9 @@ public class MenuView extends Activity {
 		g.setAdapter(new ImageAdapter(this));
 		g.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				//insert here the Intent for the Activiry related to button
+				//insert here the Intent for the Activity related to button
 				if(position == 1){
-					Intent intent = new Intent(MenuView.this, SLKFarmActivity.class);
+					Intent intent = new Intent(MenuView.this, ChoiceActivity.class);
 					startActivity(intent);
 				}
 				else{

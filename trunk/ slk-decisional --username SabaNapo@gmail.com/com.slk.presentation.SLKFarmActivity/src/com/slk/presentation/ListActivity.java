@@ -48,7 +48,7 @@ public class ListActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista);
-		Log.d("Log----->", "OnCreate");
+		
 		slk_utility = new SLKApplication(getApplicationContext());
 
 		if (getIntent().getAction().equals("1"))
