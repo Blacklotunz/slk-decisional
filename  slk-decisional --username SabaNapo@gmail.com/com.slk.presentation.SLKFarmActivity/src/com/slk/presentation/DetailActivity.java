@@ -78,16 +78,6 @@ public class DetailActivity extends Activity{
 		Log.v("previsione", ""+actualPrevisione);
 
 
-
-		Button homeButton = (Button) findViewById(R.id.home);
-		homeButton.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				SLKFarmActivity.prodotti_selezionati=new ArrayList<Prodotto>();
-				finish();
-			}
-		});
-
 		final Button confirmButton = (Button) findViewById(R.id.Conferma);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 			
