@@ -9,6 +9,7 @@ import com.slk.storage.SLKStorage;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,14 +28,14 @@ public class SLKFarmActivity extends TabActivity {
 	static final private int GREEN = 1;
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
-	
+
 	//set this to true if db clean in needed
 	private static final boolean flag_clear = false;
-	
-	
+
+
 	private SLKApplication slk_utility;
 	ArrayList<Prodotto> prodotti;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class SLKFarmActivity extends TabActivity {
 		SLKStorage storage= new SLKStorage(this);
 		if(flag_clear)
 			storage.clear(); //pulisce il DB
+
 		if(slk_utility.getAllProducts().isEmpty()){
 			slk_utility.setProducts();
 			slk_utility.setHistoryProducts();
@@ -67,6 +69,15 @@ public class SLKFarmActivity extends TabActivity {
 		rIntent.setAction(""+RED);
 		tabHost.addTab(tabHost.newTabSpec("RED").setContent(rIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.redbutton, null)));
 
+		if(getIntent().getAction()!=null){
+			if (getIntent().getAction().equals("1"))
+				tabHost.setCurrentTab(0);
+			else if (getIntent().getAction().equals("2"))
+				tabHost.setCurrentTab(1);
+			else if (getIntent().getAction().equals("3"))
+				tabHost.setCurrentTab(2);
+			else tabHost.setCurrentTab(0);
+		}
 
 		Button ricerca = (Button) findViewById(R.id.bottone_ricerca);
 		ricerca.setOnClickListener(new View.OnClickListener() {
@@ -142,12 +153,20 @@ public class SLKFarmActivity extends TabActivity {
 	public void onResume(Bundle SavedIstanceState){
 		this.onCreate(SavedIstanceState);
 	}
-
+	
+	
+	/* method for don't give permission to use back button
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			return false;
 		}
 		return super.onKeyDown(keyCode, event);
-	}
+	}*/
 
+	/* method to use for show an advise before exit
+	@Override
+	public void onBackPressed() {
+		Log.i("SLKFARMACTIVITY","back pressed!");
+		finish();
+	}*/
 }
