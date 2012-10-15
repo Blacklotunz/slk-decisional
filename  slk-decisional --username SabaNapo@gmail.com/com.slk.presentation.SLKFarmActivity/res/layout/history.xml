@@ -11,16 +11,6 @@
         android:layout_height="wrap_content"
         android:background="@color/White" >
 
-        <Button
-            android:id="@+id/home"
-            style="@style/ButtonTextMedium"
-            android:layout_width="100sp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/blackbuttons"
-            android:text="@string/home"
-            android:textColor="@android:color/white" />
-
     </RelativeLayout>
 
     <RelativeLayout

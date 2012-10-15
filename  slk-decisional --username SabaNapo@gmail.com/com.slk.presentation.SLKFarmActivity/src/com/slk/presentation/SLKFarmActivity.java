@@ -112,15 +112,7 @@ public class SLKFarmActivity extends TabActivity {
 			}
 		});
 
-		final Button historyButton = (Button) findViewById(R.id.historyButton);
-		historyButton.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {	
-				Intent intent = new Intent(SLKFarmActivity.this, HistoryActivity.class);
-				startActivity(intent);
-			}
-		});
-
+		
 		final Button confrontaButton = (Button) findViewById(R.id.confronta);
 		confrontaButton.setOnClickListener(new View.OnClickListener() {
 

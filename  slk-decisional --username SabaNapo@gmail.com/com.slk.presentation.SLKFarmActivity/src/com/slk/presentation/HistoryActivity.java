@@ -103,16 +103,6 @@ public class HistoryActivity extends Activity{
 			}
 		});
 
-
-
-
-		final Button homeButton = (Button) findViewById(R.id.home);
-		homeButton.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				finish();
-			}
-		});
 	}
 
 	private void creaLayout(Context ctx, ArrayList<HistoryProdotto> history_prodotti){
@@ -221,13 +211,6 @@ public class HistoryActivity extends Activity{
 		final float scale = getResources().getDisplayMetrics().scaledDensity;
 		// Convert the dps to pixels, based on density scale
 		return (int) (scale*sp);
-	}
-
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 
 	private void setVisibleRow(){
