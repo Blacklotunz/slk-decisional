@@ -4,14 +4,40 @@
     android:layout_height="fill_parent"
     android:background="@color/White"
     android:orientation="vertical" >
-
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.68" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/White" >
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:orientation="horizontal" >
-
+
         <Button
             android:id="@+id/confronta"
             style="@style/ButtonTextMedium"
@@ -33,51 +59,14 @@
 
             <requestFocus />
         </EditText>
-
+
         <Button
             android:id="@+id/bottone_ricerca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/ic_menu_search"
             android:title="search product" />
-    </LinearLayout>
-
-<TabHost
-    android:id="@android:id/tabhost"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-        </TabWidget>
-
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/White" >
-
-        </FrameLayout>
-    </LinearLayout>
-</TabHost>
-
-<Button
-    android:id="@+id/historyButton"
-    style="@style/ButtonTextMedium"
-    android:layout_width="67dp"
-    android:layout_height="match_parent"
-    android:background="@drawable/blackbuttons"
-    android:padding="3dp"
-    android:shadowColor="@color/Black"
-    android:src="@drawable/history_button"
-    android:text="History" />
 
     </LinearLayout>
+
+</LinearLayout>

@@ -88,6 +88,15 @@ public class DetailActivity extends Activity{
 				finish();
 			}
 		});
+		
+		final Button history = (Button) findViewById(R.id.historyd);
+		history.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(DetailActivity.this, HistoryActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		
 		final Button QuantityB = (Button) findViewById(R.id.set_quantity);
