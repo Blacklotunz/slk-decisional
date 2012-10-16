@@ -146,12 +146,12 @@ public class HistoryProdotto implements Parcelable{
 		p.writeInt(getQ_prodotta());
 	}
 
-	public static final Parcelable.Creator<Prodotto> CREATOR = new Parcelable.Creator<Prodotto>() {
-		public Prodotto createFromParcel(Parcel in) {
-			return new Prodotto(in);
+	public static final Parcelable.Creator<Crop> CREATOR = new Parcelable.Creator<Crop>() {
+		public Crop createFromParcel(Parcel in) {
+			return new Crop(in);
 		}
-		public Prodotto[] newArray(int size) {
-			return new Prodotto[size];
+		public Crop[] newArray(int size) {
+			return new Crop[size];
 		}
 	};
 

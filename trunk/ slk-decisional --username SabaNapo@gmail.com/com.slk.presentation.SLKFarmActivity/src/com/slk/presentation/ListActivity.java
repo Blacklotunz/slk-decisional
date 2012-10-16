@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
-import com.slk.application.Prodotto;
+import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
 
 import android.app.Activity;
@@ -26,7 +26,7 @@ import android.widget.TextView;
 public class ListActivity extends Activity{
 
 	
-	private ArrayList<Prodotto> prodotti;
+	private ArrayList<Crop> prodotti;
 	private SLKApplication slk_utility;
 	//	private static Prodotto prodotto_selezionato;
 	
@@ -127,7 +127,7 @@ public class ListActivity extends Activity{
 	}
 
 
-	private void creaLayout(Context ctx, ArrayList<Prodotto> prodotti){
+	private void creaLayout(Context ctx, ArrayList<Crop> prodotti){
 
 		LinearLayout LL_riga = (LinearLayout) findViewById(R.id.LinearLayout_riga);
 		LinearLayout LL_img = null;
@@ -136,7 +136,7 @@ public class ListActivity extends Activity{
 		LinearLayout LL = null;
 
 
-		for(final Prodotto p : prodotti){
+		for(final Crop p : prodotti){
 			Log.v(TAG, "@Nuovo prodotto");
 			LL = new LinearLayout(getApplicationContext());
 

@@ -39,7 +39,7 @@ public class ListaProdotti <E>{
 		prodotti.add(index, prodotto);
 	}
 	
-	public boolean remove(Prodotto prodotto){
+	public boolean remove(Crop prodotto){
 		return prodotti.remove(prodotto);
 	}
 	

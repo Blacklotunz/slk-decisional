@@ -61,7 +61,7 @@ public class SLKApplication {
 
 
 	//ritorna un arraylist che contiene tutti i prodotti del database mappati ognuno in una classe prodotto
-	public ArrayList<Prodotto> getAllProducts(){
+	public ArrayList<Crop> getAllProducts(){
 		return getSelectProducts("all");
 	}
 	/*
@@ -71,22 +71,22 @@ public class SLKApplication {
 	 * SI DEVE SETTARE SUCCESSIVAMENTE ATTRAVERSO IL METODO setColore() 
 	 * */
 	//ritorna un arraylist che contiene tutti i prodotti della lista verde mappati ognuno in una classe prodotto
-	public ArrayList<Prodotto> getGreenProducts(){
+	public ArrayList<Crop> getGreenProducts(){
 		return getSelectProducts("green");	
 	}
 	//ritorna un arraylist che contiene tutti i prodotti della lista gialla mappati ognuno in una classe prodotto
-	public ArrayList<Prodotto> getYellowProducts(){
+	public ArrayList<Crop> getYellowProducts(){
 		return getSelectProducts("yellow");	
 	}
 	//ritorna un arraylist che contiene tutti i prodotti della lista rossa mappati ognuno in una classe prodotto
-	public ArrayList<Prodotto> getRedProducts(){
+	public ArrayList<Crop> getRedProducts(){
 		return getSelectProducts("red");	
 	}
 
 	//metodo richiamato dagli altri metodi getProducts...in base al valore passato cambia la query e la fa eseguire allo storage layer
-	public ArrayList<Prodotto> getSelectProducts(String ProdType){
+	public ArrayList<Crop> getSelectProducts(String ProdType){
 		db.open();
-		ArrayList<Prodotto> toReturn=new ArrayList<Prodotto>();
+		ArrayList<Crop> toReturn=new ArrayList<Crop>();
 		Cursor c=null;
 		if(ProdType.equals("all"))
 			c=db.fetchProducts();
@@ -103,11 +103,11 @@ public class SLKApplication {
 		int qVendAnnPreCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC);
 		int qPrevAnnCorrCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR);
 		int stagioneCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_STAGIONE);
-		Prodotto prod;
+		Crop prod;
 		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
-				prod=new Prodotto(c.getString(nameCol),c.getDouble(priceCol),c.getInt(imgCol),00000,c.getInt(listaCol),c.getInt(qVendAnnPreCol),c.getInt(qPrevAnnCorrCol),c.getInt(stagioneCol));
+				prod=new Crop(c.getString(nameCol),c.getDouble(priceCol),c.getInt(imgCol),00000,c.getInt(listaCol),c.getInt(qVendAnnPreCol),c.getInt(qPrevAnnCorrCol),c.getInt(stagioneCol));
 				toReturn.add(prod);
 				String s="Product Name:"+c.getString(nameCol)+", Price:"+c.getDouble(priceCol)+", Imm:"+c.getInt(imgCol)+", Lista:"+c.getInt(listaCol)+", Quantita venduta anno prec:"+c.getInt(qVendAnnPreCol)+", Quantita preventivata:"+c.getInt(qPrevAnnCorrCol)+", Stagione:"+c.getInt(stagioneCol); 
 				Log.v("ciao", s);                
@@ -119,7 +119,7 @@ public class SLKApplication {
 			if (toReturn.size()!=0){
 				int[] colors=color_test.getColours(toReturn.size(),toReturn.get(0).getLista());
 				for(int i=0;i<toReturn.size();i++){
-					Prodotto p=toReturn.get(i);
+					Crop p=toReturn.get(i);
 					p.setColore(colors[toReturn.size()-(i+1)]);
 					Log.v("colore",""+ colors[i]);
 				}
