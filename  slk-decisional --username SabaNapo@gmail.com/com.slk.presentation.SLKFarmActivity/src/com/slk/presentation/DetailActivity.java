@@ -3,7 +3,7 @@ package com.slk.presentation;
 import java.util.ArrayList;
 
 import com.slk.R;
-import com.slk.application.Prodotto;
+import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
 
 import android.app.Activity;
@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class DetailActivity extends Activity{
 
-	private Prodotto prodotto_selezionato; 
+	private Crop prodotto_selezionato; 
 
 	protected static final int SINGLE_CHOICE_DIALOG = 1;
 	private int oldPrevisione=0;
@@ -109,7 +109,7 @@ public class DetailActivity extends Activity{
 
 	}
 
-	private void inserisciProdottoPianificato(Prodotto prod_selezionato){
+	private void inserisciProdottoPianificato(Crop prod_selezionato){
 
 		int colore=0;
 		if(prodotto_selezionato.getLista()==1)

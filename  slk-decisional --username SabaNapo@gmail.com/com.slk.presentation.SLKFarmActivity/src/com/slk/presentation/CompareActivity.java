@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
-import com.slk.application.Prodotto;
+import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
 
 import android.app.Activity;
@@ -23,11 +23,11 @@ import android.widget.TextView;
 public class CompareActivity extends Activity{
 
 
-	ArrayList<Prodotto> products_to_insert = new ArrayList<Prodotto>();
-	protected ArrayList<Prodotto> sec_prodotti;
+	ArrayList<Crop> products_to_insert = new ArrayList<Crop>();
+	protected ArrayList<Crop> sec_prodotti;
 	protected SLKApplication slk_utility;
-	protected Stack<Prodotto> invisible_up = new Stack<Prodotto>();
-	protected Stack<Prodotto> invisible_down = new Stack<Prodotto>();
+	protected Stack<Crop> invisible_up = new Stack<Crop>();
+	protected Stack<Crop> invisible_down = new Stack<Crop>();
 
 	protected RelativeLayout LL_top;
 	protected RelativeLayout LL_bot;
@@ -61,7 +61,7 @@ public class CompareActivity extends Activity{
 
 		if(SLKFarmActivity.prodotti_selezionati.size()>2){
 			int i=0;
-			for(Prodotto p: SLKFarmActivity.prodotti_selezionati){
+			for(Crop p: SLKFarmActivity.prodotti_selezionati){
 				if(i==0 || i==1)
 					products_to_insert.add(i, SLKFarmActivity.prodotti_selezionati.get(i));
 				else
@@ -126,7 +126,7 @@ public class CompareActivity extends Activity{
 	}
 
 
-	private void caricaLayout(Context applicationContext, ArrayList<Prodotto> products_to_insert) {
+	private void caricaLayout(Context applicationContext, ArrayList<Crop> products_to_insert) {
 		num_page = SLKFarmActivity.prodotti_selezionati.size()/2;
 		if(SLKFarmActivity.prodotti_selezionati.size()%2 > 0)
 			num_page = num_page + 1;
@@ -153,7 +153,7 @@ public class CompareActivity extends Activity{
 		riempiGriglia(products_to_insert);
 	}
 
-	protected void up_griglia(ArrayList<Prodotto> prodotti) {
+	protected void up_griglia(ArrayList<Crop> prodotti) {
 		cont = cont-1;
 		
 		if(products_to_insert.size()==2)
@@ -168,7 +168,7 @@ public class CompareActivity extends Activity{
 			riempiGriglia(products_to_insert);
 	}
 
-	protected void down_griglia(ArrayList<Prodotto> prodotti) {
+	protected void down_griglia(ArrayList<Crop> prodotti) {
 		cont = cont+1;
 
 		if(products_to_insert.size()==2)
@@ -183,8 +183,8 @@ public class CompareActivity extends Activity{
 			riempiGriglia(products_to_insert);
 	}
 
-	protected void riempiGriglia(ArrayList<Prodotto> products){
-		Prodotto p;
+	protected void riempiGriglia(ArrayList<Crop> products){
+		Crop p;
 
 		if(products.size()>0){
 			p = products.get(0);
@@ -227,7 +227,7 @@ public class CompareActivity extends Activity{
 		return super.onKeyDown(keyCode, event);
 	}
 
-	private void addListenerProdotto(RelativeLayout LL, final Prodotto p) {
+	private void addListenerProdotto(RelativeLayout LL, final Crop p) {
 		LL.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {

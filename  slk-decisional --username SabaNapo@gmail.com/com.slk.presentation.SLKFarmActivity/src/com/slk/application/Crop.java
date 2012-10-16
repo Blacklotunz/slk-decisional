@@ -3,7 +3,7 @@ package com.slk.application;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Prodotto implements Parcelable{
+public class Crop implements Parcelable{
 
 	private String nome;
 	private double prezzo;
@@ -14,7 +14,7 @@ public class Prodotto implements Parcelable{
 	private int q_prev_anno_corrente;
 	private int stagione;
 
-	public Prodotto(String nome, double prezzo, int img, int colore,int lista,int q_vend_anno_precedente,int q_prev_anno_corrente,int stagione){
+	public Crop(String nome, double prezzo, int img, int colore,int lista,int q_vend_anno_precedente,int q_prev_anno_corrente,int stagione){
 		this.nome=nome;
 		this.prezzo=prezzo;
 		this.img=img;
@@ -25,7 +25,7 @@ public class Prodotto implements Parcelable{
 		this.stagione=stagione;
 	}
 	
-	public Prodotto(Parcel in) {
+	public Crop(Parcel in) {
 		this.nome=in.readString();
 		this.prezzo=in.readDouble();
 		this.img=in.readInt();
@@ -124,11 +124,11 @@ public class Prodotto implements Parcelable{
 	}
 
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-		public Prodotto createFromParcel(Parcel in) {
-			return new Prodotto(in);
+		public Crop createFromParcel(Parcel in) {
+			return new Crop(in);
 		}
-		public Prodotto[] newArray(int size) {
-			return new Prodotto[size];
+		public Crop[] newArray(int size) {
+			return new Crop[size];
 		}
 	};
 
