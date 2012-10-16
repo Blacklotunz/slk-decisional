@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
-import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
+import com.slk.bean.Product;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,7 +26,7 @@ import android.widget.TextView;
 public class ListActivity extends Activity{
 
 	
-	private ArrayList<Crop> prodotti;
+	private ArrayList<Product> prodotti;
 	private SLKApplication slk_utility;
 	//	private static Prodotto prodotto_selezionato;
 	
@@ -127,7 +127,7 @@ public class ListActivity extends Activity{
 	}
 
 
-	private void creaLayout(Context ctx, ArrayList<Crop> prodotti){
+	private void creaLayout(Context ctx, ArrayList<Product> prodotti){
 
 		LinearLayout LL_riga = (LinearLayout) findViewById(R.id.LinearLayout_riga);
 		LinearLayout LL_img = null;
@@ -136,8 +136,8 @@ public class ListActivity extends Activity{
 		LinearLayout LL = null;
 
 
-		for(final Crop p : prodotti){
-			Log.v(TAG, "@Nuovo prodotto");
+		for(final Product p : prodotti){
+			
 			LL = new LinearLayout(getApplicationContext());
 
 			LL.setLayoutParams(new LinearLayout.LayoutParams(
@@ -158,10 +158,9 @@ public class ListActivity extends Activity{
 			LL_img.setBackgroundColor(p.getColore());
 
 			ImageView img = new ImageView(ListActivity.this);
-			int i=p.getImg();
-			String prodotto=p.getNome();
-			Log.v(TAG, "------prodotto  -->"+prodotto+" i-->"+i +" zucchina-->"+R.drawable.zucchine);
-			img.setImageResource(p.getImg());
+
+			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			img.setImageResource(resId);
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 			LL_img.addView(img);
 			LL.addView(LL_img);

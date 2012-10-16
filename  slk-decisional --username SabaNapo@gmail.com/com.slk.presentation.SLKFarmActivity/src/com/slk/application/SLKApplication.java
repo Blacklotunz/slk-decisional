@@ -8,6 +8,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
+
+import com.slk.bean.Product;
 import com.slk.storage.SLKStorage;
 
 public class SLKApplication {
@@ -61,7 +63,7 @@ public class SLKApplication {
 
 
 	//ritorna un arraylist che contiene tutti i prodotti del database mappati ognuno in una classe prodotto
-	public ArrayList<Crop> getAllProducts(){
+	public ArrayList<Product> getAllProducts(){
 		return getSelectProducts("all");
 	}
 	/*
@@ -71,22 +73,22 @@ public class SLKApplication {
 	 * SI DEVE SETTARE SUCCESSIVAMENTE ATTRAVERSO IL METODO setColore() 
 	 * */
 	//ritorna un arraylist che contiene tutti i prodotti della lista verde mappati ognuno in una classe prodotto
-	public ArrayList<Crop> getGreenProducts(){
+	public ArrayList<Product> getGreenProducts(){
 		return getSelectProducts("green");	
 	}
 	//ritorna un arraylist che contiene tutti i prodotti della lista gialla mappati ognuno in una classe prodotto
-	public ArrayList<Crop> getYellowProducts(){
+	public ArrayList<Product> getYellowProducts(){
 		return getSelectProducts("yellow");	
 	}
 	//ritorna un arraylist che contiene tutti i prodotti della lista rossa mappati ognuno in una classe prodotto
-	public ArrayList<Crop> getRedProducts(){
+	public ArrayList<Product> getRedProducts(){
 		return getSelectProducts("red");	
 	}
 
 	//metodo richiamato dagli altri metodi getProducts...in base al valore passato cambia la query e la fa eseguire allo storage layer
-	public ArrayList<Crop> getSelectProducts(String ProdType){
+	public ArrayList<Product> getSelectProducts(String ProdType){
 		db.open();
-		ArrayList<Crop> toReturn=new ArrayList<Crop>();
+		ArrayList<Product> toReturn=new ArrayList<Product>();
 		Cursor c=null;
 		if(ProdType.equals("all"))
 			c=db.fetchProducts();
@@ -96,30 +98,37 @@ public class SLKApplication {
 			c=db.fetchYellowProducts();
 		if(ProdType.equals("red"))
 			c=db.fetchRedProducts();
-		int nameCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_NAME);  //indici delle colonne
+		
+		//indici delle colonne
+		int idCol =c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_ID);
+		int nameCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_NAME);  
 		int priceCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_PRICE);
 		int imgCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_IMG);
 		int listaCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_LISTA);
 		int qVendAnnPreCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC);
 		int qPrevAnnCorrCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR);
-		int stagioneCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_STAGIONE);
-		Crop prod;
+		int productionLevelCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_PRODUCTION_LEVEL);
+		int varietyCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_VARIETY);
+		Product prod;
+		
 		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
-				prod=new Crop(c.getString(nameCol),c.getDouble(priceCol),c.getInt(imgCol),00000,c.getInt(listaCol),c.getInt(qVendAnnPreCol),c.getInt(qPrevAnnCorrCol),c.getInt(stagioneCol));
+				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getInt(qVendAnnPreCol),c.getInt(qPrevAnnCorrCol));
 				toReturn.add(prod);
-				String s="Product Name:"+c.getString(nameCol)+", Price:"+c.getDouble(priceCol)+", Imm:"+c.getInt(imgCol)+", Lista:"+c.getInt(listaCol)+", Quantita venduta anno prec:"+c.getInt(qVendAnnPreCol)+", Quantita preventivata:"+c.getInt(qPrevAnnCorrCol)+", Stagione:"+c.getInt(stagioneCol); 
-				Log.v("ciao", s);                
+				
+				//String s="Product Name:"+c.getString(nameCol)+", Price:"+c.getDouble(priceCol)+", Imm:"+c.getInt(imgCol)+", Lista:"+c.getInt(listaCol)+", Quantita venduta anno prec:"+c.getInt(qVendAnnPreCol)+", Quantita preventivata:"+c.getInt(qPrevAnnCorrCol)+", Stagione:"+c.getInt(stagioneCol); 
+				//Log.v("product fetched", s);   
+				
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
 
 		db.close();
 		if (!ProdType.equals("all")){
 			if (toReturn.size()!=0){
-				int[] colors=color_test.getColours(toReturn.size(),toReturn.get(0).getLista());
+				int[] colors=ColorSetter.getColours(toReturn.size(),toReturn.get(0).getLista());
 				for(int i=0;i<toReturn.size();i++){
-					Crop p=toReturn.get(i);
+					Product p=toReturn.get(i);
 					p.setColore(colors[toReturn.size()-(i+1)]);
 					Log.v("colore",""+ colors[i]);
 				}
@@ -193,7 +202,7 @@ public class SLKApplication {
 		db.close();
 	}*/
 	
-	public void insertOrUpdateProductInHistory(String name,double price,int img,int colore,int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr,int stagione,int q_prev_utente){
+	public void insertOrUpdateProductInHistory(String name,double price,String imgURL,int colore,int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr,int q_prev_utente){
 		db.open();
 		Cursor c=db.getHistoryProductbyYear(name, anno);
 		//Se il prodotto è presente gia nella tabella history nell anno preso in considerazione incrementa la quantità preventivata nell'anno dall utente
@@ -206,7 +215,7 @@ public class SLKApplication {
 		}
 		else{
 			//Prodotto non presente nell'anno preso in considerazione si aggiungera' una riga riguardante il prodotto
-			db.insertProductInHistory(name, price, img, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, stagione, q_prev_utente);
+			db.insertProductInHistory(name, price, imgURL, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, q_prev_utente);
 		}
 		db.close();
 	}
@@ -271,10 +280,10 @@ public class SLKApplication {
 		if(db.fetchHistoryProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			Log.i("SLKApplication", "DB vuoto");
 			
-			db.insertProductInHistory("banana", 3,R.drawable.banana,Color.RED,2011,3,2000,2000,1,150);
-			db.insertProductInHistory("carrot", 2,R.drawable.carota,Color.GREEN,2011,7,170,170,2,200);
-			db.insertProductInHistory("savoy cabbage", 1,R.drawable.cavolo,Color.YELLOW,2010,10,1100,1100,3,300);
-			db.insertProductInHistory("cucumber", 1.5,R.drawable.cetriolo,Color.YELLOW,2010,12,120,120,4,50);
+			db.insertProductInHistory("banana", 3,"url",Color.RED,2011,3,2000,2000,150);
+			db.insertProductInHistory("carrot", 2,"url",Color.GREEN,2011,7,170,170,200);
+			db.insertProductInHistory("savoy cabbage", 1,"url",Color.YELLOW,2010,10,1100,1100,300);
+			db.insertProductInHistory("cucumber", 1.5,"url",Color.YELLOW,2010,12,120,120,50);
 		}
 		db.close();
 	}

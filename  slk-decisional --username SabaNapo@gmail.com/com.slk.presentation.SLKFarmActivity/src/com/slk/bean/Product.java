@@ -1,48 +1,51 @@
-package com.slk.application;
+package com.slk.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Crop implements Parcelable{
+public class Product implements Parcelable{
 
+	private String id;
 	private String nome;
+	private String variety;
 	private double prezzo;
-	private int img;
+	private String imgURL;
 	private int colore;
-	private int lista;
+	private int productionLevel;
+	private int lista; //1 green, 2 yellow, 3 red
 	private int q_vend_anno_precedente;
 	private int q_prev_anno_corrente;
-	private int stagione;
 
-	public Crop(String nome, double prezzo, int img, int colore,int lista,int q_vend_anno_precedente,int q_prev_anno_corrente,int stagione){
+	public Product(String id, String nome, String variety, double prezzo, String imgURL, int productionLevel, int lista, int q_vend_anno_precedente,int q_prev_anno_corrente){
+		this.id=id;
 		this.nome=nome;
 		this.prezzo=prezzo;
-		this.img=img;
-		this.colore=colore;
+		this.imgURL=imgURL;
+		this.productionLevel=productionLevel;
 		this.lista=lista;
 		this.q_vend_anno_precedente=q_vend_anno_precedente;
 		this.q_prev_anno_corrente=q_prev_anno_corrente;
-		this.stagione=stagione;
+		this.variety = variety;
 	}
 	
-	public Crop(Parcel in) {
+	public Product(Parcel in) {
 		this.nome=in.readString();
 		this.prezzo=in.readDouble();
-		this.img=in.readInt();
+		this.imgURL=in.readString();
 		this.colore=in.readInt();
 		this.lista=in.readInt();
 		this.q_vend_anno_precedente=in.readInt();
-		this.q_prev_anno_corrente=in.readInt();
-		this.stagione=in.readInt();
-		
+		this.q_prev_anno_corrente=in.readInt();	
 	}
-
-	public int getStagione() {
-		return stagione;
-	}
-
-	public void setStagione(int stagione) {
-		this.stagione = stagione;
+	
+	public void writeToParcel(Parcel p, int flags) {
+		p.writeString(getNome());
+		p.writeDouble(getPrezzo());
+		p.writeString(getImg());
+		p.writeInt(getColore());
+		p.writeInt(getLista());
+		p.writeInt(getQ_vend_anno_precedente());
+		p.writeInt(getQ_prev_anno_corrente());
 	}
 
 	public int getQ_prev_anno_corrente() {
@@ -71,13 +74,13 @@ public class Crop implements Parcelable{
 		this.lista = lista;
 	}
 
-	public int getImg() {
-		return img;
+	public String getImg() {
+		return imgURL;
 	}
 
 
-	public void setImg(int img) {
-		this.img = img;
+	public void setImg(String img) {
+		this.imgURL = img;
 	}
 
 	public String getNome() {
@@ -112,23 +115,36 @@ public class Crop implements Parcelable{
 	}
 
 	
-	public void writeToParcel(Parcel p, int flags) {
-		p.writeString(getNome());
-		p.writeDouble(getPrezzo());
-		p.writeInt(getImg());
-		p.writeInt(getColore());
-		p.writeInt(getLista());
-		p.writeInt(getQ_vend_anno_precedente());
-		p.writeInt(getQ_prev_anno_corrente());
-		p.writeInt(getStagione());
+
+
+	public int getProductionLevel() {
+		return productionLevel;
 	}
 
+	public void setProductionLevel(int productionLevel) {
+		this.productionLevel = productionLevel;
+	}
+
+
+
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
+
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-		public Crop createFromParcel(Parcel in) {
-			return new Crop(in);
+		public Product createFromParcel(Parcel in) {
+			return new Product(in);
 		}
-		public Crop[] newArray(int size) {
-			return new Crop[size];
+		public Product[] newArray(int size) {
+			return new Product[size];
 		}
 	};
 

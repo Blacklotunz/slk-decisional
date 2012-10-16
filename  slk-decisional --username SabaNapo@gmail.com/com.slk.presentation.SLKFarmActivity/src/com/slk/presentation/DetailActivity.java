@@ -3,8 +3,8 @@ package com.slk.presentation;
 import java.util.ArrayList;
 
 import com.slk.R;
-import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
+import com.slk.bean.Product;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class DetailActivity extends Activity{
 
-	private Crop prodotto_selezionato; 
+	private Product prodotto_selezionato; 
 
 	protected static final int SINGLE_CHOICE_DIALOG = 1;
 	private int oldPrevisione=0;
@@ -43,8 +43,8 @@ public class DetailActivity extends Activity{
 		
 		
 		ImageView image=(ImageView) findViewById(R.id.immagine_prodotto);
-		image.setBackgroundResource(prodotto_selezionato.getImg());
-		Log.i("DetailActivity","image setted");
+		int resId = getResources().getIdentifier(prodotto_selezionato.getNome(), "drawable", getPackageName());
+		image.setImageResource(resId);
 
 		TextView nome=(TextView)findViewById(R.id.nome);
 		nome.setText(prodotto_selezionato.getNome().toUpperCase());
@@ -59,7 +59,7 @@ public class DetailActivity extends Activity{
 		info3.setText("Current Production Plan: "+prodotto_selezionato.getQ_prev_anno_corrente()+" Kg.");
 		
 		TextView info4=(TextView)findViewById(R.id.info4);
-		info4.setText("Season of production: "+prodotto_selezionato.getStagione());
+		
 
 		TextView prevision = (TextView) findViewById(R.id.previsione);
 		prevision.setText("Your Prevision is: "+ slk_utility.getCurrentQuantity(prodotto_selezionato.getNome()));
@@ -109,7 +109,7 @@ public class DetailActivity extends Activity{
 
 	}
 
-	private void inserisciProdottoPianificato(Crop prod_selezionato){
+	private void inserisciProdottoPianificato(Product prod_selezionato){
 
 		int colore=0;
 		if(prodotto_selezionato.getLista()==1)
@@ -119,7 +119,7 @@ public class DetailActivity extends Activity{
 		else if(prodotto_selezionato.getLista()==3)
 			colore=Color.RED;
 
-		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getNome(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), 5, prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), prod_selezionato.getStagione(), actualPrevisione);
+		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getNome(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), 5, prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
 		slk_utility.updateProduct(prod_selezionato.getNome(),prod_selezionato.getQ_prev_anno_corrente(),actualPrevisione);
 		slk_utility.updateListProduct(prodotto_selezionato.getNome(),prodotto_selezionato.getLista());
 	}

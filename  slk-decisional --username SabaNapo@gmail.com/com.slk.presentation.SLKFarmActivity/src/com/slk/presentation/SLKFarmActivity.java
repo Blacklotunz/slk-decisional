@@ -3,8 +3,8 @@ package com.slk.presentation;
 import java.util.ArrayList;
 
 import com.slk.R;
-import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
+import com.slk.bean.Product;
 import com.slk.storage.SLKStorage;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 public class SLKFarmActivity extends TabActivity {
 
-	protected static ArrayList<Crop> prodotti_selezionati=new ArrayList<Crop>();
+	protected static ArrayList<Product> prodotti_selezionati=new ArrayList<Product>();
 	static final private int GREEN = 1;
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
@@ -34,7 +34,7 @@ public class SLKFarmActivity extends TabActivity {
 
 
 	private SLKApplication slk_utility;
-	ArrayList<Crop> prodotti;
+	ArrayList<Product> prodotti;
 
 	/** Called when the activity is first created. */
 	@Override

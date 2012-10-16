@@ -54,7 +54,6 @@ public class SLKStorage {
 		cv.put(ProductsMetaData.PRODUCT_LISTA, lista);
 		cv.put(ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC, q_venduta_anno_prec);
 		cv.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
-		cv.put(ProductsMetaData.PRODUCT_STAGIONE, stagione);
 		mDb.insert(ProductsMetaData.PRODUCTS_TABLE, null, cv);
 	}
 	/*Metodo per incrementare la quantità di prodotto dopo che è stata modificata nella schermata finale*/
@@ -85,17 +84,16 @@ public class SLKStorage {
 	 * stagione distingue la stagione in cui si coltiva il prodotto: 1=primavera, 2=estate, 3=autunno, 4=inverno
 	 * q_prodotta e' la quantita' che è stata prodotta dall utente nell anno preso in considerazione
 	 * */
-	public void insertProductInHistory(String name,double price,int img,int colore,int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr,int stagione,int q_prodotta){
+	public void insertProductInHistory(String name,double price,String imgURL,int colore,int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr,int q_prodotta){
 		ContentValues cv=new ContentValues();
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_NAME, name);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_PRICE, price);
-		cv.put(HistoryMetaData.PRODUCT_HISTORY_IMG, img);
+		cv.put(HistoryMetaData.PRODUCT_HISTORY_IMG, imgURL);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_COLOR, colore);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_ANNO, anno);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_MESE, mese);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_QUANT_VEND_ANNO_PREC, q_venduta_anno_prec);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
-		cv.put(HistoryMetaData.PRODUCT_HISTORY_STAGIONE, stagione);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA, q_prodotta);
 		mDb.insert(HistoryMetaData.HISTORY_TABLE, null, cv);
 	}
@@ -154,13 +152,15 @@ public class SLKStorage {
 	// i metadati della tabella products, accessibili ovunque
 	static public class ProductsMetaData {  
 		static public final String PRODUCTS_TABLE = "products";
+		static public final String PRODUCT_ID = "id";
 		static public final String PRODUCT_NAME = "name";
+		static public final String PRODUCT_VARIETY = "variety";
 		static public final String PRODUCT_PRICE = "price";
 		static public final String PRODUCT_IMG = "immagine";
 		static public final String PRODUCT_LISTA = "app_lista";
 		static public final String PRODUCT_QUANT_VEND_ANNO_PREC = "q_vend_anno_prec";
 		static public final String PRODUCT_QUANT_PREV_ANNO_CORR = "q_prev_anno_corr";
-		static public final String PRODUCT_STAGIONE =	"stagione";
+		static public final String PRODUCT_PRODUCTION_LEVEL = "productionLevel";
 	}
 
 	// i metadati della tabella HISTORY, accessibili ovunque
@@ -188,8 +188,7 @@ public class SLKStorage {
 			+ ProductsMetaData.PRODUCT_IMG + " Varchar[12] not null,"
 			+ ProductsMetaData.PRODUCT_LISTA + " int not null,"
 			+ ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC + " int not null,"
-			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " int not null,"
-			+ ProductsMetaData.PRODUCT_STAGIONE + " int not null);";
+			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " int not null,";
 
 	//sql code for the creation of HISTORY table
 	private static final String HISTORY_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "  

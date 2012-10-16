@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
-import com.slk.application.Crop;
 import com.slk.application.SLKApplication;
+import com.slk.bean.Product;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,11 +23,11 @@ import android.widget.TextView;
 public class CompareActivity extends Activity{
 
 
-	ArrayList<Crop> products_to_insert = new ArrayList<Crop>();
-	protected ArrayList<Crop> sec_prodotti;
+	ArrayList<Product> products_to_insert = new ArrayList<Product>();
+	protected ArrayList<Product> sec_prodotti;
 	protected SLKApplication slk_utility;
-	protected Stack<Crop> invisible_up = new Stack<Crop>();
-	protected Stack<Crop> invisible_down = new Stack<Crop>();
+	protected Stack<Product> invisible_up = new Stack<Product>();
+	protected Stack<Product> invisible_down = new Stack<Product>();
 
 	protected RelativeLayout LL_top;
 	protected RelativeLayout LL_bot;
@@ -61,7 +61,7 @@ public class CompareActivity extends Activity{
 
 		if(SLKFarmActivity.prodotti_selezionati.size()>2){
 			int i=0;
-			for(Crop p: SLKFarmActivity.prodotti_selezionati){
+			for(Product p: SLKFarmActivity.prodotti_selezionati){
 				if(i==0 || i==1)
 					products_to_insert.add(i, SLKFarmActivity.prodotti_selezionati.get(i));
 				else
@@ -126,7 +126,7 @@ public class CompareActivity extends Activity{
 	}
 
 
-	private void caricaLayout(Context applicationContext, ArrayList<Crop> products_to_insert) {
+	private void caricaLayout(Context applicationContext, ArrayList<Product> products_to_insert) {
 		num_page = SLKFarmActivity.prodotti_selezionati.size()/2;
 		if(SLKFarmActivity.prodotti_selezionati.size()%2 > 0)
 			num_page = num_page + 1;
@@ -153,7 +153,7 @@ public class CompareActivity extends Activity{
 		riempiGriglia(products_to_insert);
 	}
 
-	protected void up_griglia(ArrayList<Crop> prodotti) {
+	protected void up_griglia(ArrayList<Product> prodotti) {
 		cont = cont-1;
 		
 		if(products_to_insert.size()==2)
@@ -168,7 +168,7 @@ public class CompareActivity extends Activity{
 			riempiGriglia(products_to_insert);
 	}
 
-	protected void down_griglia(ArrayList<Crop> prodotti) {
+	protected void down_griglia(ArrayList<Product> prodotti) {
 		cont = cont+1;
 
 		if(products_to_insert.size()==2)
@@ -183,20 +183,15 @@ public class CompareActivity extends Activity{
 			riempiGriglia(products_to_insert);
 	}
 
-	protected void riempiGriglia(ArrayList<Crop> products){
-		Crop p;
+	protected void riempiGriglia(ArrayList<Product> products){
+		Product p;
 
 		if(products.size()>0){
 			p = products.get(0);
 			txt_nome_top.setText(p.getNome());
 			
-			/**
-			 * metodo da utilizzare per settare dinamicamente le immagini dei crops l'immagine dovrˆ avere lo stesso id del crop.
-			 */
-			//int resourceId = getResources().getIdentifier("arancia","drawable",getPackageName());
-			//img_top.setImageResource(resourceId);
-			
-			img_top.setImageResource(p.getImg());
+			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			img_top.setImageResource(resId);
 			txt_avg_top.setText("Average price: "+p.getPrezzo());
 			txt_q_ven_anno_prec_top.setText("Quantity sold last year: "+p.getQ_vend_anno_precedente()+" Kg.");
 			txt_q_prev_anno_corr_top.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
@@ -207,7 +202,8 @@ public class CompareActivity extends Activity{
 		if(products.size()==2){
 			p = products.get(1);
 			txt_nome_bot.setText(p.getNome());
-			img_bot.setImageResource(p.getImg());
+			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			img_bot.setImageResource(resId);
 			txt_avg_bot.setText("Average price: "+p.getPrezzo());
 			txt_q_ven_anno_prec_bot.setText("Quantity sold last year: "+p.getQ_vend_anno_precedente()+" Kg.");
 			txt_q_prev_anno_corr_bot.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
@@ -227,7 +223,7 @@ public class CompareActivity extends Activity{
 		return super.onKeyDown(keyCode, event);
 	}
 
-	private void addListenerProdotto(RelativeLayout LL, final Crop p) {
+	private void addListenerProdotto(RelativeLayout LL, final Product p) {
 		LL.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
