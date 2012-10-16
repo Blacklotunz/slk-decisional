@@ -1,5 +1,7 @@
 package com.slk.application;
 
+import com.slk.bean.Product;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -146,12 +148,12 @@ public class HistoryProdotto implements Parcelable{
 		p.writeInt(getQ_prodotta());
 	}
 
-	public static final Parcelable.Creator<Crop> CREATOR = new Parcelable.Creator<Crop>() {
-		public Crop createFromParcel(Parcel in) {
-			return new Crop(in);
+	public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+		public Product createFromParcel(Parcel in) {
+			return new Product(in);
 		}
-		public Crop[] newArray(int size) {
-			return new Crop[size];
+		public Product[] newArray(int size) {
+			return new Product[size];
 		}
 	};
 

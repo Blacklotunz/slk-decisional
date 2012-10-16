@@ -1,13 +1,13 @@
 package com.slk.application;
 
+import java.util.ArrayList;
+
+import com.slk.bean.Product;
+
 import android.graphics.Color;
 
 
-public class color_test {
-
-	/**
-	 * @param args
-	 */
+public class ColorSetter {
 	
 	/*
 	 * 
@@ -23,7 +23,7 @@ public class color_test {
 //	public static void main(String[] args) {
 //		//		Color[] colours = getColours(13, 1); //codice 1 per il verde
 //		// 		Color[] colours = getColours(17, 2); //codice 2 per il giallo
-//		int[] colours = getColours(10, 3); //codice 3 per il rosso
+//				int[] colours = getColours(10, 3); //codice 3 per il rosso
 //		for (int i = 0; i<colours.length; i++) {
 //			System.out.println("Colore : " + colours[i]);
 //		}
@@ -33,7 +33,6 @@ public class color_test {
 	public static int[] getColours(int num_col, int color_code) {
 		int[] colours = new int[num_col];
 		int percentuale = 185/num_col; //185 per non prendere colori troppo chiari (troppo vicini a 255)
-		//System.out.println(percentuale);
 		if (color_code == 1) { //codice per il verde
 			for (int i = 0; i < num_col; i++) {
 				int brighter = Color.rgb(percentuale * i, 255, percentuale * i);
@@ -59,4 +58,5 @@ public class color_test {
 		}
 		return colours;
 	}
+	
 }

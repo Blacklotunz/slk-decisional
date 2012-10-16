@@ -2,6 +2,8 @@ package com.slk.application;
 
 import java.util.ArrayList;
 
+import com.slk.bean.Product;
+
 public class ListaProdotti <E>{
 	private ArrayList<E> prodotti;
 	private int lista; // 0 per verde, 1 per giallo
@@ -39,7 +41,7 @@ public class ListaProdotti <E>{
 		prodotti.add(index, prodotto);
 	}
 	
-	public boolean remove(Crop prodotto){
+	public boolean remove(Product prodotto){
 		return prodotti.remove(prodotto);
 	}
 	
