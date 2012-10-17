@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/sezione_controlli"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_margin="2sp"
         android:background="@color/White" >
 
@@ -33,8 +33,8 @@
             <LinearLayout
                 android:id="@+id/LinearLayout_riga"
                 style="@drawable/rounded_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:background="@color/White"
                 android:orientation="vertical" >
 

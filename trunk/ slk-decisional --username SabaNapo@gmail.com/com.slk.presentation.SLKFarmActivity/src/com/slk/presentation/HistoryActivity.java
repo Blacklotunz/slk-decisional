@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
-import com.slk.application.HistoryProdotto;
 import com.slk.application.SLKApplication;
+import com.slk.bean.HistoryProdotto;
 
 import android.app.Activity;
 import android.content.Context;
@@ -150,7 +150,8 @@ public class HistoryActivity extends Activity{
 			LL_img.setBackgroundColor(p.getColore());
 
 			ImageView img = new ImageView(HistoryActivity.this);
-			img.setBackgroundResource(p.getImg());
+			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			img.setImageResource(resId);
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 			LL_img.addView(img);
 			LL.addView(LL_img);

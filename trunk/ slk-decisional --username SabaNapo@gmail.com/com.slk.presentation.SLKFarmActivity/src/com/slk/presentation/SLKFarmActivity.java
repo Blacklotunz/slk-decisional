@@ -29,8 +29,6 @@ public class SLKFarmActivity extends TabActivity {
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
 
-	//set this to true if db clean in needed
-	private static final boolean flag_clear = false;
 
 
 	private SLKApplication slk_utility;
@@ -43,11 +41,9 @@ public class SLKFarmActivity extends TabActivity {
 		setContentView(R.layout.decidinglist);
 
 		slk_utility = new SLKApplication(getApplicationContext());
-
-		SLKStorage storage= new SLKStorage(this);
-		if(flag_clear)
-			storage.clear(); //pulisce il DB
-
+		SLKStorage db = new SLKStorage(getApplicationContext());
+		db.clear();
+		
 		if(slk_utility.getAllProducts().isEmpty()){
 			slk_utility.setProducts();
 			slk_utility.setHistoryProducts();
