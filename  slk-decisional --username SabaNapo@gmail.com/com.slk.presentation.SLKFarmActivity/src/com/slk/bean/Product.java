@@ -25,7 +25,7 @@ public class Product implements Parcelable{
 		this.lista=lista;
 		this.q_vend_anno_precedente=q_vend_anno_precedente;
 		this.q_prev_anno_corrente=q_prev_anno_corrente;
-		this.variety = variety;
+		this.setVariety(variety);
 	}
 	
 	public Product(Parcel in) {
@@ -110,7 +110,6 @@ public class Product implements Parcelable{
 
 	
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -147,5 +146,14 @@ public class Product implements Parcelable{
 			return new Product[size];
 		}
 	};
+
+	public String getVariety() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setVariety(String variety) {
+		this.variety = variety;
+	}
 
 }

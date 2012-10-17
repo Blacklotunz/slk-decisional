@@ -7,7 +7,7 @@
 
         <Button
             android:id="@+id/normal"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
@@ -17,7 +17,7 @@
 
         <Button
             android:id="@+id/under"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/normal"
             android:background="@drawable/greenbuttons"
@@ -28,7 +28,7 @@
 
         <Button
             android:id="@+id/over"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/normal"
             android:layout_marginTop="10dp"
@@ -38,14 +38,14 @@
 
         <Button
             android:id="@+id/historyc"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="@string/history" />
 
         <Button
             android:id="@+id/back"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"

@@ -119,7 +119,7 @@ public class DetailActivity extends Activity{
 		else if(prodotto_selezionato.getLista()==3)
 			colore=Color.RED;
 
-		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getNome(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), 5, prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
+		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getNome(),prod_selezionato.getVariety(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), 5, prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
 		slk_utility.updateProduct(prod_selezionato.getNome(),prod_selezionato.getQ_prev_anno_corrente(),actualPrevisione);
 		slk_utility.updateListProduct(prodotto_selezionato.getNome(),prodotto_selezionato.getLista());
 	}
