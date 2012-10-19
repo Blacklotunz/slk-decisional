@@ -1,11 +1,9 @@
 package com.slk.presentation;
 
-import java.util.ArrayList;
-
+import java.util.Calendar;
 import com.slk.R;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,8 +24,8 @@ public class DetailActivity extends Activity{
 	private Product prodotto_selezionato; 
 
 	protected static final int SINGLE_CHOICE_DIALOG = 1;
-	private int oldPrevisione=0;
-	private int actualPrevisione=0;
+	private Double oldPrevisione=0.0;
+	private Double actualPrevisione=0.0;
 	private RelativeLayout relLay;
 	SLKApplication slk_utility;
 
@@ -38,7 +36,10 @@ public class DetailActivity extends Activity{
 		setContentView(R.layout.product);
 		
 		slk_utility= new SLKApplication(getApplicationContext());
-		prodotto_selezionato=getIntent().getExtras().getParcelable("prodotto");
+	   
+		Intent intent = getIntent();
+		prodotto_selezionato=intent.getParcelableExtra("prodotto");
+		
 		relLay=(RelativeLayout)findViewById(R.id.prodotto);
 		
 		
@@ -62,7 +63,7 @@ public class DetailActivity extends Activity{
 		
 
 		TextView prevision = (TextView) findViewById(R.id.previsione);
-		prevision.setText("Your Prevision is: "+ slk_utility.getCurrentQuantity(prodotto_selezionato.getNome()));
+		prevision.setText("Your Prevision is: "+ slk_utility.getCurrentQuantity(prodotto_selezionato.getId()));
 
 		relLay.setBackgroundColor(Color.GREEN);
 		if(prodotto_selezionato.getLista()==2){
@@ -119,9 +120,9 @@ public class DetailActivity extends Activity{
 		else if(prodotto_selezionato.getLista()==3)
 			colore=Color.RED;
 
-		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getNome(),prod_selezionato.getVariety(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), 5, prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
-		slk_utility.updateProduct(prod_selezionato.getNome(),prod_selezionato.getQ_prev_anno_corrente(),actualPrevisione);
-		slk_utility.updateListProduct(prodotto_selezionato.getNome(),prodotto_selezionato.getLista());
+		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getNome(),prod_selezionato.getVariety(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
+		slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getQ_prev_anno_corrente(),actualPrevisione);
+		slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
 	}
 	
 	@Override
@@ -149,25 +150,28 @@ public class DetailActivity extends Activity{
 						"Selected: " + quantities[which]+" press OK button to save your choice",
 						Toast.LENGTH_SHORT).show();
 				if(which==0)
-					actualPrevisione = 100;
+					actualPrevisione = 100.0;
 				if(which==1)
-					actualPrevisione = 250;
+					actualPrevisione = 250.0;
 				if(which==2)
-					actualPrevisione = 750;
+					actualPrevisione = 750.0;
 				if(which==3)
-					actualPrevisione = 1750;
+					actualPrevisione = 1750.0;
 				if(which==4)
-					actualPrevisione = 2750;
+					actualPrevisione = 2750.0;
 				if(which==5)
-					actualPrevisione = 5000;
+					actualPrevisione = 5000.0;
 				
 				TextView prevision = (TextView) findViewById(R.id.previsione);
 				prevision.setText("Your Prevision is: "+actualPrevisione);
 				Button QuantityB= (Button) findViewById(R.id.set_quantity);
 				QuantityB.setText("Selected "+quantities[which]);
 				
+				/**
+				 * to change: non usare pi la differenza ma il livello di supply
+				 */
 				//faccio la differenza per aggiornare colore, lista, ecc.
-				int differenza=prodotto_selezionato.getQ_vend_anno_precedente()-(prodotto_selezionato.getQ_prev_anno_corrente()+actualPrevisione);
+				Double differenza=prodotto_selezionato.getQ_vend_anno_precedente()-(prodotto_selezionato.getQ_prev_anno_corrente()+actualPrevisione);
 				if (differenza > 400){//lista verde
 					prodotto_selezionato.setLista(1);
 					relLay.setBackgroundColor(Color.GREEN);

@@ -8,7 +8,7 @@
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="0.68" >
 
         <LinearLayout
@@ -38,15 +38,6 @@
         android:layout_margin="5dp"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/confronta"
-            style="@style/ButtonTextMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:background="@drawable/blackbuttons"
-            android:text="@string/confronta"
-            android:textColor="@android:color/white" />
-
         <EditText
             android:id="@+id/campo_ricerca"
             android:layout_width="0dip"
@@ -59,13 +50,22 @@
 
             <requestFocus />
         </EditText>
-
+
         <Button
             android:id="@+id/bottone_ricerca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/ic_menu_search"
             android:title="search product" />
+
+        <Button
+            android:id="@+id/confronta"
+            style="@style/ButtonTextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/blackbuttons"
+            android:text="@string/confronta"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

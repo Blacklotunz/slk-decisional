@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ListActivity extends Activity{
+public class ProductListActivity extends Activity{
 
 	
 	private ArrayList<Product> prodotti;
@@ -37,8 +37,7 @@ public class ListActivity extends Activity{
 	private Button up,down;
 	protected Stack<View> invisible_up,invisible_down;
 	protected int sotto_view; 
-	protected int n_item_visible;
-	private static final String TAG="ACTIVITY LISTA PRODOTTI"; 
+	protected int n_item_visible=4;
 	private static final int riga_dim_sp=50;
 
 
@@ -151,13 +150,13 @@ public class ListActivity extends Activity{
 			LL.setBackgroundResource(R.drawable.rounded_edittext);
 
 			//Set image for a row
-			LL_img = new LinearLayout(ListActivity.this);
+			LL_img = new LinearLayout(ProductListActivity.this);
 			LinearLayout.LayoutParams lp_img = new LinearLayout.LayoutParams(convertToSpInpixel(riga_dim_sp),convertToSpInpixel(riga_dim_sp));
 			lp_img.setMargins(convertToSpInpixel(0), convertToSpInpixel(0), 0, convertToSpInpixel(0));
 			LL_img.setLayoutParams(lp_img);
 			LL_img.setBackgroundColor(p.getColore());
 
-			ImageView img = new ImageView(ListActivity.this);
+			ImageView img = new ImageView(ProductListActivity.this);
 
 			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
 			img.setImageResource(resId);
@@ -166,7 +165,7 @@ public class ListActivity extends Activity{
 			LL.addView(LL_img);
 
 			//set info
-			LL_info = new LinearLayout(ListActivity.this);
+			LL_info = new LinearLayout(ProductListActivity.this);
 			LinearLayout.LayoutParams lp_info = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT,
 					LayoutParams.FILL_PARENT,(float)0.8);
@@ -175,14 +174,14 @@ public class ListActivity extends Activity{
 			LL_info.setOrientation(LinearLayout.VERTICAL);
 			LL_info.setBackgroundColor(p.getColore());
 
-			TextView txt_nome = new TextView(ListActivity.this);
+			TextView txt_nome = new TextView(ProductListActivity.this);
 			txt_nome.setText(p.getNome());
 			txt_nome.setGravity(Gravity.CENTER);
 			txt_nome.setTextAppearance(getApplicationContext(), R.style.ButtonTextMedium);
 			txt_nome.setTextColor(getResources().getColor(R.color.Black));
 			LL_info.addView(txt_nome);
 
-			TextView txt_price = new TextView(ListActivity.this);
+			TextView txt_price = new TextView(ProductListActivity.this);
 			txt_price.setText("Price: "+p.getPrezzo()+" $");
 			txt_price.setGravity(Gravity.CENTER);
 			txt_price.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
@@ -192,7 +191,7 @@ public class ListActivity extends Activity{
 			LL.addView(LL_info);
 
 			//set checkbox
-			LL_flag = new LinearLayout(ListActivity.this);
+			LL_flag = new LinearLayout(ProductListActivity.this);
 			LL_flag.setLayoutParams(new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT));
@@ -204,7 +203,7 @@ public class ListActivity extends Activity{
 			LL_flag.setBackgroundColor(p.getColore());
 
 			//checkbox listener
-			CheckBox cb = new CheckBox(ListActivity.this);
+			CheckBox cb = new CheckBox(ProductListActivity.this);
 			cb.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					if(((CheckBox) v).isChecked()) {
@@ -230,9 +229,10 @@ public class ListActivity extends Activity{
 
 
 				public void onClick(View v) {
-					Intent intent=new Intent(ListActivity.this,DetailActivity.class);
+					Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
 					intent.putExtra("prodotto", p);
 					startActivity(intent);
+					finish();
 
 				}
 			});
@@ -241,7 +241,7 @@ public class ListActivity extends Activity{
 
 	private void setVisibleRow(){
 		//n_item_visible=(int)(findViewById(R.id.LinearLayout_riga).getHeight()/convertToSpInpixel(riga_dim_sp));
-		n_item_visible= 4;
+		//n_item_visible= 4;
 		Log.i("riga_dim_sp",""+convertToSpInpixel(riga_dim_sp));
 		Log.i("LL_riga.getHeight()",""+LL_riga.getHeight());
 		Log.i("LL_riga.getChildCount()",""+LL_riga.getChildCount());

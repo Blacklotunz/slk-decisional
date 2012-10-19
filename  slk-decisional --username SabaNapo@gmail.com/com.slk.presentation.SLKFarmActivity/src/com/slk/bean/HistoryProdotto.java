@@ -12,14 +12,14 @@ public class HistoryProdotto implements Parcelable{
 	private int colore;
 	private int anno;
 	private int mese;
-	private int q_vend_anno_precedente;
-	private int q_prev_anno_corrente;
-	private int q_prodotta;
+	private Double q_vend_anno_precedente;
+	private Double q_prev_anno_corrente;
+	private Double q_prodotta;
 
-	public HistoryProdotto(String id, String nome,String variety, double prezzo, String img, int colore,int anno,int mese,int q_vend_anno_precedente,int q_prev_anno_corrente,int q_prodotta){
+	public HistoryProdotto(String id, String nome,String variety, double prezzo, String img, int colore,int anno,int mese,Double q_vend_anno_precedente,Double q_prev_anno_corrente,Double q_prodotta){
 		this.id=id;
-		this.variety=variety;
 		this.nome=nome;
+		this.variety=variety;
 		this.prezzo=prezzo;
 		this.colore=colore;
 		this.anno=anno;
@@ -39,9 +39,9 @@ public class HistoryProdotto implements Parcelable{
 		this.colore=in.readInt();
 		this.anno=in.readInt();
 		this.mese=in.readInt();
-		this.q_vend_anno_precedente=in.readInt();
-		this.q_prev_anno_corrente=in.readInt();
-		this.q_prodotta=in.readInt();
+		this.q_vend_anno_precedente=in.readDouble();
+		this.q_prev_anno_corrente=in.readDouble();
+		this.q_prodotta=in.readDouble();
 		
 	}
 	
@@ -54,9 +54,9 @@ public class HistoryProdotto implements Parcelable{
 		p.writeInt(getColore());
 		p.writeInt(getAnno());
 		p.writeInt(getMese());
-		p.writeInt(getQ_vend_anno_precedente());
-		p.writeInt(getQ_prev_anno_corrente());
-		p.writeInt(getQ_prodotta());
+		p.writeDouble(getQ_vend_anno_precedente());
+		p.writeDouble(getQ_prev_anno_corrente());
+		p.writeDouble(getQ_prodotta());
 	}
 
 	public int getAnno() {
@@ -75,28 +75,28 @@ public class HistoryProdotto implements Parcelable{
 		this.mese = mese;
 	}
 
-	public int getQ_prodotta() {
+	public Double getQ_prodotta() {
 		return q_prodotta;
 	}
 
-	public void setQ_prodotta(int q_prodotta) {
+	public void setQ_prodotta(Double q_prodotta) {
 		this.q_prodotta = q_prodotta;
 	}
 
 
-	public int getQ_prev_anno_corrente() {
+	public Double getQ_prev_anno_corrente() {
 		return q_prev_anno_corrente;
 	}
 
-	public void setQ_prev_anno_corrente(int q_prev_anno_corrente) {
+	public void setQ_prev_anno_corrente(Double q_prev_anno_corrente) {
 		this.q_prev_anno_corrente = q_prev_anno_corrente;
 	}
 
-	public int getQ_vend_anno_precedente() {
+	public Double getQ_vend_anno_precedente() {
 		return q_vend_anno_precedente;
 	}
 
-	public void setQ_vend_anno_precedente(int q_vend_anno_precedente) {
+	public void setQ_vend_anno_precedente(Double q_vend_anno_precedente) {
 		this.q_vend_anno_precedente = q_vend_anno_precedente;
 	}
 

@@ -21,23 +21,26 @@ public class SLKApplication {
 		db=new SLKStorage(ct);	 
 	}
 
-	//Ritorna l'anno corrente
+	//return current year
 	public int getCurrentYear(){
-		Calendar calendar = Calendar.getInstance();
-		return calendar.get(Calendar.YEAR);	
+		return Calendar.getInstance().get(Calendar.YEAR);	
+	}
+	//return current month
+	public int getCurrentMonth(){
+		return Calendar.getInstance().get(Calendar.MONTH);
 	}
 
-	public boolean isThisProductCultivatedLastYear(String name){
+	public boolean isThisProductCultivatedLastYear(String id){
 		int lastYear=this.getCurrentYear()-1;
-		return this.isProductInHistorybyYear(name, lastYear);
+		return this.isProductInHistorybyYear(id, lastYear);
 
 	}
 
-	public String getLastYearQuantity(String name){
+	public String getLastYearQuantity(String id){
 		int lastYear=this.getCurrentYear()-1;
 		String toReturn;
 		db.open();
-		Cursor c=db.getHistoryProductbyYear(name, lastYear);
+		Cursor c=db.getHistoryProductbyYear(id, lastYear);
 		if(c.moveToFirst()){
 			int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
 			toReturn="Last production: "+c.getInt(quantCol)+" Kg";
@@ -48,10 +51,10 @@ public class SLKApplication {
 		return toReturn;
 	}
 
-	public int getCurrentQuantity(String name){
+	public int getCurrentQuantity(String id){
 		int toReturn=0;
 		db.open();
-		Cursor c=db.getHistoryProductbyYear(name, this.getCurrentYear());
+		Cursor c=db.getHistoryProductbyYear(id, this.getCurrentYear());
 		if(c.moveToFirst()){
 			int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
 			toReturn=c.getInt(quantCol);
@@ -67,7 +70,7 @@ public class SLKApplication {
 	public ArrayList<Product> getAllProducts(){
 		return getSelectProducts("all");
 	}
-	
+
 	//ritorna un arraylist che contiene tutti i prodotti della lista verde mappati ognuno in una classe prodotto
 	public ArrayList<Product> getGreenProducts(){
 		return getSelectProducts("green");	
@@ -110,7 +113,7 @@ public class SLKApplication {
 		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
-				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getInt(qVendAnnPreCol),c.getInt(qPrevAnnCorrCol));
+				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
 				toReturn.add(prod);
 
 				//String s="Product Name:"+c.getString(nameCol)+", Price:"+c.getDouble(priceCol)+", Imm:"+c.getInt(imgCol)+", Lista:"+c.getInt(listaCol)+", Quantita venduta anno prec:"+c.getInt(qVendAnnPreCol)+", Quantita preventivata:"+c.getInt(qPrevAnnCorrCol)+", Stagione:"+c.getInt(stagioneCol); 
@@ -118,7 +121,7 @@ public class SLKApplication {
 
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
-
+		c.close();
 		db.close();
 		if (!ProdType.equals("all")){
 			if (toReturn.size()!=0){
@@ -155,11 +158,11 @@ public class SLKApplication {
 		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
-				prod=new HistoryProdotto(c.getString(idCol),c.getString(nameCol),c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(coloreCol),c.getInt(annoCol),c.getInt(meseCol),c.getInt(qVendAnnPreCol),c.getInt(qPrevAnnCorrCol),c.getInt(quantCol));
+				prod=new HistoryProdotto(c.getString(idCol),c.getString(nameCol),c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(coloreCol),c.getInt(annoCol),c.getInt(meseCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol),c.getDouble(quantCol));
 				toReturn.add(prod);         
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
-
+		c.close();
 		db.close();
 		return toReturn;
 
@@ -183,37 +186,23 @@ public class SLKApplication {
 	 * Se invece fa l'update incrementa la quantità di prodotto che l'utente ha previsto di produrre
 	 * Controlla se il prodotto è presente nella history in base al nome del prodotto e all anno tramite il metodo isProductInHistory
 	 * */
-
-	/*public void insertOrUpdateProductInHistory(String name,double price,int img,int colore,int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr,int stagione,int q_prodotta,int q_prev_utente){
-		//Se il prodotto è presente gia nella tabella history nell anno preso in considerazione incrementa la quantità preventivata nell'anno dall utente
-		if(this.isProductInHistorybyYear(name, anno)){
-			db.open();
-			q_prodotta=q_prodotta+q_prev_utente;
-			db.updateProductInHistory(name, q_prodotta);
-		}
-		else{
-			db.open();
-			//Prodotto non presente nell'anno preso in considerazione si aggiungera' una riga riguardante il prodotto
-			db.insertProductInHistory(name, price, img, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, stagione, q_prodotta);
-		}
-		db.close();
-	}*/
-
-	public void insertOrUpdateProductInHistory(String id, String name,String variety, double price, String imgURL,int colore,int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr,int q_prev_utente){
+	public void insertOrUpdateProductInHistory(String id, String name,String variety, double price, String imgURL,int colore,int anno,int mese,double q_venduta_anno_prec,double q_prev_anno_corr,double q_prev_utente){
 		db.open();
-		Cursor c=db.getHistoryProductbyYear(name, anno);
+		
+		Cursor c=db.getHistoryProductbyYear(id, anno);
 		//Se il prodotto è presente gia nella tabella history nell anno preso in considerazione incrementa la quantità preventivata nell'anno dall utente
 		if(c.moveToFirst()){
 			int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
-			int q_prodotta=c.getInt(quantCol);
+			double q_prodotta=c.getDouble(quantCol);
 			q_prodotta=q_prodotta+q_prev_utente;
-			db.updateProductInHistory(name, q_prodotta);
-			db.updateProductColorInHistory(name, colore);
+			db.updateProductInHistory(id, q_prodotta);
+			db.updateProductColorInHistory(id, colore);
 		}
 		else{
 			//Prodotto non presente nell'anno preso in considerazione si aggiungera' una riga riguardante il prodotto
 			db.insertProductInHistory(id, name,variety, price, imgURL, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, q_prev_utente);
 		}
+		c.close();
 		db.close();
 	}
 	//Metodo di inserimento di un prodotto nella tabella Products
@@ -226,16 +215,16 @@ public class SLKApplication {
 	}
 
 	//Incrementa sul database la quantita' preventivata del prodotto dopo la scelta dell'utente
-	public void updateProduct(String name,int q_prev_anno_corr,int q_prev_utente){
+	public void updateProduct(String id,Double q_prev_anno_corr,Double q_prev_utente){
 		q_prev_anno_corr=q_prev_anno_corr+q_prev_utente;
 		db.open();
-		db.updateProduct(name, q_prev_anno_corr);
+		db.updateProduct(id, q_prev_anno_corr);
 		db.close();
 	}
 
-	public void updateListProduct(String name,int lista){
+	public void updateListProduct(String id,int lista){
 		db.open();
-		db.updateListaProduct(name, lista);
+		db.updateListaProduct(id, lista);
 		db.close();
 	}
 
@@ -246,7 +235,6 @@ public class SLKApplication {
 		db.open();
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			Log.i("SLKApplication", "DB vuoto");
-
 			db.insertProduct("bananaid","banana","variety", 3,"url",1, 10 ,2000,1000);
 			db.insertProduct("carrotid","carrot", "variety",		2,	 "url",		 1,10, 1000,	500);
 			db.insertProduct("cabbageid", "cabbage", "variety",		1,	 "url",		 1, 10,2000,	1000);
@@ -257,18 +245,11 @@ public class SLKApplication {
 			db.insertProduct("kiwiid","kiwi", "variety",		1.2, "url", 1,10, 1000,	0);
 			db.insertProduct("saladid","salad", "variety",	1.0, "url", 2, 40,3500,	3300);
 			db.insertProduct("zucchiniid","zucchini", "variety",	1.0, "url", 2, 40,200,	150);
-			db.insertProduct("eggplantid","eggplant", "variety",	1.3, "url", 2, 40,450,	400);
 			db.insertProduct("watermelonid","watermelon", "variety",	0.4, "url", 2, 40,3450,	3300);
-			db.insertProduct("basilid","basil", "variety",	0.5, "url", 2, 40,1800,	1700);
-			db.insertProduct("savoy cabbageid","savoy cabbage", "variety",		0.6, "url", 2,40, 2000,	1999);
-			db.insertProduct("appleid","apple", 	"variety",	0.5, "url", 3,80, 400,	500);
-			db.insertProduct("pearid","pear", 	"variety",	2.0, "url", 3, 80,1250,	1300);
-			db.insertProduct("orangeid","orange", "variety",	1.2, "url", 3,80, 2450,	3000);
-			db.insertProduct("mangoid","mango", 	"variety",	1.2, "url", 3, 80,6760,	7000);
 			db.insertProduct("khakiid","khaki", "variety",	1.1, "url", 3,80, 1200,	1250);
-			db.insertProduct("sweet pepperid","sweet pepper", "variety",	1.8, "url", 3, 80,4500,	4650);
+
+			db.close();
 		}
-		db.close();
 	}
 
 	/*Inserisce i prodotti nel database per dettagli sulla firma del metodo insertHistoryProduct

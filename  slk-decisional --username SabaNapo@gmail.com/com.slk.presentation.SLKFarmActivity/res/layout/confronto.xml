@@ -10,25 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/White" >
-
-        <Button
-            android:id="@+id/back"
-            style="@style/ButtonTextMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blackbuttons"
-            android:text="@string/back"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/home"
-            style="@style/ButtonTextMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/blackbuttons"
-            android:text="@string/home"
-            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 

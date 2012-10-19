@@ -1,10 +1,16 @@
 package com.slk.bean;
 
+import java.io.Serializable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Product implements Parcelable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String nome;
 	private String variety;
@@ -13,54 +19,59 @@ public class Product implements Parcelable{
 	private int colore;
 	private int productionLevel;
 	private int lista; //1 green, 2 yellow, 3 red
-	private int q_vend_anno_precedente;
-	private int q_prev_anno_corrente;
+	private Double q_vend_anno_precedente;
+	private Double q_prev_anno_corrente;
 
-	public Product(String id, String nome, String variety, double prezzo, String imgURL, int productionLevel, int lista, int q_vend_anno_precedente,int q_prev_anno_corrente){
+	public Product(String id, String nome, String variety, double prezzo, String imgURL, int productionLevel, int lista, Double q_vend_anno_precedente,Double q_prev_anno_corrente){
 		this.id=id;
 		this.nome=nome;
+		this.variety=variety;
 		this.prezzo=prezzo;
 		this.imgURL=imgURL;
 		this.productionLevel=productionLevel;
 		this.lista=lista;
 		this.q_vend_anno_precedente=q_vend_anno_precedente;
 		this.q_prev_anno_corrente=q_prev_anno_corrente;
-		this.setVariety(variety);
+		
 	}
 	
 	public Product(Parcel in) {
+		this.id = in.readString();
 		this.nome=in.readString();
+		in.readString();
 		this.prezzo=in.readDouble();
 		this.imgURL=in.readString();
 		this.colore=in.readInt();
 		this.lista=in.readInt();
-		this.q_vend_anno_precedente=in.readInt();
-		this.q_prev_anno_corrente=in.readInt();	
+		this.q_vend_anno_precedente=in.readDouble();
+		this.q_prev_anno_corrente=in.readDouble();	
 	}
 	
 	public void writeToParcel(Parcel p, int flags) {
+		p.writeString(getId());
 		p.writeString(getNome());
+		p.writeString(getVariety());
 		p.writeDouble(getPrezzo());
 		p.writeString(getImg());
 		p.writeInt(getColore());
 		p.writeInt(getLista());
-		p.writeInt(getQ_vend_anno_precedente());
-		p.writeInt(getQ_prev_anno_corrente());
+		p.writeDouble(getQ_vend_anno_precedente());
+		p.writeDouble(getQ_prev_anno_corrente());
 	}
 
-	public int getQ_prev_anno_corrente() {
+	public Double getQ_prev_anno_corrente() {
 		return q_prev_anno_corrente;
 	}
 
-	public void setQ_prev_anno_corrente(int q_prev_anno_corrente) {
+	public void setQ_prev_anno_corrente(Double q_prev_anno_corrente) {
 		this.q_prev_anno_corrente = q_prev_anno_corrente;
 	}
 
-	public int getQ_vend_anno_precedente() {
+	public Double getQ_vend_anno_precedente() {
 		return q_vend_anno_precedente;
 	}
 
-	public void setQ_vend_anno_precedente(int q_vend_anno_precedente) {
+	public void setQ_vend_anno_precedente(Double q_vend_anno_precedente) {
 		this.q_vend_anno_precedente = q_vend_anno_precedente;
 	}
 
@@ -113,9 +124,6 @@ public class Product implements Parcelable{
 		return 0;
 	}
 
-	
-
-
 	public int getProductionLevel() {
 		return productionLevel;
 	}
@@ -123,9 +131,6 @@ public class Product implements Parcelable{
 	public void setProductionLevel(int productionLevel) {
 		this.productionLevel = productionLevel;
 	}
-
-
-
 
 	public String getId() {
 		return id;
@@ -136,6 +141,13 @@ public class Product implements Parcelable{
 	}
 
 
+	public String getVariety() {
+		return variety;
+	}
+
+	public void setVariety(String variety) {
+		this.variety = variety;
+	}
 
 
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -146,14 +158,5 @@ public class Product implements Parcelable{
 			return new Product[size];
 		}
 	};
-
-	public String getVariety() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setVariety(String variety) {
-		this.variety = variety;
-	}
 
 }

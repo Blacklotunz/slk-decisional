@@ -27,7 +27,7 @@ public class MenuView extends Activity {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				//insert here the Intent for the Activity related to button
 				if(position == 1){
-					Intent intent = new Intent(MenuView.this, ChoiceActivity.class);
+					Intent intent = new Intent(MenuView.this, ChoiceSupplyActivity.class);
 					startActivity(intent);
 				}
 				else{

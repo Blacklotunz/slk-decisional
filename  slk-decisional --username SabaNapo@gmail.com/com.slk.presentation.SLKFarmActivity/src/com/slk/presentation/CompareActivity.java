@@ -76,20 +76,7 @@ public class CompareActivity extends Activity{
 
 		caricaLayout(getApplicationContext(), products_to_insert);
 
-		final Button homeButton = (Button) findViewById(R.id.home);
-		homeButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finish();
-			}
-		});
-
-		final Button backButton = (Button) findViewById(R.id.back);
-		backButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finish();
-			}
-		});
-
+		
 		final Button upButton = (Button) findViewById(R.id.up);
 		final Button downButton = (Button) findViewById(R.id.down);
 
@@ -230,6 +217,7 @@ public class CompareActivity extends Activity{
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);
 				startActivity(intent);
+				finish();
 			}
 		});
 

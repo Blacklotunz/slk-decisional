@@ -43,12 +43,4 @@
             android:layout_alignParentBottom="true"
             android:text="@string/history" />
 
-        <Button
-            android:id="@+id/back"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/back" />
-
     </RelativeLayout>
