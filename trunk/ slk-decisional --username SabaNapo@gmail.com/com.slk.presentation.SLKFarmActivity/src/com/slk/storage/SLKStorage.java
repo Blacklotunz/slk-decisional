@@ -1,5 +1,7 @@
 package com.slk.storage;
 
+import java.util.Calendar;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -45,9 +47,11 @@ public class SLKStorage {
 	 * q_prev_anno_corr e' la quantita preventivata fino ad ora
 	 * stagione distingue la stagione in cui si coltiva il prodotto: 1=primavera, 2=estate, 3=autunno, 4=inverno
 	 * */
-	public void insertProduct(String id, String name, String Variety,double price,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){ //metodo per inserire i dati
+	public void insertProduct(String id, String name, String variety,double price,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){ //metodo per inserire i dati
 		ContentValues cv=new ContentValues();
+		cv.put(ProductsMetaData.PRODUCT_ID, id);
 		cv.put(ProductsMetaData.PRODUCT_NAME, name);
+		cv.put(ProductsMetaData.PRODUCT_VARIETY, variety);
 		cv.put(ProductsMetaData.PRODUCT_PRICE, price);
 		cv.put(ProductsMetaData.PRODUCT_IMG, img);
 		cv.put(ProductsMetaData.PRODUCT_LISTA, lista);
@@ -56,18 +60,18 @@ public class SLKStorage {
 		mDb.insert(ProductsMetaData.PRODUCTS_TABLE, null, cv);
 	}
 	/*Metodo per incrementare la quantità di prodotto dopo che è stata modificata nella schermata finale*/
-	public void updateProduct(String name,int q_prev_anno_corr){
-		String strFilter = "name='" + name+"'";
+	public void updateProduct(String id,Double q_prev_anno_corr){
+		String strFilter = "id='" + id+"'";
 		ContentValues args = new ContentValues();
 		args.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
-		mDb.update("products", args, strFilter, null);	
+		mDb.update("Crops", args, strFilter, null);	
 	}
 
-	public void updateListaProduct(String name, int lista) {
-		String strFilter = "name='" + name+"'";
+	public void updateListaProduct(String id, int lista) {
+		String strFilter = "id='" + id +"'";
 		ContentValues args = new ContentValues();
 		args.put(ProductsMetaData.PRODUCT_LISTA, lista);
-		mDb.update("products", args, strFilter, null);	
+		mDb.update("Crops", args, strFilter, null);	
 
 	}
 
@@ -83,9 +87,11 @@ public class SLKStorage {
 	 * stagione distingue la stagione in cui si coltiva il prodotto: 1=primavera, 2=estate, 3=autunno, 4=inverno
 	 * q_prodotta e' la quantita' che è stata prodotta dall utente nell anno preso in considerazione
 	 * */
-	public void insertProductInHistory(String id, String name, String variety, double price, String imgURL, int colore, int anno,int mese,int q_venduta_anno_prec,int q_prev_anno_corr, int q_prodotta){
+	public void insertProductInHistory(String id, String name, String variety, double price, String imgURL, int colore, int anno,int mese,double q_venduta_anno_prec,double q_prev_anno_corr, double q_prodotta){
 		ContentValues cv=new ContentValues();
+		cv.put(HistoryMetaData.PRODUCT_HISTORY_ID, id);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_NAME, name);
+		cv.put(HistoryMetaData.PRODUCT_HISTORY_VARIETY, variety);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_PRICE, price);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_IMG, imgURL);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_COLOR, colore);
@@ -97,22 +103,23 @@ public class SLKStorage {
 		mDb.insert(HistoryMetaData.HISTORY_TABLE, null, cv);
 	}
 
-	public void updateProductInHistory(String name,int q_prodotta){
-		String strFilter = "name='" + name+"' and anno='2012'";
+	public void updateProductInHistory(String id,double q_prodotta){
+		String strFilter = "id='" + id+"'";
 		ContentValues args = new ContentValues();
 		args.put(HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA, q_prodotta);
 		mDb.update("history", args, strFilter, null);	
 	}
-	public void updateProductColorInHistory(String name,int colore){
-		String strFilter = "name='" + name+"' and anno='2012'";
+	public void updateProductColorInHistory(String id,int colore){
+		String strFilter = "id='" + id+"'";
 		ContentValues args = new ContentValues();
 		args.put(HistoryMetaData.PRODUCT_HISTORY_COLOR, colore);
 		mDb.update("history", args, strFilter, null);	
 	}
 
 	/*Metodo che ritorna il prodotto passato da name in un determinato anno(se è presente)*/
-	public Cursor getHistoryProductbyYear(String name,int anno){ 
-		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,HistoryMetaData.PRODUCT_HISTORY_NAME+"='" + name + "'"+" and "+HistoryMetaData.PRODUCT_HISTORY_ANNO+"='" + anno + "'",null,null,null,null);                            
+	public Cursor getHistoryProductbyYear(String id,int anno){ 
+		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,HistoryMetaData.PRODUCT_HISTORY_ID+"='" + id + "'"+" and "+HistoryMetaData.PRODUCT_HISTORY_ANNO+"='" + anno + "'",null,null,null,null);
+		//return mDb.query("history", null,"id='" + id + "' and anno ='" + anno + "'",null,null,null,null);          
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
@@ -125,27 +132,27 @@ public class SLKStorage {
 	/*Metodo che restituisce tutti gli elementi 
 	 *contenuti nella tabella products*/
 	public Cursor fetchProducts(){
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,null,null,null,null,"q_vend_anno_prec-q_prev_anno_corr");               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,null,null,null,null,null);               
 	}
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria sottoproduzione(verdi)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchGreenProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==1",null,null,null,"q_vend_anno_prec-q_prev_anno_corr");               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==1",null,null,null,null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria mediaproduzione(gialli)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchYellowProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==2",null,null,null,"q_vend_anno_prec-q_prev_anno_corr");               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==2",null,null,null,null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria sovrapproduzione(rossi)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchRedProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,"q_vend_anno_prec-q_prev_anno_corr");               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,null);               
 	}
 
 	// i metadati della tabella products, accessibili ovunque
@@ -195,19 +202,19 @@ public class SLKStorage {
 			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " int);";
 
 	//sql code for the creation of HISTORY table
-	private static final String HISTORY_TABLE_CREATE = "CREATE TABLE"  
+	private static final String HISTORY_TABLE_CREATE = "CREATE TABLE "  
 			+ HistoryMetaData.HISTORY_TABLE + " (" 
-			+ HistoryMetaData.PRODUCT_HISTORY_ID + " text primary key, "
-			+ HistoryMetaData.PRODUCT_HISTORY_NAME + " text not null, "
-			+ HistoryMetaData.PRODUCT_VARIETY + " text not null, "
-			+ HistoryMetaData.PRODUCT_HISTORY_PRICE + " double not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_IMG + " Varchar[12] not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_COLOR + " int not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_ANNO + " int not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_MESE + " int not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_QUANT_VEND_ANNO_PREC + " int not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_QUANT_PREV_ANNO_CORR + " int not null,"
-			+ HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA + " int not null);";
+			+ HistoryMetaData.PRODUCT_HISTORY_ID + " text, "
+			+ HistoryMetaData.PRODUCT_HISTORY_NAME + " text, "
+			+ HistoryMetaData.PRODUCT_VARIETY + " text, "
+			+ HistoryMetaData.PRODUCT_HISTORY_PRICE + " double,"
+			+ HistoryMetaData.PRODUCT_HISTORY_IMG + " Varchar[12],"
+			+ HistoryMetaData.PRODUCT_HISTORY_COLOR + " int,"
+			+ HistoryMetaData.PRODUCT_HISTORY_ANNO + " int,"
+			+ HistoryMetaData.PRODUCT_HISTORY_MESE + " int,"
+			+ HistoryMetaData.PRODUCT_HISTORY_QUANT_VEND_ANNO_PREC + " double,"
+			+ HistoryMetaData.PRODUCT_HISTORY_QUANT_PREV_ANNO_CORR + " double,"
+			+ HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA + " double);";
 
 
 	//classe che ci aiuta nella creazione del db

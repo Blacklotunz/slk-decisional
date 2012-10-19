@@ -9,6 +9,7 @@ import com.slk.bean.HistoryProdotto;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,7 +44,6 @@ public class HistoryActivity extends Activity{
 
 		history_prodotti = new ArrayList<HistoryProdotto>();
 		slk_utility = new SLKApplication(getApplicationContext());
-		//		slk_utility.setHistoryProducts();
 		history_prodotti = slk_utility.getHistoryProducts();
 
 		//metodo che crea il layout quando viene premuto il pulsante history nella home page.
@@ -115,22 +115,15 @@ public class HistoryActivity extends Activity{
 
 		for(HistoryProdotto p : history_prodotti){
 			LL = new LinearLayout(getApplicationContext());
-			LL.setLayoutParams(new LinearLayout.LayoutParams(
-					LayoutParams.FILL_PARENT,
-					convertToSpInpixel(riga_dim_sp)));
+			LL.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, convertToSpInpixel(riga_dim_sp)));
 			LL.setOrientation(LinearLayout.HORIZONTAL);
 			LL.setBackgroundColor(p.getColore());
 			LL.setPadding(2, 2, 2, 1);
-
-			// Set black border for a row
 			LL.setBackgroundResource(R.drawable.rounded_edittext);
 
 			//set year
 			LL_anno = new LinearLayout(HistoryActivity.this);
-			LinearLayout.LayoutParams lp_anno = new LinearLayout.LayoutParams(
-					convertToSpInpixel(riga_dim_sp),
-					LayoutParams.FILL_PARENT);
-
+			LinearLayout.LayoutParams lp_anno = new LinearLayout.LayoutParams(convertToSpInpixel(riga_dim_sp), LayoutParams.FILL_PARENT);
 			LL_anno.setLayoutParams(lp_anno);
 			LL_anno.setBackgroundColor(p.getColore());
 
@@ -139,6 +132,7 @@ public class HistoryActivity extends Activity{
 			txt_anno.setGravity(Gravity.CENTER_HORIZONTAL);
 			txt_anno.setGravity(Gravity.CENTER_VERTICAL);
 			txt_anno.setTextAppearance(getApplicationContext(), R.style.ButtonTextMedium);
+			txt_anno.setTextColor(Color.BLACK);
 			LL_anno.addView(txt_anno);
 			LL.addView(LL_anno);
 
@@ -148,7 +142,10 @@ public class HistoryActivity extends Activity{
 			LL_img.setLayoutParams(lp_img);
 
 			LL_img.setBackgroundColor(p.getColore());
-
+			
+			/**
+			 * to change: le immagini saranno salvate della cartella data
+			 */
 			ImageView img = new ImageView(HistoryActivity.this);
 			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
 			img.setImageResource(resId);
@@ -158,40 +155,25 @@ public class HistoryActivity extends Activity{
 
 			//info
 			LL_info = new LinearLayout(HistoryActivity.this);
-			LinearLayout.LayoutParams lp_info = new LinearLayout.LayoutParams(
-					LayoutParams.FILL_PARENT,
-					LayoutParams.FILL_PARENT);
+			LinearLayout.LayoutParams lp_info = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
 			LL_info.setLayoutParams(lp_info);
 			LL_info.setOrientation(LinearLayout.VERTICAL);
 			LL_info.setBackgroundColor(p.getColore());
-
 			TextView txt_nome = new TextView(HistoryActivity.this);
 			txt_nome.setText(p.getNome());
 			txt_nome.setGravity(Gravity.CENTER);
 			txt_nome.setTextAppearance(getApplicationContext(), R.style.ButtonTextMedium);
+			txt_nome.setTextColor(Color.BLACK);
 			LL_info.addView(txt_nome);
 
 			TextView txt_quantita_anno_corrente = new TextView(HistoryActivity.this);
 			txt_quantita_anno_corrente.setText("Planned: "+p.getQ_prodotta()+" Kg.");
 			txt_quantita_anno_corrente.setGravity(Gravity.CENTER);
 			txt_quantita_anno_corrente.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
+			txt_quantita_anno_corrente.setTextColor(Color.BLACK);
 			LL_info.addView(txt_quantita_anno_corrente);
 			LL.addView(LL_info);
-/*
-			//flag
-			LL_flag = new LinearLayout(HistoryActivity.this);
-			LL_flag.setLayoutParams(new LinearLayout.LayoutParams(
-					30,
-					LayoutParams.FILL_PARENT));
-			LinearLayout.LayoutParams lp_flag = new LinearLayout.LayoutParams(
-					30,
-					LayoutParams.FILL_PARENT);
-			lp_flag.setMargins(1, 1, 1, 1);
-			LL_flag.setLayoutParams(lp_flag);
 
-			LL_flag.setBackgroundColor(p.getColore());
-			LL.addView(LL_flag);
-*/
 			LL_riga.addView(LL,0);
 		}
 	}

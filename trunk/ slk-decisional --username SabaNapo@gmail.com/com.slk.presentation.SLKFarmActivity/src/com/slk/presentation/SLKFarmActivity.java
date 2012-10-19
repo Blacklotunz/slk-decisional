@@ -40,28 +40,18 @@ public class SLKFarmActivity extends TabActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.decidinglist);
 
-		slk_utility = new SLKApplication(getApplicationContext());
-		SLKStorage db = new SLKStorage(getApplicationContext());
-		db.clear();
-		
-		if(slk_utility.getAllProducts().isEmpty()){
-			slk_utility.setProducts();
-			slk_utility.setHistoryProducts();
-		}
-
+		slk_utility = new SLKApplication(getApplicationContext());	
 		final EditText campo_cerca = (EditText) findViewById(R.id.campo_ricerca);
+
 		prodotti=slk_utility.getAllProducts();
-
-
-
 		TabHost tabHost = getTabHost();
-		Intent gIntent = new Intent (this, ListActivity.class);
+		Intent gIntent = new Intent (this, ProductListActivity.class);
 		gIntent.setAction(""+GREEN);
 		tabHost.addTab(tabHost.newTabSpec("GREEN").setContent(gIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.greenbutton, null)));
-		Intent yIntent = new Intent (this, ListActivity.class);
+		Intent yIntent = new Intent (this, ProductListActivity.class);
 		yIntent.setAction(""+YELLOW);
 		tabHost.addTab(tabHost.newTabSpec("YELLOW").setContent(yIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.yellowbutton, null)));
-		Intent rIntent = new Intent (this, ListActivity.class);
+		Intent rIntent = new Intent (this, ProductListActivity.class);
 		rIntent.setAction(""+RED);
 		tabHost.addTab(tabHost.newTabSpec("RED").setContent(rIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.redbutton, null)));
 
@@ -85,15 +75,15 @@ public class SLKFarmActivity extends TabActivity {
 				for(int i=0; i<prodotti.size(); i++){
 					if(prodotti.get(i).getNome().toLowerCase().equals(campo)){
 						flag = true;
+						Product p = prodotti.get(i);
 						Intent intent = new Intent(SLKFarmActivity.this, DetailActivity.class);
-						intent.putExtra("prodotto", prodotti.get(i));
+						intent.putExtra("prodotto", p);
 						startActivity(intent);
 					}
 				}
 				if(flag==false){
 					LayoutInflater inflater = getLayoutInflater();
 					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
-
 					ImageView image = (ImageView) layout.findViewById(R.id.image);
 					image.setImageResource(R.drawable.warning);
 					TextView text = (TextView) layout.findViewById(R.id.text);
