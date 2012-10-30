@@ -101,7 +101,6 @@ public class DetailActivity extends Activity{
 				setSupplyLevel();
 				checkSupplyLevel();
 				inserisciProdottoPianificato(prodotto_selezionato);
-				Log.i("Lista prima della query",""+prodotto_selezionato.getLista());
 				Intent intent = new Intent(DetailActivity.this, SLKFarmActivity.class);
 				SLKFarmActivity.prodotti_selezionati.clear();
 				startActivity(intent);
@@ -138,9 +137,6 @@ public class DetailActivity extends Activity{
 		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getNome(),prod_selezionato.getVariety(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), colore, slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
 		slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getQ_prev_anno_corrente(),actualPrevisione);
 		slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
-
-		Log.i("Lista ->",""+prod_selezionato.getLista());
-		Log.i("Production Level ->",""+prod_selezionato.getProductionLevel());
 	}
 
 	@Override

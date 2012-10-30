@@ -74,7 +74,7 @@ public class MenuView extends Activity {
 			ImageView imageView;
 			if (convertView == null) {
 				imageView = new ImageView(mContext);
-				imageView.setLayoutParams(new GridView.LayoutParams(60, 60));
+				imageView.setLayoutParams(new GridView.LayoutParams(70, 90));
 				imageView.setAdjustViewBounds(false);
 				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				imageView.setPadding(0, 0, 0, 0);
@@ -86,9 +86,9 @@ public class MenuView extends Activity {
 		}
 		private Context mContext;
 		private Integer[] mThumbIds = {
-				R.drawable.ic_launcher, R.drawable.crop_selection,
-				R.drawable.growing, R.drawable.harvest,
-				R.drawable.ic_launcher, R.drawable.sell,
+				R.drawable.ic_launcher, R.drawable.select,
+				R.drawable.grow, R.drawable.harvest,
+				R.drawable.store, R.drawable.sell,
 		};
 	}
 
