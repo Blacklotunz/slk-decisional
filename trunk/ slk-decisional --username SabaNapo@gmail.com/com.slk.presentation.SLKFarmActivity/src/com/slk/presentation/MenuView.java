@@ -1,6 +1,10 @@
 package com.slk.presentation;
 
+import java.io.IOException;
+
 import com.slk.R;
+import com.slk.application.ImageHandler;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +23,21 @@ public class MenuView extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
+		/**
+		 * example uses of downloadImageFromUrl method
+		 
+		try {
+			ImageHandler.downloadImageFromUrl("http://www.forux.it/wp-content/uploads/icons/android.jpg", "prova");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		*
+		*
+		*/
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menuview);
 		GridView g = (GridView) findViewById(R.id.myGrid);
@@ -36,6 +55,8 @@ public class MenuView extends Activity {
 			}
 		});
 	}
+	
+	
 	public class ImageAdapter extends BaseAdapter {
 		public ImageAdapter(Context c) {
 			mContext = c;
@@ -66,8 +87,8 @@ public class MenuView extends Activity {
 		private Context mContext;
 		private Integer[] mThumbIds = {
 				R.drawable.ic_launcher, R.drawable.crop_selection,
-				R.drawable.ic_launcher, R.drawable.ic_launcher,
-				R.drawable.ic_launcher, R.drawable.ic_launcher,
+				R.drawable.growing, R.drawable.harvest,
+				R.drawable.ic_launcher, R.drawable.sell,
 		};
 	}
 

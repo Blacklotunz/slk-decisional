@@ -125,7 +125,7 @@
     <color name="Black">#000</color>
 
     <string name="Undersupply">Undersupply</string>
-    <string name="Search">   Search product...</string>
+    <string name="Search">Search product...</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>

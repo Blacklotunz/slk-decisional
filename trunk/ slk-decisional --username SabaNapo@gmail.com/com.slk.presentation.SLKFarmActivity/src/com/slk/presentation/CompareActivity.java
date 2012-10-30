@@ -203,12 +203,6 @@ public class CompareActivity extends Activity{
 		}
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
 
 	private void addListenerProdotto(RelativeLayout LL, final Product p) {
 		LL.setOnClickListener(new OnClickListener() {
@@ -216,6 +210,7 @@ public class CompareActivity extends Activity{
 			public void onClick(View v) {
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);
+				SLKFarmActivity.prodotti_selezionati.clear();
 				startActivity(intent);
 				finish();
 			}

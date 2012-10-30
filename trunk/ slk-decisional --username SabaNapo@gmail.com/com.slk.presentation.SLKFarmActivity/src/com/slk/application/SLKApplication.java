@@ -115,21 +115,16 @@ public class SLKApplication {
 				//estrazione dei dati dalla entry del cursor
 				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
 				toReturn.add(prod);
-
-				//String s="Product Name:"+c.getString(nameCol)+", Price:"+c.getDouble(priceCol)+", Imm:"+c.getInt(imgCol)+", Lista:"+c.getInt(listaCol)+", Quantita venduta anno prec:"+c.getInt(qVendAnnPreCol)+", Quantita preventivata:"+c.getInt(qPrevAnnCorrCol)+", Stagione:"+c.getInt(stagioneCol); 
-				//Log.v("product fetched", s);   
-
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
 		c.close();
 		db.close();
+		
 		if (!ProdType.equals("all")){
 			if (toReturn.size()!=0){
-				int[] colors=ColorSetter.getColours(toReturn.size(),toReturn.get(0).getLista());
-				for(int i=0;i<toReturn.size();i++){
-					Product p=toReturn.get(i);
-					p.setColore(colors[toReturn.size()-(i+1)]);
-					Log.v("colore",""+ colors[i]);
+				//set color for each product
+				for(Product p : toReturn){
+					p.setColore(ColorSetter.getColours(p.getProductionLevel(),p.getLista()));
 				}
 			}
 		}
@@ -188,7 +183,7 @@ public class SLKApplication {
 	 * */
 	public void insertOrUpdateProductInHistory(String id, String name,String variety, double price, String imgURL,int colore,int anno,int mese,double q_venduta_anno_prec,double q_prev_anno_corr,double q_prev_utente){
 		db.open();
-		
+
 		Cursor c=db.getHistoryProductbyYear(id, anno);
 		//Se il prodotto è presente gia nella tabella history nell anno preso in considerazione incrementa la quantità preventivata nell'anno dall utente
 		if(c.moveToFirst()){
@@ -215,10 +210,10 @@ public class SLKApplication {
 	}
 
 	//Incrementa sul database la quantita' preventivata del prodotto dopo la scelta dell'utente
-	public void updateProduct(String id,Double q_prev_anno_corr,Double q_prev_utente){
+	public void updateProduct(String id,int productionLevel,Double q_prev_anno_corr,Double q_prev_utente){
 		q_prev_anno_corr=q_prev_anno_corr+q_prev_utente;
 		db.open();
-		db.updateProduct(id, q_prev_anno_corr);
+		db.updateProduct(id, productionLevel, q_prev_anno_corr);
 		db.close();
 	}
 
@@ -235,18 +230,18 @@ public class SLKApplication {
 		db.open();
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			Log.i("SLKApplication", "DB vuoto");
-			db.insertProduct("bananaid","banana","variety", 3,"url",1, 10 ,2000,1000);
-			db.insertProduct("carrotid","carrot", "variety",		2,	 "url",		 1,10, 1000,	500);
-			db.insertProduct("cabbageid", "cabbage", "variety",		1,	 "url",		 1, 10,2000,	1000);
-			db.insertProduct("cucumberid","cucumber",	"variety",1.5, "url",	 1, 10,500,	100);
-			db.insertProduct("onionid","onion", "variety",	0.5, "url",	 1, 10,700,	300);
-			db.insertProduct("strawberryid","strawberry","variety", 	1.0, "url", 1, 10,8000,	0);
-			db.insertProduct("cherryid","cherry", "variety",	2.0, "url", 1, 10,5500,	0);
-			db.insertProduct("kiwiid","kiwi", "variety",		1.2, "url", 1,10, 1000,	0);
-			db.insertProduct("saladid","salad", "variety",	1.0, "url", 2, 40,3500,	3300);
-			db.insertProduct("zucchiniid","zucchini", "variety",	1.0, "url", 2, 40,200,	150);
-			db.insertProduct("watermelonid","watermelon", "variety",	0.4, "url", 2, 40,3450,	3300);
-			db.insertProduct("khakiid","khaki", "variety",	1.1, "url", 3,80, 1200,	1250);
+			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,1000);
+			db.insertProduct("carrotid","carrot", "variety",2.1,"url",1,1, 1000,500);
+			db.insertProduct("cabbageid", "cabbage", "variety",1.3,"url",1, 12,2000,1000);
+			db.insertProduct("cucumberid","cucumber",	"variety",1.5, "url",1,16,500,100);
+			db.insertProduct("onionid","onion", "variety",0.5,"url",1,20,700,300);
+			db.insertProduct("strawberryid","strawberry","variety", 	1.0, "url", 1, 23,8000,	0);
+			db.insertProduct("cherryid","cherry", "variety",	2.0, "url", 2, 34,5500,	0);
+			db.insertProduct("kiwiid","kiwi", "variety",		1.2, "url", 2,50, 1000,	0);
+			db.insertProduct("saladid","salad", "variety",	1.0, "url", 2, 67,3500,	3300);
+			db.insertProduct("zucchiniid","zucchini", "variety",	1.0, "url", 3, 79,200,	150);
+			db.insertProduct("watermelonid","watermelon", "variety",	0.4, "url", 3, 80,3450,	3300);
+			db.insertProduct("khakiid","khaki", "variety",	1.1, "url", 3,92, 1200,	1250);
 
 			db.close();
 		}

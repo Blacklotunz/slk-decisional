@@ -45,7 +45,6 @@ public class SLKStorage {
 	 * lista è usata per distinguere i prodotti tra: verdi lista=1, gialli lista=2, rossi lista=3
 	 * q_venduta_anno_prec e' la quantita di prodotto venduta l'anno precedente
 	 * q_prev_anno_corr e' la quantita preventivata fino ad ora
-	 * stagione distingue la stagione in cui si coltiva il prodotto: 1=primavera, 2=estate, 3=autunno, 4=inverno
 	 * */
 	public void insertProduct(String id, String name, String variety,double price,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){ //metodo per inserire i dati
 		ContentValues cv=new ContentValues();
@@ -55,15 +54,17 @@ public class SLKStorage {
 		cv.put(ProductsMetaData.PRODUCT_PRICE, price);
 		cv.put(ProductsMetaData.PRODUCT_IMG, img);
 		cv.put(ProductsMetaData.PRODUCT_LISTA, lista);
+		cv.put(ProductsMetaData.PRODUCT_PRODUCTION_LEVEL, supp);
 		cv.put(ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC, q_venduta_anno_prec);
 		cv.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
 		mDb.insert(ProductsMetaData.PRODUCTS_TABLE, null, cv);
 	}
 	/*Metodo per incrementare la quantità di prodotto dopo che è stata modificata nella schermata finale*/
-	public void updateProduct(String id,Double q_prev_anno_corr){
+	public void updateProduct(String id,int productionLevel,Double q_prev_anno_corr){
 		String strFilter = "id='" + id+"'";
 		ContentValues args = new ContentValues();
 		args.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
+		args.put(ProductsMetaData.PRODUCT_PRODUCTION_LEVEL,  productionLevel);
 		mDb.update("Crops", args, strFilter, null);	
 	}
 
@@ -126,33 +127,33 @@ public class SLKStorage {
 	 *appartenenti alla tabella history
 	 *ordinati in base all anno*/	
 	public Cursor fetchHistoryProducts(){ 
-		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,null,null,null,null,"anno");               
+		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,null,null,null,null,"anno",null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *contenuti nella tabella products*/
 	public Cursor fetchProducts(){
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,null,null,null,null,null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,null,null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
 	}
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria sottoproduzione(verdi)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchGreenProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==1",null,null,null,null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==1",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria mediaproduzione(gialli)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchYellowProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==2",null,null,null,null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==2",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria sovrapproduzione(rossi)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchRedProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
 	}
 
 	// i metadati della tabella products, accessibili ovunque
@@ -197,8 +198,8 @@ public class SLKStorage {
 			+ ProductsMetaData.PRODUCT_PRICE + " double,"
 			+ ProductsMetaData.PRODUCT_IMG + " text ,"
 			+ ProductsMetaData.PRODUCT_LISTA + " int,"
-			+ ProductsMetaData.PRODUCT_PRODUCTION_LEVEL + " double , "
-			+ ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC + " int ,"
+			+ ProductsMetaData.PRODUCT_PRODUCTION_LEVEL + " int not null, "
+			+ ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC + " int,"
 			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " int);";
 
 	//sql code for the creation of HISTORY table
