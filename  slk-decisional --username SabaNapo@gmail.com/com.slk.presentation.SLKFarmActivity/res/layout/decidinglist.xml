@@ -37,12 +37,11 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:orientation="horizontal" >
-
+
         <EditText
             android:id="@+id/campo_ricerca"
-            android:layout_width="0dip"
+            android:layout_width="150dp"
             android:layout_height="45dp"
-            android:layout_weight="100.05"
             android:background="@drawable/rounded_edittext"
             android:ems="12"
             android:hint="@string/Search"
@@ -50,11 +49,11 @@
 
             <requestFocus />
         </EditText>
-
+
         <Button
             android:id="@+id/bottone_ricerca"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@android:drawable/ic_menu_search"
             android:title="search product" />
 

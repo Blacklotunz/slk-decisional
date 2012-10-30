@@ -1,6 +1,5 @@
 package com.slk.bean;
 
-import java.io.Serializable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,7 +9,6 @@ public class Product implements Parcelable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private String id;
 	private String nome;
 	private String variety;
@@ -42,6 +40,7 @@ public class Product implements Parcelable{
 		this.prezzo=in.readDouble();
 		this.imgURL=in.readString();
 		this.colore=in.readInt();
+		this.productionLevel=in.readInt();
 		this.lista=in.readInt();
 		this.q_vend_anno_precedente=in.readDouble();
 		this.q_prev_anno_corrente=in.readDouble();	
@@ -54,6 +53,7 @@ public class Product implements Parcelable{
 		p.writeDouble(getPrezzo());
 		p.writeString(getImg());
 		p.writeInt(getColore());
+		p.writeInt(getProductionLevel());
 		p.writeInt(getLista());
 		p.writeDouble(getQ_vend_anno_precedente());
 		p.writeDouble(getQ_prev_anno_corrente());

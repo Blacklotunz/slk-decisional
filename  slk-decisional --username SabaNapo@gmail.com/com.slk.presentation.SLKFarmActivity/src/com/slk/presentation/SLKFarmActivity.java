@@ -39,8 +39,14 @@ public class SLKFarmActivity extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.decidinglist);
+		
+		//SLKStorage db = new SLKStorage(getApplicationContext());
+		//db.clear();
 
 		slk_utility = new SLKApplication(getApplicationContext());	
+		
+		slk_utility.setProducts();
+		
 		final EditText campo_cerca = (EditText) findViewById(R.id.campo_ricerca);
 
 		prodotti=slk_utility.getAllProducts();
