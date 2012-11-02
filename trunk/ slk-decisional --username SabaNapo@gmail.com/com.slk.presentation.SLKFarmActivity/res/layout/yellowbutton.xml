@@ -4,6 +4,6 @@
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:background="@drawable/yellowbuttons"
-    android:text="Normalsupply" >
+    android:text="@string/normal" >
 
 </Button>

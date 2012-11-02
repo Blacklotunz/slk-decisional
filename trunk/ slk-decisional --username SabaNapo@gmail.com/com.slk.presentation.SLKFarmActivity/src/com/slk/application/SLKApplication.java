@@ -88,6 +88,7 @@ public class SLKApplication {
 	public ArrayList<Product> getSelectProducts(String ProdType){
 		db.open();
 		
+		
 		ArrayList<Product> toReturn=new ArrayList<Product>();
 		Cursor c=null;
 		if(ProdType.equals("all"))
@@ -229,20 +230,21 @@ public class SLKApplication {
 	 * fare riferimento alla classe SLKStorage nel package com.slk.storage*/
 	public void setProducts(){
 		db.open();
+		
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			Log.i("SLKApplication", "DB vuoto");
-			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,1000);
-			db.insertProduct("carrotid","carrot", "variety",2.1,"url",1,1, 1000,500);
-			db.insertProduct("cabbageid", "cabbage", "variety",1.3,"url",1, 12,2000,1000);
-			db.insertProduct("cucumberid","cucumber",	"variety",1.5, "url",1,16,500,100);
-			db.insertProduct("onionid","onion", "variety",0.5,"url",1,2,700,300);
+			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,0);
+			db.insertProduct("carrotid","carrot", "variety",2.1,"url",1,1, 1000,0);
+			db.insertProduct("cabbageid", "cabbage", "variety",1.3,"url",1, 12,2000,0);
+			db.insertProduct("cucumberid","cucumber",	"variety",1.5, "url",1,16,500,0);
+			db.insertProduct("onionid","onion", "variety",0.5,"url",1,2,700,0);
 			db.insertProduct("strawberryid","strawberry","variety",1.0, "url", 1, 33,8000,	0);
 			db.insertProduct("cherryid","cherry", "variety",	2.0, "url", 2, 34,5500,	0);
 			db.insertProduct("kiwiid","kiwi", "variety",		1.2, "url", 2,50, 1000,	0);
 			db.insertProduct("saladid","salad", "variety",	1.0, "url", 2, 67,3500,	3300);
-			db.insertProduct("zucchiniid","zucchini", "variety",	1.0, "url", 3, 79,200,	150);
-			db.insertProduct("watermelonid","watermelon", "variety",	0.4, "url", 3, 80,3450,	3300);
-			db.insertProduct("khakiid","khaki", "variety",	1.1, "url", 3,92, 1200,	1250);
+			db.insertProduct("zucchiniid","zucchini", "variety",	1.0, "url", 3, 79,200,	0);
+			db.insertProduct("watermelonid","watermelon", "variety",	0.4, "url", 3, 80,3450,	0);
+			db.insertProduct("khakiid","khaki", "variety",	1.1, "url", 3,92, 1200,0);
 
 			db.close();
 		}

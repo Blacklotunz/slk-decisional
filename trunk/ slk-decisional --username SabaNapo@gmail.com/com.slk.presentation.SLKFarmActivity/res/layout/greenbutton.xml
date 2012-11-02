@@ -4,6 +4,6 @@
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:background="@drawable/greenbuttons"
-    android:text="@string/Undersupply" >
+    android:text="@string/under" >
 
 </Button>
