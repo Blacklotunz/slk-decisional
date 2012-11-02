@@ -138,5 +138,6 @@
     <string name="warning">Warning</string>
     <string name="yes_label">YES</string>
     <string name="no_label">NO</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>
