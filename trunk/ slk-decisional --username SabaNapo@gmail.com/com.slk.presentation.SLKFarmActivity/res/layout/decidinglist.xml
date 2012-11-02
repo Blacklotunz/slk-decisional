@@ -31,42 +31,34 @@
 
         </LinearLayout>
     </TabHost>
-
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:orientation="horizontal" >
-
-        <EditText
-            android:id="@+id/campo_ricerca"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/rounded_edittext"
-            android:ems="12"
-            android:hint="@string/Search"
-            android:inputType="text" >
-
-            <requestFocus />
-        </EditText>
-
+
         <Button
             android:id="@+id/bottone_ricerca"
+            style="@style/ButtonTextMedium"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="3dp"
-            android:background="@android:drawable/ic_menu_search"
+            android:layout_weight="0.05"
+            android:background="@drawable/blackbuttons"
+            android:text="Search"
+            android:textColor="@color/White"
             android:title="search product" />
-
+
         <Button
             android:id="@+id/confronta"
             style="@style/ButtonTextMedium"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_margin="0dp"
+            android:layout_margin="3dp"
             android:layout_marginRight="2dp"
+            android:layout_weight="0.04"
             android:background="@drawable/blackbuttons"
             android:text="@string/confronta"
             android:textColor="@android:color/white" />

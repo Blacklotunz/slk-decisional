@@ -6,7 +6,10 @@ import com.slk.R;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 import com.slk.storage.SLKStorage;
+
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,9 +48,7 @@ public class SLKFarmActivity extends TabActivity {
 
 		slk_utility = new SLKApplication(getApplicationContext());	
 		
-		slk_utility.setProducts();
-		
-		final EditText campo_cerca = (EditText) findViewById(R.id.campo_ricerca);
+		//slk_utility.setProducts();
 
 		prodotti=slk_utility.getAllProducts();
 		TabHost tabHost = getTabHost();
@@ -71,36 +72,14 @@ public class SLKFarmActivity extends TabActivity {
 			else tabHost.setCurrentTab(0);
 		}
 
+		
+		
+		
 		Button ricerca = (Button) findViewById(R.id.bottone_ricerca);
 		ricerca.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				boolean flag = false;
-				String campo = campo_cerca.getText().toString();
-				campo = campo.toLowerCase();
-				for(int i=0; i<prodotti.size(); i++){
-					if(prodotti.get(i).getNome().toLowerCase().equals(campo)){
-						flag = true;
-						Product p = prodotti.get(i);
-						Intent intent = new Intent(SLKFarmActivity.this, DetailActivity.class);
-						intent.putExtra("prodotto", p);
-						startActivity(intent);
-					}
-				}
-				if(flag==false){
-					LayoutInflater inflater = getLayoutInflater();
-					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
-					ImageView image = (ImageView) layout.findViewById(R.id.image);
-					image.setImageResource(R.drawable.warning);
-					TextView text = (TextView) layout.findViewById(R.id.text);
-					text.setText("Product not found!");
-					text.setGravity(Gravity.CENTER_VERTICAL);
-					Toast toast = new Toast(getApplicationContext());
-					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(layout);
-					toast.show();
-				}
+				createTextSearchDialog();
 			}
 		});
 
@@ -136,6 +115,58 @@ public class SLKFarmActivity extends TabActivity {
 
 	public void onResume(Bundle SavedIstanceState){
 		this.onCreate(SavedIstanceState);
+	}
+
+	
+	private void createTextSearchDialog() {
+
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Type Crop To Search");
+		alert.setMessage("e.g., banana");
+
+		// Set an EditText view to get user input 
+		final EditText input = new EditText(this);
+		alert.setView(input);
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				boolean flag=false;
+				String value = input.getText().toString();
+				value = value.toLowerCase();
+				for(int i=0; i<prodotti.size(); i++){
+					if(prodotti.get(i).getNome().toLowerCase().equals(value)){
+						flag = true;
+						Product p = prodotti.get(i);
+						Intent intent = new Intent(SLKFarmActivity.this, DetailActivity.class);
+						intent.putExtra("prodotto", p);
+						startActivity(intent);
+						finish();
+					}
+				}
+				if(flag==false){
+					LayoutInflater inflater = getLayoutInflater();
+					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
+					ImageView image = (ImageView) layout.findViewById(R.id.image);
+					image.setImageResource(R.drawable.warning);
+					TextView text = (TextView) layout.findViewById(R.id.text);
+					text.setText("Product not found!");
+					text.setGravity(Gravity.CENTER_VERTICAL);
+					Toast toast = new Toast(getApplicationContext());
+					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(layout);
+					toast.show();
+				}
+			}
+		});
+
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// Canceled.
+			}
+		});
+		
+		alert.show();
 	}
 	
 	
