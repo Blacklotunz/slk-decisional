@@ -182,7 +182,7 @@ public class ProductListActivity extends Activity{
 			LL_info.addView(txt_nome);
 
 			TextView txt_price = new TextView(ProductListActivity.this);
-			txt_price.setText("Price: "+p.getPrezzo()+" $");
+			txt_price.setText("Variety: "+p.getVariety());
 			txt_price.setGravity(Gravity.CENTER);
 			txt_price.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
 			txt_price.setTextColor(getResources().getColor(R.color.Black));
@@ -227,7 +227,6 @@ public class ProductListActivity extends Activity{
 			//Listner of a single ROW
 			LL.setOnClickListener(new OnClickListener() {
 
-
 				public void onClick(View v) {
 					Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
 					intent.putExtra("prodotto", p);
@@ -240,12 +239,6 @@ public class ProductListActivity extends Activity{
 	}
 
 	private void setVisibleRow(){
-		//n_item_visible=(int)(findViewById(R.id.LinearLayout_riga).getHeight()/convertToSpInpixel(riga_dim_sp));
-		//n_item_visible= 4;
-		Log.i("riga_dim_sp",""+convertToSpInpixel(riga_dim_sp));
-		Log.i("LL_riga.getHeight()",""+LL_riga.getHeight());
-		Log.i("LL_riga.getChildCount()",""+LL_riga.getChildCount());
-		Log.i("n_item_visible",""+n_item_visible);
 
 		if(n_item_visible<LL_riga.getChildCount())
 			down.setVisibility(View.VISIBLE);
@@ -260,11 +253,13 @@ public class ProductListActivity extends Activity{
 		}
 	}
 
+	/*
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			return false;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	*/
 
 }

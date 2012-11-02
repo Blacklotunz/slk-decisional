@@ -36,7 +36,7 @@ public class Product implements Parcelable{
 	public Product(Parcel in) {
 		this.id = in.readString();
 		this.nome=in.readString();
-		in.readString();
+		this.variety=in.readString();
 		this.prezzo=in.readDouble();
 		this.imgURL=in.readString();
 		this.colore=in.readInt();

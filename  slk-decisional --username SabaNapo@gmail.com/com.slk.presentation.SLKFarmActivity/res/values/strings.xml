@@ -130,10 +130,13 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_menu_view">MenuView</string>
-    <string name="under">UnderSupplies</string>
-    <string name="normal">NormalSupplies</string>
-    <string name="over">OverSupplies</string>
+    <string name="under">Low production</string>
+    <string name="normal">Normal production</string>
+    <string name="over">High production</string>
     <string name="history">History</string>
     <string name="title_activity_choice">ChoiceActivity</string>
+    <string name="warning">Warning</string>
+    <string name="yes_label">YES</string>
+    <string name="no_label">NO</string>
 
 </resources>

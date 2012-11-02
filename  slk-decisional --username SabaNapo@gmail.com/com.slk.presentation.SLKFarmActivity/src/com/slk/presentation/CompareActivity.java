@@ -208,6 +208,7 @@ public class CompareActivity extends Activity{
 		LL.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
+				SLKFarmActivity.prodotti_selezionati.clear();
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);
 				SLKFarmActivity.prodotti_selezionati.clear();

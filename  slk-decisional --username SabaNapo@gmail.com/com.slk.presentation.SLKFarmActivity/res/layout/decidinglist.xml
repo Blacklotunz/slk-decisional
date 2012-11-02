@@ -51,11 +51,11 @@
 
             <requestFocus />
         </EditText>
-
+
         <Button
             android:id="@+id/bottone_ricerca"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginRight="3dp"
             android:background="@android:drawable/ic_menu_search"
             android:title="search product" />
