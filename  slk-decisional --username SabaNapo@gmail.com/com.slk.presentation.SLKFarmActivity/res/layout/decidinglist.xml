@@ -38,24 +38,24 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:orientation="horizontal" >
-
+
         <Button
             android:id="@+id/bottone_ricerca"
             style="@style/ButtonTextMedium"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginRight="3dp"
             android:layout_weight="0.05"
             android:background="@drawable/blackbuttons"
             android:text="Search"
             android:textColor="@color/White"
             android:title="search product" />
-
+
         <Button
             android:id="@+id/confronta"
             style="@style/ButtonTextMedium"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_margin="3dp"
             android:layout_marginRight="2dp"
             android:layout_weight="0.04"

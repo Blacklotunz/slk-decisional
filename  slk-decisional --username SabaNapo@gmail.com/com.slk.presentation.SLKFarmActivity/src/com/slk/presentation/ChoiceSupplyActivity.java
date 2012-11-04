@@ -54,4 +54,13 @@ public class ChoiceSupplyActivity extends Activity {
 		});
 	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(SLKFarmActivity.closeFlag){
+			Intent intent = new Intent(this,SLKFarmActivity.class);
+			startActivity(intent);
+		}
+			
+	}
 }

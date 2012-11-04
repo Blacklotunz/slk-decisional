@@ -112,7 +112,7 @@ public class CompareActivity extends Activity{
 
 	}
 
-
+	
 	private void caricaLayout(Context applicationContext, ArrayList<Product> products_to_insert) {
 		num_page = SLKFarmActivity.prodotti_selezionati.size()/2;
 		if(SLKFarmActivity.prodotti_selezionati.size()%2 > 0)
@@ -208,10 +208,9 @@ public class CompareActivity extends Activity{
 		LL.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				SLKFarmActivity.prodotti_selezionati.clear();
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);
-				SLKFarmActivity.prodotti_selezionati.clear();
+				//SLKFarmActivity.prodotti_selezionati.clear();
 				startActivity(intent);
 				finish();
 			}

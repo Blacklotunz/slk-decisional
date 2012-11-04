@@ -28,10 +28,11 @@ import android.widget.Toast;
 public class SLKFarmActivity extends TabActivity {
 
 	protected static ArrayList<Product> prodotti_selezionati=new ArrayList<Product>();
+	protected static boolean closeFlag = false;
 	static final private int GREEN = 1;
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
-
+	Bundle savedInstanceState;
 
 
 	private SLKApplication slk_utility;
@@ -40,6 +41,8 @@ public class SLKFarmActivity extends TabActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		SLKFarmActivity.closeFlag=false;
+		this.savedInstanceState = savedInstanceState;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.decidinglist);
 		
@@ -109,14 +112,16 @@ public class SLKFarmActivity extends TabActivity {
 				}
 			}
 		});
-
-
+		
 	}
-
-	public void onResume(Bundle SavedIstanceState){
-		this.onCreate(SavedIstanceState);
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(closeFlag)
+			finish();
 	}
-
+	
 	
 	private void createTextSearchDialog() {
 

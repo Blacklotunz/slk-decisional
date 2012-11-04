@@ -6,15 +6,12 @@ import java.util.Stack;
 import com.slk.R;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -25,12 +22,10 @@ import android.widget.TextView;
 
 public class ProductListActivity extends Activity{
 
-	
+
 	private ArrayList<Product> prodotti;
 	private SLKApplication slk_utility;
 	//	private static Prodotto prodotto_selezionato;
-	
-
 	protected boolean init=true;
 	private LinearLayout LL_riga;
 	private final int button_dim_sp=25;
@@ -47,7 +42,7 @@ public class ProductListActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista);
-		
+
 		slk_utility = new SLKApplication(getApplicationContext());
 
 		if (getIntent().getAction().equals("1"))
@@ -118,6 +113,7 @@ public class ProductListActivity extends Activity{
 	}
 
 
+
 	public int convertToSpInpixel(int sp) {
 		// Get the screen's density scale
 		final float scale = getResources().getDisplayMetrics().scaledDensity;
@@ -136,13 +132,14 @@ public class ProductListActivity extends Activity{
 
 
 		for(final Product p : prodotti){
-			
+
 			LL = new LinearLayout(getApplicationContext());
 
 			LL.setLayoutParams(new LinearLayout.LayoutParams(
 					LayoutParams.FILL_PARENT,
 					LayoutParams.WRAP_CONTENT));
 			LL.setOrientation(LinearLayout.HORIZONTAL);
+
 			//((LinearLayout.LayoutParams)LL.getLayoutParams()).setMargins(0, 0, 0, convertToSpInpixel(0));
 			LL.setPadding(2, 2, 2, 1);
 
@@ -193,12 +190,12 @@ public class ProductListActivity extends Activity{
 			//set checkbox
 			LL_flag = new LinearLayout(ProductListActivity.this);
 			LL_flag.setLayoutParams(new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT));
 			LinearLayout.LayoutParams lp_flag = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT+1);
-			
+
 			LL_flag.setLayoutParams(lp_flag);		
 			LL_flag.setBackgroundColor(p.getColore());
 
@@ -231,7 +228,7 @@ public class ProductListActivity extends Activity{
 					Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
 					intent.putExtra("prodotto", p);
 					startActivity(intent);
-					finish();
+					//finish();
 
 				}
 			});
@@ -260,6 +257,6 @@ public class ProductListActivity extends Activity{
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	*/
+	 */
 
 }

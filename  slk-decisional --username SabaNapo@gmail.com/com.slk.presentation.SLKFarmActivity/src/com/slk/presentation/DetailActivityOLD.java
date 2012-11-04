@@ -82,7 +82,7 @@ public class DetailActivityOLD extends Activity{
 		info4.setText("Current production plan: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 
 
-		TextView prevision = (TextView) findViewById(R.id.previsione);
+		TextView prevision = (TextView) findViewById(R.id.prevision);
 		prevision.setText("Your Prevision is: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 		
 		TextView lastYear = (TextView) findViewById(R.id.last);
@@ -240,10 +240,19 @@ public class DetailActivityOLD extends Activity{
 		return builder.create();
 	}
 
-	//check supplyLevel for change background color
-	public void checkAndSetSupplyLevel(){
+	//check supplyLevel for change background color and product's list
+	public void checkSupplyLevel(){
+		if (prodotto_selezionato.getProductionLevel()<=33)//green list
+			prodotto_selezionato.setLista(1);		
+		else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67)//yellow list
+			prodotto_selezionato.setLista(2);	
+		else if(prodotto_selezionato.getProductionLevel()>=68)//red list
+			prodotto_selezionato.setLista(3);	
+	}
+	
+	//set new supply level (simulate the method that should run on back-end)
+	public void setSupplyLevel(){
 		if (prodotto_selezionato.getProductionLevel()<=33){//green list
-			prodotto_selezionato.setLista(1);
 			if(prodotto_selezionato.getProductionLevel()<=11){
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_0_11));
 				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_0_11));
@@ -260,7 +269,6 @@ public class DetailActivityOLD extends Activity{
 				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 			}
 		}else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67){//yellow list
-			prodotto_selezionato.setLista(2);
 			if(prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=45){
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_34_45));
 				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_34_45));
@@ -277,7 +285,6 @@ public class DetailActivityOLD extends Activity{
 				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 			}
 		}else if(prodotto_selezionato.getProductionLevel()>=68){//red list
-			prodotto_selezionato.setLista(3);
 			if(prodotto_selezionato.getProductionLevel()>=68 && prodotto_selezionato.getProductionLevel()<=79){
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_68_79));
 				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_68_79));
@@ -308,8 +315,11 @@ public class DetailActivityOLD extends Activity{
 				new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int id) {
-				checkAndSetSupplyLevel(); //change the background color and set the supply level into the bean
+				setSupplyLevel(); //change the background color and set the supply level into the bean
+				checkSupplyLevel();
 				inserisciProdottoPianificato(prodotto_selezionato);
+				SLKFarmActivity.closeFlag=true;
+				SLKFarmActivity.prodotti_selezionati.clear();
 			}
 
 		});
@@ -324,7 +334,7 @@ public class DetailActivityOLD extends Activity{
 
 		});
 		
-		TextView prevision = (TextView) findViewById(R.id.previsione);
+		TextView prevision = (TextView) findViewById(R.id.prevision);
 		prevision.setText("Your Prevision is: "+(prodotto_selezionato.getQ_prev_anno_corrente()+actualPrevisione));
 		
 		// Ritorniamo l'Alert creato
