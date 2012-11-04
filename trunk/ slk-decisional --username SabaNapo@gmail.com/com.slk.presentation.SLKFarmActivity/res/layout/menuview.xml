@@ -1,13 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/myGrid"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_gravity="center"
     android:background="@color/White"
-    android:columnWidth="60dp"
     android:gravity="center"
-    android:horizontalSpacing="30dp"
-    android:numColumns="2"
-    android:padding="10dp"
-    android:stretchMode="columnWidth"
-    android:verticalSpacing="30dp" />
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp" >
+
+    <Button
+        android:id="@+id/cropPlanning"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bluebuttons"
+        android:text="Crop Planning" />
+
+    <Button
+        android:id="@+id/seeding"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bluebuttons"
+        android:text="Seeding" />
+
+    <Button
+        android:id="@+id/planting"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bluebuttons"
+        android:text="Planting &amp; Nursery Management" />
+
+    <Button
+        android:id="@+id/growing"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bluebuttons"
+        android:text="Growing" />
+
+    <Button
+        android:id="@+id/harvesting"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bluebuttons"
+        android:text="Harvesting Packing &amp; Storing" />
+
+    <Button
+        android:id="@+id/selling"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bluebuttons"
+        android:text="Selling" />
+
+</LinearLayout>

@@ -1,12 +1,9 @@
 package com.slk.presentation;
 
 import com.slk.R;
-import com.slk.R.layout;
-import com.slk.R.menu;
 import com.slk.application.ColorSetter;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,11 +13,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
 
 public class DetailActivity extends Activity {
 	private static final String UNDER_SUPPLY_0_11 = "#82FA58";
@@ -85,26 +78,22 @@ public class DetailActivity extends Activity {
 		TextView info3=(TextView)findViewById(R.id.info3);
 		info3.setText("Last Year Selling Price: "+prodotto_selezionato.getPrezzo()+" $/Kg");
 
-		TextView info4=(TextView)findViewById(R.id.info4);
-		info4.setText("Current production plan: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
+		//TextView info4=(TextView)findViewById(R.id.info4);
+		//info4.setText("Current production plan: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 
 
-		TextView prevision = (TextView) findViewById(R.id.previsione);
+		TextView prevision = (TextView) findViewById(R.id.prevision);
 		prevision.setText("Your Prevision is: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 
 		TextView lastYear = (TextView) findViewById(R.id.last);
 		lastYear.setText("Last Year Production: "+prodotto_selezionato.getQ_vend_anno_precedente()+" Kg");
 
 		relLay.setBackgroundColor(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista()));
-		//relLay.setBackgroundColor(prodotto_selezionato.getColore());
 
 		final Button confirmButton = (Button) findViewById(R.id.Conferma);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Intent intent = new Intent(DetailActivity.this, ChoiceSupplyActivity.class);
-				SLKFarmActivity.prodotti_selezionati.clear();
-				startActivity(intent);
 				finish();
 			}
 		});
@@ -128,6 +117,7 @@ public class DetailActivity extends Activity {
 
 	}
 
+	
 	private void inserisciProdottoPianificato(Product prod_selezionato){
 
 		/**
@@ -182,58 +172,61 @@ public class DetailActivity extends Activity {
 
 		alert.show();
 	}
-
-	//check supplyLevel for change background color
-	public void checkAndSetSupplyLevel(){
-		if (prodotto_selezionato.getProductionLevel()<=33){//green list
+	
+	//check supplyLevel for change background color and product's list
+	public void checkSupplyLevel(){
+		if (prodotto_selezionato.getProductionLevel()<=33)//green list
 			prodotto_selezionato.setLista(1);
+			
+		else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67)//yellow list
+			prodotto_selezionato.setLista(2);
+			
+		else if(prodotto_selezionato.getProductionLevel()>=68)//red list
+			prodotto_selezionato.setLista(3);		
+	}
+	
+
+	//set new supply level (simulate the method that should run on back-end)
+	public void setSupplyLevel(){
+		if (prodotto_selezionato.getProductionLevel()<=33){//green list
+			
 			if(prodotto_selezionato.getProductionLevel()<=11){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_0_11));
-				
 				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_0_11));		
 			}
 			if(prodotto_selezionato.getProductionLevel()>=12 && prodotto_selezionato.getProductionLevel()<=22){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_12_22));
 				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_12_22));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=23 && prodotto_selezionato.getProductionLevel()<=33){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_23_33));
 				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_23_33));
 			}
 		}else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67){//yellow list
-			prodotto_selezionato.setLista(2);
+			
 			if(prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=45){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_34_45));
 				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_34_45));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=46 && prodotto_selezionato.getProductionLevel()<=57){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_46_57));
 				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_46_57));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=58 && prodotto_selezionato.getProductionLevel()<=67){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_58_67));
 				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_58_67));
 			}
 		}else if(prodotto_selezionato.getProductionLevel()>=68){//red list
-			prodotto_selezionato.setLista(3);
+			
 			if(prodotto_selezionato.getProductionLevel()>=68 && prodotto_selezionato.getProductionLevel()<=79){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_68_79));
 				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_68_79));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=80 && prodotto_selezionato.getProductionLevel()<=91){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_80_91));
 				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_80_91));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=92){
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_92_100));
 				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_92_100));
 			}
@@ -256,8 +249,14 @@ public class DetailActivity extends Activity {
 				 * choice is a simulated data from the backend
 				 */
 				choice = (int) (actualPrevisione/10);
-				checkAndSetSupplyLevel(); //change the background color and set the supply level into the bean
+				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
+				setSupplyLevel(); //change the background color and set the supply level into the bean
+				checkSupplyLevel();
 				inserisciProdottoPianificato(prodotto_selezionato);
+				SLKFarmActivity.closeFlag=true;
+				SLKFarmActivity.prodotti_selezionati.clear();
+				TextView prevision = (TextView) findViewById(R.id.prevision);
+				prevision.setText("Current Year Production Planned: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 			}
 
 		});
@@ -270,9 +269,6 @@ public class DetailActivity extends Activity {
 			}
 
 		});
-
-		TextView prevision = (TextView) findViewById(R.id.previsione);
-		prevision.setText("Your Prevision is: "+(prodotto_selezionato.getQ_prev_anno_corrente()+actualPrevisione));
 
 		// Ritorniamo l'Alert creato
 		return builder.create();

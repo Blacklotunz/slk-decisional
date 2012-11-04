@@ -97,16 +97,16 @@
             android:layout_height="wrap_content"
             android:background="@drawable/blackbuttons"
             android:text="> Select quantity to grow &lt;" />
-
+
         <TextView
-            android:id="@+id/previsione"
+            android:id="@+id/prevision"
             style="@style/ButtonTextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/White"
             android:shadowColor="@color/White"
-            android:text="Your prevision is:"
+            android:text="Your last selection was:"
             android:textColor="@color/Black"
             android:textSize="16px" />
 
