@@ -36,6 +36,7 @@ public class SLKStorage {
 	//close the database connection
 	public void close(){ 
 		mDb.close();
+		mDbHelper.close();
 	}
 
 	/* Con questo metodi si inseriscono i prodotti nel database

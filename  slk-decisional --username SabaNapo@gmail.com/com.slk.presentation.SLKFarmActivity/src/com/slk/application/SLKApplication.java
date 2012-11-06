@@ -48,6 +48,7 @@ public class SLKApplication {
 		else{
 			toReturn="Not have produced this product last year";
 		}
+		db.close();
 		return toReturn;
 	}
 
@@ -62,6 +63,7 @@ public class SLKApplication {
 		else{
 			toReturn=0;
 		}
+		db.close();
 		return toReturn;
 	}
 
@@ -87,12 +89,12 @@ public class SLKApplication {
 	//metodo richiamato dagli altri metodi getProducts...in base al valore passato cambia la query e la fa eseguire allo storage layer
 	public ArrayList<Product> getSelectProducts(String ProdType){
 		db.open();
-		
-		
+	
 		ArrayList<Product> toReturn=new ArrayList<Product>();
 		Cursor c=null;
-		if(ProdType.equals("all"))
+		if(ProdType.equals("all")){
 			c=db.fetchProducts();
+		}
 		if(ProdType.equals("green"))
 			c=db.fetchGreenProducts();
 		if(ProdType.equals("yellow"))
@@ -120,7 +122,7 @@ public class SLKApplication {
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
 		c.close();
-		db.close();
+		
 		
 		if (!ProdType.equals("all")){
 			if (toReturn.size()!=0){
@@ -130,6 +132,7 @@ public class SLKApplication {
 				}
 			}
 		}
+		db.close();
 		return toReturn;
 	}
 
