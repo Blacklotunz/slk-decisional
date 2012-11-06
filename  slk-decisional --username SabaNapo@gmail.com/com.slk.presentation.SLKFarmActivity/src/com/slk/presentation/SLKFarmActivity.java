@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 public class SLKFarmActivity extends TabActivity {
 
 	protected static ArrayList<Product> prodotti_selezionati=new ArrayList<Product>();
+	protected static Button confrontaButton;
 	protected static boolean closeFlag = false;
 	static final private int GREEN = 1;
 	static final private int YELLOW = 2;
@@ -87,7 +89,7 @@ public class SLKFarmActivity extends TabActivity {
 		});
 
 		
-		final Button confrontaButton = (Button) findViewById(R.id.confronta);
+		confrontaButton = (Button) findViewById(R.id.confronta);
 		confrontaButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -174,6 +176,7 @@ public class SLKFarmActivity extends TabActivity {
 		alert.show();
 	}
 	
+
 	
 	/* method for don't give permission to use back button
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

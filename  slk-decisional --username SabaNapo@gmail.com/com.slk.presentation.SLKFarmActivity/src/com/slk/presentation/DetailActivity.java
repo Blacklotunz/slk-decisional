@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,16 +69,28 @@ public class DetailActivity extends Activity {
 
 		TextView nome=(TextView)findViewById(R.id.nome);
 		nome.setText(prodotto_selezionato.getNome().toUpperCase());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+		nome.setTextColor(Color.WHITE);
 
 		TextView info1=(TextView)findViewById(R.id.info1);
 		info1.setText("Variety: "+prodotto_selezionato.getVariety());
-
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info1.setTextColor(Color.WHITE);
+		
 		TextView info2=(TextView)findViewById(R.id.info2);
 		info2.setText("Last year production: "+prodotto_selezionato.getQ_vend_anno_precedente()+" Kg");
-
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info2.setTextColor(Color.WHITE);
+		
 		TextView info3=(TextView)findViewById(R.id.info3);
 		info3.setText("Last Year Selling Price: "+prodotto_selezionato.getPrezzo()+" $/Kg");
-
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info3.setTextColor(Color.WHITE);
+		
 		//TextView info4=(TextView)findViewById(R.id.info4);
 		//info4.setText("Current production plan: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 
@@ -89,7 +102,9 @@ public class DetailActivity extends Activity {
 		lastYear.setText("Last Year Production: "+prodotto_selezionato.getQ_vend_anno_precedente()+" Kg");
 
 		relLay.setBackgroundColor(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista()));
-
+		
+		//Log.i("color--->", ""+ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista()));
+		
 		final Button confirmButton = (Button) findViewById(R.id.Conferma);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
