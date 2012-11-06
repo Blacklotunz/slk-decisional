@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
+import com.slk.application.ColorSetter;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -112,6 +114,12 @@ public class CompareActivity extends Activity{
 
 	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(SLKFarmActivity.closeFlag)
+			finish();
+	}
 	
 	private void caricaLayout(Context applicationContext, ArrayList<Product> products_to_insert) {
 		num_page = SLKFarmActivity.prodotti_selezionati.size()/2;
@@ -184,6 +192,14 @@ public class CompareActivity extends Activity{
 			txt_q_prev_anno_corr_top.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
 			LL_top.setVisibility(LinearLayout.VISIBLE);
 			findViewById(R.id.sfondo_prodotto_top).setBackgroundColor(p.getColore());
+			
+			//if background color is a dark red set textColor to white
+			if(ColorSetter.getColours(p.getProductionLevel(), p.getLista())==-10417397){
+				txt_avg_top.setTextColor(Color.WHITE);
+				txt_q_ven_anno_prec_top.setTextColor(Color.WHITE);
+				txt_q_prev_anno_corr_top.setTextColor(Color.WHITE);
+			}
+			
 			addListenerProdotto(LL_top,p);
 		}
 		if(products.size()==2){
@@ -196,6 +212,14 @@ public class CompareActivity extends Activity{
 			txt_q_prev_anno_corr_bot.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
 			LL_bot.setVisibility(LinearLayout.VISIBLE);
 			findViewById(R.id.sfondo_prodotto_bot).setBackgroundColor(p.getColore());
+			
+			//if background color is a dark red set textColor to white
+			if(ColorSetter.getColours(p.getProductionLevel(), p.getLista())==-10417397){
+				txt_avg_bot.setTextColor(Color.WHITE);
+				txt_q_ven_anno_prec_bot.setTextColor(Color.WHITE);
+				txt_q_prev_anno_corr_bot.setTextColor(Color.WHITE);
+			}
+			
 			addListenerProdotto(LL_bot,p);
 		}
 		if(products.size()==1){
@@ -212,7 +236,7 @@ public class CompareActivity extends Activity{
 				intent.putExtra("prodotto",p);
 				//SLKFarmActivity.prodotti_selezionati.clear();
 				startActivity(intent);
-				finish();
+				//finish();
 			}
 		});
 

@@ -4,21 +4,26 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
+import com.slk.application.ColorSetter;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View.OnClickListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProductListActivity extends Activity{
 
@@ -184,24 +189,27 @@ public class ProductListActivity extends Activity{
 			txt_price.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
 			txt_price.setTextColor(getResources().getColor(R.color.Black));
 			LL_info.addView(txt_price);
+			
+			//if background color is a dark red set textColor to white
+			if(ColorSetter.getColours(p.getProductionLevel(), p.getLista())==-10417397){
+				txt_nome.setTextColor(Color.WHITE);
+				txt_price.setTextColor(Color.WHITE);
+			}
+			
 
 			LL.addView(LL_info);
 
 			//set checkbox
 			LL_flag = new LinearLayout(ProductListActivity.this);
-			LL_flag.setLayoutParams(new LinearLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT,
-					LayoutParams.WRAP_CONTENT));
-			LinearLayout.LayoutParams lp_flag = new LinearLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT,
-					LayoutParams.WRAP_CONTENT+1);
-
+			LL_flag.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			LinearLayout.LayoutParams lp_flag = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT+1);
 			LL_flag.setLayoutParams(lp_flag);		
 			LL_flag.setBackgroundColor(p.getColore());
 
 			//checkbox listener
 			CheckBox cb = new CheckBox(ProductListActivity.this);
-			cb.setOnClickListener(new OnClickListener() {
+			cb.setOnClickListener(new OnClickListener() 
+			{
 				public void onClick(View v) {
 					if(((CheckBox) v).isChecked()) {
 						SLKFarmActivity.prodotti_selezionati.add(p);
@@ -213,50 +221,99 @@ public class ProductListActivity extends Activity{
 							}
 						}
 					}
-				}
-			});
+					//change the text and the listener of button compare when the number of products change.
+					//if there's no product selected
+					if(SLKFarmActivity.prodotti_selezionati.size()==0){
+						SLKFarmActivity.confrontaButton.setText("Compare");
+						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+							public void onClick(View v) {
+								LayoutInflater inflater = getLayoutInflater();
+								View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
+								ImageView image = (ImageView) layout.findViewById(R.id.image);
+								image.setImageResource(R.drawable.warning);
+								TextView text = (TextView) layout.findViewById(R.id.text);
+								text.setText("No products selected! You must select at least one product!");
+								text.setGravity(Gravity.CENTER_VERTICAL);
+								Toast toast = new Toast(getApplicationContext());
+								toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+								toast.setDuration(Toast.LENGTH_LONG);
+								toast.setView(layout);
+								toast.show();
+							}
+						});
+					}
+	
+						//if just ONE products is selected the function is show the details of products.
+						if(SLKFarmActivity.prodotti_selezionati.size()==1){
+							SLKFarmActivity.confrontaButton.setText("Select");
+							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+								public void onClick(View v) {
+									if(SLKFarmActivity.prodotti_selezionati.size()>0){
+										Intent intent = new Intent(ProductListActivity.this,DetailActivity.class);
+										intent.putExtra("prodotto",SLKFarmActivity.prodotti_selezionati.get(0));
+										startActivity(intent);
+									}
+								}
+							});
+						}
 
-			LL_flag.addView(cb);
+						else{
+							SLKFarmActivity.confrontaButton.setText("Compare");
+							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+								public void onClick(View v) {
+									if(SLKFarmActivity.prodotti_selezionati.size()>0){
+										Intent intent = new Intent(ProductListActivity.this,CompareActivity.class);
+										intent.putParcelableArrayListExtra("prodotti_selezionati",SLKFarmActivity.prodotti_selezionati);
+										startActivity(intent);
+									}
+								}
+							});
+						}
+					}
+				});
 
-			LL.addView(LL_flag);
-			LL_riga.addView(LL,0);
+						LL_flag.addView(cb);
+						LL.addView(LL_flag);
+						LL_riga.addView(LL,0);
 
-			//Listner of a single ROW
-			LL.setOnClickListener(new OnClickListener() {
+						//Listner of a single ROW
+						LL.setOnClickListener(new OnClickListener() {
 
-				public void onClick(View v) {
-					Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
-					intent.putExtra("prodotto", p);
-					startActivity(intent);
-					//finish();
+							public void onClick(View v) {
+								Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
+								intent.putExtra("prodotto", p);
+								startActivity(intent);
+								//finish();
 
-				}
-			});
+							}
+						});
+			}
 		}
-	}
 
-	private void setVisibleRow(){
+		private void setVisibleRow(){
 
-		if(n_item_visible<LL_riga.getChildCount())
-			down.setVisibility(View.VISIBLE);
-		View view;
-		invisible_up=new Stack<View>();
-		invisible_down=new Stack<View>();
-		while(n_item_visible<LL_riga.getChildCount())
-		{
-			view=LL_riga.getChildAt(n_item_visible);
-			invisible_down.push(view);
-			LL_riga.removeView(view);  
+			if(n_item_visible<LL_riga.getChildCount())
+				down.setVisibility(View.VISIBLE);
+			View view;
+			invisible_up=new Stack<View>();
+			invisible_down=new Stack<View>();
+			while(n_item_visible<LL_riga.getChildCount())
+			{
+				view=LL_riga.getChildAt(n_item_visible);
+				invisible_down.push(view);
+				LL_riga.removeView(view);  
+			}
 		}
-	}
 
-	/*
+
+
+		/*
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			return false;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	 */
+		 */
 
-}
+	}
