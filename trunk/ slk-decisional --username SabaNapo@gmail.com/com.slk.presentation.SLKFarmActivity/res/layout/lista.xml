@@ -29,10 +29,9 @@
             android:layout_below="@+id/up"
             android:background="@android:color/black"
             android:orientation="vertical" >
-
+
             <LinearLayout
                 android:id="@+id/LinearLayout_riga"
-                style="@drawable/rounded_edittext"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@color/White"

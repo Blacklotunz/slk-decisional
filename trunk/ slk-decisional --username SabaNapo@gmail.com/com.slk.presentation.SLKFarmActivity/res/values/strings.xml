@@ -139,5 +139,6 @@
     <string name="yes_label">YES</string>
     <string name="no_label">NO</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <color name="transparent">#80000000</color>
 
 </resources>

@@ -38,23 +38,22 @@
             android:layout_below="@+id/up"
             android:background="@color/White"
             android:orientation="vertical" >
-
+
             <RelativeLayout
                 android:id="@+id/Layout_top"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_margin="12sp"
                 android:layout_weight="1"
-                android:background="@color/White"
+                android:background="@drawable/rounded_edittext"
                 android:padding="3sp" >
-
+
                 <RelativeLayout
                     android:id="@+id/sfondo_prodotto_top"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_margin="1dp"
-                    android:background="@color/transparent"
-                    android:clickable="true"
+                    android:background="@color/White"
                     android:padding="2dp" >
 
                      <ImageView
@@ -72,7 +71,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:text=""
-                        android:textColor="@color/Black"
                         android:textSize="14dp" />
                     <TextView
                         android:id="@+id/txt_avg_top"
@@ -111,23 +109,22 @@
                 </RelativeLayout>
 
             </RelativeLayout>
-
+
             <RelativeLayout
                 android:id="@+id/Layout_bot"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_margin="12sp"
                 android:layout_weight="1"
-                android:background="@color/White"
+                android:background="@drawable/rounded_edittext"
                 android:padding="3sp" >
-
+
                 <RelativeLayout
                     android:id="@+id/sfondo_prodotto_bot"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_margin="2sp"
-                    android:background="@color/transparent"
-                    android:clickable="true"
+                    android:background="@color/White"
                     android:padding="5sp" >
 
                     <TextView
@@ -138,7 +135,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:text=""
-                        android:textColor="@color/Black"
                         android:textSize="14dp" />
 
                     <TextView
@@ -183,7 +179,6 @@
                         android:layout_alignTop="@+id/txt_nome_bot" />
 
                 </RelativeLayout>
-
             </RelativeLayout>
 
         </LinearLayout>

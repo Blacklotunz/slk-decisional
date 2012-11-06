@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,6 +52,9 @@ public class CompareActivity extends Activity{
 
 	private TextView txt_q_prev_anno_corr_top;
 	private TextView txt_q_prev_anno_corr_bot;
+	
+	private ArrayList<TextView> vListTop = new ArrayList<TextView>();
+	private ArrayList<TextView> vListBot = new ArrayList<TextView>();
 
 
 	/** Called when the activity is first created. */
@@ -191,16 +195,18 @@ public class CompareActivity extends Activity{
 			txt_q_ven_anno_prec_top.setText("Quantity sold last year: "+p.getQ_vend_anno_precedente()+" Kg.");
 			txt_q_prev_anno_corr_top.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
 			LL_top.setVisibility(LinearLayout.VISIBLE);
-			findViewById(R.id.sfondo_prodotto_top).setBackgroundColor(p.getColore());
-			
+			View top = findViewById(R.id.sfondo_prodotto_top);
+			//set color of  background 
+			ColorSetter.setBgColor(p,top);
+	
 			//if background color is a dark red set textColor to white
-			if(ColorSetter.getColours(p.getProductionLevel(), p.getLista())==-10417397){
-				txt_avg_top.setTextColor(Color.WHITE);
-				txt_q_ven_anno_prec_top.setTextColor(Color.WHITE);
-				txt_q_prev_anno_corr_top.setTextColor(Color.WHITE);
-			}
+			vListTop.add(txt_nome_top);
+			vListTop.add(txt_avg_top);
+			vListTop.add(txt_q_ven_anno_prec_top);
+			vListTop.add(txt_q_prev_anno_corr_top);
+			ColorSetter.setWhiteTextCompare(p, vListTop);
 			
-			addListenerProdotto(LL_top,p);
+			addListenerProdotto(top,p);
 		}
 		if(products.size()==2){
 			p = products.get(1);
@@ -211,16 +217,18 @@ public class CompareActivity extends Activity{
 			txt_q_ven_anno_prec_bot.setText("Quantity sold last year: "+p.getQ_vend_anno_precedente()+" Kg.");
 			txt_q_prev_anno_corr_bot.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
 			LL_bot.setVisibility(LinearLayout.VISIBLE);
-			findViewById(R.id.sfondo_prodotto_bot).setBackgroundColor(p.getColore());
+			View bot = findViewById(R.id.sfondo_prodotto_bot);
+			//set color of  background 
+			ColorSetter.setBgColor(p,bot);
 			
-			//if background color is a dark red set textColor to white
-			if(ColorSetter.getColours(p.getProductionLevel(), p.getLista())==-10417397){
-				txt_avg_bot.setTextColor(Color.WHITE);
-				txt_q_ven_anno_prec_bot.setTextColor(Color.WHITE);
-				txt_q_prev_anno_corr_bot.setTextColor(Color.WHITE);
-			}
+			//if background color is dark set textColor to white
+			vListBot.add(txt_nome_bot);
+			vListBot.add(txt_avg_bot);
+			vListBot.add(txt_q_ven_anno_prec_bot);
+			vListBot.add(txt_q_prev_anno_corr_bot);
+			ColorSetter.setWhiteTextCompare(p, vListBot);
 			
-			addListenerProdotto(LL_bot,p);
+			addListenerProdotto(bot,p);
 		}
 		if(products.size()==1){
 			LL_bot.setVisibility(LinearLayout.INVISIBLE);
@@ -228,9 +236,8 @@ public class CompareActivity extends Activity{
 	}
 
 
-	private void addListenerProdotto(RelativeLayout LL, final Product p) {
-		LL.setOnClickListener(new OnClickListener() {
-
+	private void addListenerProdotto(View LL, final Product p) {
+		LL.setOnClickListener(new OnClickListener() {	
 			public void onClick(View v) {
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);

@@ -47,15 +47,18 @@ public class SLKFarmActivity extends TabActivity {
 		this.savedInstanceState = savedInstanceState;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.decidinglist);
-		
+
 		//SLKStorage db = new SLKStorage(getApplicationContext());
 		//db.clear();
 
 		slk_utility = new SLKApplication(getApplicationContext());	
-		
-		//slk_utility.setProducts();
 
 		prodotti=slk_utility.getAllProducts();
+		if(prodotti.isEmpty()){
+			slk_utility.setProducts();
+			prodotti = slk_utility.getAllProducts();
+		}
+
 		TabHost tabHost = getTabHost();
 		Intent gIntent = new Intent (this, ProductListActivity.class);
 		gIntent.setAction(""+GREEN);
@@ -77,9 +80,9 @@ public class SLKFarmActivity extends TabActivity {
 			else tabHost.setCurrentTab(0);
 		}
 
-		
-		
-		
+
+
+
 		Button ricerca = (Button) findViewById(R.id.bottone_ricerca);
 		ricerca.setOnClickListener(new View.OnClickListener() {
 
@@ -88,7 +91,7 @@ public class SLKFarmActivity extends TabActivity {
 			}
 		});
 
-		
+
 		confrontaButton = (Button) findViewById(R.id.confronta);
 		confrontaButton.setOnClickListener(new View.OnClickListener() {
 
@@ -114,17 +117,17 @@ public class SLKFarmActivity extends TabActivity {
 				}
 			}
 		});
-		
+
 	}
-	
+
 	@Override
 	public void onResume(){
 		super.onResume();
 		if(closeFlag)
 			finish();
 	}
-	
-	
+
+
 	private void createTextSearchDialog() {
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -172,12 +175,12 @@ public class SLKFarmActivity extends TabActivity {
 				// Canceled.
 			}
 		});
-		
+
 		alert.show();
 	}
-	
 
-	
+
+
 	/* method for don't give permission to use back button
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
