@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -153,6 +154,7 @@ public class DetailActivity extends Activity {
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(this);
+		input.setInputType(InputType.TYPE_CLASS_PHONE);
 		alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {

@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 public class SLKFarmActivity extends TabActivity {
 
-	protected static ArrayList<Product> prodotti_selezionati=new ArrayList<Product>();
+	protected static ArrayList<Product> prodotti_selezionati;
 	protected static Button confrontaButton;
 	protected static boolean closeFlag = false;
 	static final private int GREEN = 1;
@@ -43,6 +43,7 @@ public class SLKFarmActivity extends TabActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		prodotti_selezionati = new ArrayList<Product>();
 		SLKFarmActivity.closeFlag=false;
 		this.savedInstanceState = savedInstanceState;
 		super.onCreate(savedInstanceState);
@@ -101,7 +102,7 @@ public class SLKFarmActivity extends TabActivity {
 					intent.putParcelableArrayListExtra("prodotti_selezionati",prodotti_selezionati);
 					startActivity(intent);
 				}
-				else{
+				else if(prodotti_selezionati.isEmpty()){
 					LayoutInflater inflater = getLayoutInflater();
 					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
 					ImageView image = (ImageView) layout.findViewById(R.id.image);
@@ -179,8 +180,7 @@ public class SLKFarmActivity extends TabActivity {
 		alert.show();
 	}
 
-
-
+	
 	/* method for don't give permission to use back button
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
