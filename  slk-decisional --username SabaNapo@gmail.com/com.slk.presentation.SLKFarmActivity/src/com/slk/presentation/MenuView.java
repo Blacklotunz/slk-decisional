@@ -1,8 +1,17 @@
 package com.slk.presentation;
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import http.HttpConnector;
+
 import com.slk.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,7 +36,28 @@ public class MenuView extends Activity {
 		Button seeding = (Button) findViewById(R.id.seeding);
 		seeding.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
-				Toast.makeText(MenuView.this, "Intent not present. Please give this button an activity to launch", Toast.LENGTH_SHORT).show();
+				//for test of httpConnector methods
+					HttpConnector http = new HttpConnector();
+					try {
+						if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", "123456789", "1234")==200){
+							JSONObject jsonObj = http.getJson();
+							if(jsonObj.getInt("success")==1)
+							Log.i("MenuView", "secretCode = "+jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey"));
+							else
+								Log.e("MenuView", "not successfull operation");
+						}
+						else{
+							Log.e("MenuView", "error in http post request");
+						}
+					} catch (ClientProtocolException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		

@@ -4,6 +4,19 @@
     android:layout_height="wrap_content"
     android:background="@color/White"
     android:gravity="center" >
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/TextMedium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/controlli"
+        android:background="@color/White"
+        android:gravity="center"
+        android:text="CLICK ON A PRODUCT TO SELECT"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/Black"
+        android:textSize="16dp" />
 
     <RelativeLayout
         android:id="@+id/controlli"
@@ -17,19 +30,20 @@
         android:id="@+id/sezione_controlli"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/down"
-        android:layout_below="@+id/controlli"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
         android:background="@color/White"
         android:padding="3sp" >
-
+
         <Button
             android:id="@+id/up"
+            style="buttonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:background="@android:drawable/arrow_up_float" />
-
+            android:background="@drawable/up" />
+
         <LinearLayout
             android:id="@+id/LinearLayout_esterno"
             android:layout_width="fill_parent"
@@ -38,7 +52,7 @@
             android:layout_below="@+id/up"
             android:background="@color/White"
             android:orientation="vertical" >
-
+
             <RelativeLayout
                 android:id="@+id/Layout_top"
                 android:layout_width="fill_parent"
@@ -47,7 +61,7 @@
                 android:layout_weight="1"
                 android:background="@color/White"
                 android:padding="3sp" >
-
+
                 <RelativeLayout
                     android:id="@+id/sfondo_prodotto_top"
                     android:layout_width="fill_parent"
@@ -57,13 +71,13 @@
                     android:clickable="true"
                     android:padding="2dp" >
 
-                     <ImageView
+                    <ImageView
                         android:id="@+id/image_top"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignTop="@+id/txt_nome_top" />
-                    
+
                     <TextView
                         android:id="@+id/txt_nome_top"
                         style="@style/TextMedium"
@@ -71,9 +85,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:text=""
                         android:textColor="@color/Black"
-                        android:textSize="14dp" />
+                        android:textSize="14dp" />
+
                     <TextView
                         android:id="@+id/txt_avg_top"
                         style="@style/TextSmall"
@@ -83,9 +97,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_margin="1dp"
                         android:shadowColor="@color/White"
-                        android:text=""
                         android:textSize="14dp" />
-
+
                     <TextView
                         android:id="@+id/q_venduta_anno_prec_top"
                         style="@style/TextSmall"
@@ -94,9 +107,8 @@
                         android:layout_below="@+id/txt_avg_top"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="1dp"
-                        android:text=""
                         android:textSize="14dp" />
-
+
                     <TextView
                         android:id="@+id/q_prev_anno_corr_top"
                         style="@style/TextSmall"
@@ -105,13 +117,10 @@
                         android:layout_below="@+id/q_venduta_anno_prec_top"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="1dp"
-                        android:text=""
                         android:textSize="14dp" />
-
                 </RelativeLayout>
-
             </RelativeLayout>
-
+
             <RelativeLayout
                 android:id="@+id/Layout_bot"
                 android:layout_width="fill_parent"
@@ -120,7 +129,7 @@
                 android:layout_weight="1"
                 android:background="@color/White"
                 android:padding="3sp" >
-
+
                 <RelativeLayout
                     android:id="@+id/sfondo_prodotto_bot"
                     android:layout_width="fill_parent"
@@ -129,7 +138,7 @@
                     android:background="@color/transparent"
                     android:clickable="true"
                     android:padding="5sp" >
-
+
                     <TextView
                         android:id="@+id/txt_nome_bot"
                         style="@style/TextMedium"
@@ -137,10 +146,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:text=""
                         android:textColor="@color/Black"
                         android:textSize="14dp" />
-
+
                     <TextView
                         android:id="@+id/txt_avg_bot"
                         style="@style/TextSmall"
@@ -150,9 +158,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_margin="1dp"
                         android:shadowColor="@color/White"
-                        android:text=""
                         android:textSize="14dp" />
-
+
                     <TextView
                         android:id="@+id/q_venduta_anno_prec_bot"
                         style="@style/TextSmall"
@@ -161,9 +168,8 @@
                         android:layout_below="@+id/txt_avg_bot"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="1dp"
-                        android:text=""
                         android:textSize="14dp" />
-
+
                     <TextView
                         android:id="@+id/q_prev_anno_corr_bot"
                         style="@style/TextSmall"
@@ -172,7 +178,6 @@
                         android:layout_below="@+id/q_venduta_anno_prec_bot"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="1dp"
-                        android:text=""
                         android:textSize="14dp" />
 
                     <ImageView
@@ -181,20 +186,18 @@
                         android:layout_height="50dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignTop="@+id/txt_nome_bot" />
-
                 </RelativeLayout>
-
             </RelativeLayout>
-
         </LinearLayout>
-
+
         <Button
             android:id="@+id/down"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@android:drawable/arrow_down_float" />
+            android:background="@drawable/down" />
+
     </RelativeLayout>
 
 </RelativeLayout>

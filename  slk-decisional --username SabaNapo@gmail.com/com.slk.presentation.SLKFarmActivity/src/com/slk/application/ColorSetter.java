@@ -28,28 +28,27 @@ public class ColorSetter {
 
 	public static int getColours(int level, int color_code) {
 		int colorCode = 0;
-		Color color = new Color();
 		//sfumature di verde
 		if (level<=11)
-			colorCode = color.parseColor(UNDER_SUPPLY_0_11);
+			colorCode = Color.parseColor(UNDER_SUPPLY_0_11);
 		else if (level>=12 && level<=22)
-			colorCode = color.parseColor(UNDER_SUPPLY_12_22);
+			colorCode = Color.parseColor(UNDER_SUPPLY_12_22);
 		else if (level>=23 && level<=33)
-			colorCode = color.parseColor(UNDER_SUPPLY_23_33);
+			colorCode = Color.parseColor(UNDER_SUPPLY_23_33);
 		//sfumature di giallo
 		if (level>=34 && level<=45)
-			colorCode = color.parseColor(NORMAL_SUPPLY_34_45);
+			colorCode = Color.parseColor(NORMAL_SUPPLY_34_45);
 		else if (level>=46 && level<=57)
-			colorCode = color.parseColor(NORMAL_SUPPLY_46_57);
+			colorCode = Color.parseColor(NORMAL_SUPPLY_46_57);
 		else if (level>=58 && level<=67)
-			colorCode = color.parseColor(NORMAL_SUPPLY_58_67);
+			colorCode = Color.parseColor(NORMAL_SUPPLY_58_67);
 		//sfumature di rosso	
 		if (level>=68 && level<=79)
-			colorCode = color.parseColor(OVER_SUPPLY_68_79);
+			colorCode = Color.parseColor(OVER_SUPPLY_68_79);
 		else if (level>=80 && level<=91)
-			colorCode = color.parseColor(OVER_SUPPLY_80_91);
+			colorCode = Color.parseColor(OVER_SUPPLY_80_91);
 		else if (level>=92)
-			colorCode = color.parseColor(OVER_SUPPLY_92_100);
+			colorCode = Color.parseColor(OVER_SUPPLY_92_100);
 
 		return colorCode;
 	}

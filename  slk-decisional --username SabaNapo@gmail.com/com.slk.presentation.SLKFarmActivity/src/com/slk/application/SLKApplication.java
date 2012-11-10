@@ -229,6 +229,17 @@ public class SLKApplication {
 	}
 
 
+	/*
+	 * This method will fetch data from ws to initialize the data into mobile device'DB
+	 * Return a boolean flag if transaction'll succeded.
+	 */
+	public boolean fetchProductsFromWS(){
+		
+		
+		return true;
+	}
+	
+	
 	/*Inserisce i prodotti nel database per dettagli sulla firma del metodo insertProduct
 	 * fare riferimento alla classe SLKStorage nel package com.slk.storage*/
 	public void setProducts(){
