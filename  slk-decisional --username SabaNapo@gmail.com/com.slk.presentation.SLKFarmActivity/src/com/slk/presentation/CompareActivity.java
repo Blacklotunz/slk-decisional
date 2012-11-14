@@ -187,13 +187,13 @@ public class CompareActivity extends Activity{
 
 		if(products.size()>0){
 			p = products.get(0);
-			txt_nome_top.setText(p.getNome());
+			txt_nome_top.setText(p.getName());
 			
-			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			img_top.setImageResource(resId);
-			txt_avg_top.setText("Average price: "+p.getPrezzo());
-			txt_q_ven_anno_prec_top.setText("Quantity sold last year: "+p.getQ_vend_anno_precedente()+" Kg.");
-			txt_q_prev_anno_corr_top.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
+			//txt_avg_top.setText("Average price: "+p.getPrice());
+			txt_q_ven_anno_prec_top.setText(getString(R.string.qLastYear)+": "+slk_utility.getLastYearQuantity(p.getId()));
+			txt_q_prev_anno_corr_top.setText(getString(R.string.yProduction)+": "+p.getCurrent_production());
 			LL_top.setVisibility(LinearLayout.VISIBLE);
 			View top = findViewById(R.id.sfondo_prodotto_top);
 			//set color of  background 
@@ -210,12 +210,12 @@ public class CompareActivity extends Activity{
 		}
 		if(products.size()==2){
 			p = products.get(1);
-			txt_nome_bot.setText(p.getNome());
-			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			txt_nome_bot.setText(p.getName());
+			int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			img_bot.setImageResource(resId);
-			txt_avg_bot.setText("Average price: "+p.getPrezzo());
-			txt_q_ven_anno_prec_bot.setText("Quantity sold last year: "+p.getQ_vend_anno_precedente()+" Kg.");
-			txt_q_prev_anno_corr_bot.setText("Amount planned this year: "+p.getQ_prev_anno_corrente()+" Kg.");
+			//txt_avg_bot.setText("Average price: "+p.getPrice());
+			txt_q_ven_anno_prec_bot.setText(getString(R.string.maxProduction)+": "+p.getMax_production());
+			txt_q_prev_anno_corr_bot.setText(getString(R.string.currProduction)+": "+p.getCurrent_production());
 			LL_bot.setVisibility(LinearLayout.VISIBLE);
 			View bot = findViewById(R.id.sfondo_prodotto_bot);
 			//set color of  background 

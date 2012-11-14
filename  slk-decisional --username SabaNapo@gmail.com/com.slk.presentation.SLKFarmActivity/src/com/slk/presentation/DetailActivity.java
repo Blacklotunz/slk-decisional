@@ -69,7 +69,7 @@ public class DetailActivity extends Activity {
 
 
 		TextView nome=(TextView)findViewById(R.id.nome);
-		nome.setText(prodotto_selezionato.getNome().toUpperCase());
+		nome.setText(prodotto_selezionato.getName().toUpperCase());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 		nome.setTextColor(Color.WHITE);
@@ -81,13 +81,13 @@ public class DetailActivity extends Activity {
 			info1.setTextColor(Color.WHITE);
 		
 		TextView info2=(TextView)findViewById(R.id.info2);
-		info2.setText("Last year production: "+prodotto_selezionato.getQ_vend_anno_precedente()+" Kg");
+		info2.setText(getString(R.string.maxProduction)+": "+prodotto_selezionato.getMax_production());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info2.setTextColor(Color.WHITE);
 		
 		TextView info3=(TextView)findViewById(R.id.info3);
-		info3.setText("Last Year Selling Price: "+prodotto_selezionato.getPrezzo()+" $/Kg");
+		info3.setText(getString(R.string.currProduction)+": "+prodotto_selezionato.getCurrent_production());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info3.setTextColor(Color.WHITE);
@@ -97,10 +97,10 @@ public class DetailActivity extends Activity {
 
 
 		TextView prevision = (TextView) findViewById(R.id.prevision);
-		prevision.setText("Your Prevision is: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
+		prevision.setText(getString(R.string.yProduction)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId()));
 
 		TextView lastYear = (TextView) findViewById(R.id.last);
-		lastYear.setText("Last Year Production: "+prodotto_selezionato.getQ_vend_anno_precedente()+" Kg");
+		lastYear.setText(getString(R.string.lastProduction)+": "+slk_utility.getLastYearQuantity(prodotto_selezionato.getId()));
 
 		relLay.setBackgroundColor(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista()));
 		
@@ -139,9 +139,9 @@ public class DetailActivity extends Activity {
 		/**
 		 * lavorare da qui. Il nuovo algoritmo deve inviare messaggi JSon al backend e memorizzare le risposte.
 		 */
-		slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getQ_prev_anno_corrente(),actualPrevisione);
+		slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getCurrent_production(),actualPrevisione);
 		slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
-		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getNome(),prod_selezionato.getVariety(), prod_selezionato.getPrezzo(), prodotto_selezionato.getImg(), prod_selezionato.getColore(), slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getQ_vend_anno_precedente(), prod_selezionato.getQ_prev_anno_corrente(), actualPrevisione);
+		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getName(),prod_selezionato.getVariety(), prod_selezionato.getPrice(), prodotto_selezionato.getImg(), prod_selezionato.getColor(), slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getMax_production(), prod_selezionato.getCurrent_production(), actualPrevisione);
 	}
 
 
@@ -209,43 +209,43 @@ public class DetailActivity extends Activity {
 			
 			if(prodotto_selezionato.getProductionLevel()<=11){
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_0_11));
-				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_0_11));		
+				prodotto_selezionato.setColor(Color.parseColor(UNDER_SUPPLY_0_11));		
 			}
 			if(prodotto_selezionato.getProductionLevel()>=12 && prodotto_selezionato.getProductionLevel()<=22){
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_12_22));
-				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_12_22));
+				prodotto_selezionato.setColor(Color.parseColor(UNDER_SUPPLY_12_22));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=23 && prodotto_selezionato.getProductionLevel()<=33){
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_23_33));
-				prodotto_selezionato.setColore(Color.parseColor(UNDER_SUPPLY_23_33));
+				prodotto_selezionato.setColor(Color.parseColor(UNDER_SUPPLY_23_33));
 			}
 		}else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67){//yellow list
 			
 			if(prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=45){
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_34_45));
-				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_34_45));
+				prodotto_selezionato.setColor(Color.parseColor(NORMAL_SUPPLY_34_45));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=46 && prodotto_selezionato.getProductionLevel()<=57){
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_46_57));
-				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_46_57));
+				prodotto_selezionato.setColor(Color.parseColor(NORMAL_SUPPLY_46_57));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=58 && prodotto_selezionato.getProductionLevel()<=67){
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_58_67));
-				prodotto_selezionato.setColore(Color.parseColor(NORMAL_SUPPLY_58_67));
+				prodotto_selezionato.setColor(Color.parseColor(NORMAL_SUPPLY_58_67));
 			}
 		}else if(prodotto_selezionato.getProductionLevel()>=68){//red list
 			
 			if(prodotto_selezionato.getProductionLevel()>=68 && prodotto_selezionato.getProductionLevel()<=79){
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_68_79));
-				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_68_79));
+				prodotto_selezionato.setColor(Color.parseColor(OVER_SUPPLY_68_79));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=80 && prodotto_selezionato.getProductionLevel()<=91){
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_80_91));
-				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_80_91));
+				prodotto_selezionato.setColor(Color.parseColor(OVER_SUPPLY_80_91));
 			}
 			if(prodotto_selezionato.getProductionLevel()>=92){
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_92_100));
-				prodotto_selezionato.setColore(Color.parseColor(OVER_SUPPLY_92_100));
+				prodotto_selezionato.setColor(Color.parseColor(OVER_SUPPLY_92_100));
 			}
 		}
 	}
@@ -254,7 +254,7 @@ public class DetailActivity extends Activity {
 		// Otteniamo il riferimento al Builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// Impostiamo il titolo, il messaggio ed una icona in chaining
-		builder.setTitle(R.string.warning);
+		builder.setTitle(getString(R.string.warning));
 		builder.setMessage("You have selected to grow "+actualPrevisione+"Kg. Are you sure?");
 
 		// Impostiamo il pulsante di Yes con il relativo listener

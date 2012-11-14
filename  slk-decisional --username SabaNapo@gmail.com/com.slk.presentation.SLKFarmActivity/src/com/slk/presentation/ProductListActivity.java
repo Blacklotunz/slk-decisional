@@ -156,11 +156,11 @@ public class ProductListActivity extends Activity{
 			LinearLayout.LayoutParams lp_img = new LinearLayout.LayoutParams(convertToSpInpixel(riga_dim_sp),convertToSpInpixel(riga_dim_sp));
 			lp_img.setMargins(convertToSpInpixel(0), convertToSpInpixel(0), 0, convertToSpInpixel(0));
 			LL_img.setLayoutParams(lp_img);
-			LL_img.setBackgroundColor(p.getColore());
+			LL_img.setBackgroundColor(p.getColor());
 
 			ImageView img = new ImageView(ProductListActivity.this);
 
-			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			img.setImageResource(resId);
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 			LL_img.addView(img);
@@ -174,10 +174,10 @@ public class ProductListActivity extends Activity{
 			lp_info.setMargins(0, convertToSpInpixel(0), 0, convertToSpInpixel(0));
 			LL_info.setLayoutParams(lp_info);
 			LL_info.setOrientation(LinearLayout.VERTICAL);
-			LL_info.setBackgroundColor(p.getColore());
+			LL_info.setBackgroundColor(p.getColor());
 
 			TextView txt_nome = new TextView(ProductListActivity.this);
-			txt_nome.setText(p.getNome());
+			txt_nome.setText(p.getName());
 			txt_nome.setGravity(Gravity.CENTER);
 			txt_nome.setTextAppearance(getApplicationContext(), R.style.ButtonTextMedium);
 			txt_nome.setTextColor(getResources().getColor(R.color.Black));
@@ -204,7 +204,7 @@ public class ProductListActivity extends Activity{
 			LL_flag.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			LinearLayout.LayoutParams lp_flag = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT+1);
 			LL_flag.setLayoutParams(lp_flag);		
-			LL_flag.setBackgroundColor(p.getColore());
+			LL_flag.setBackgroundColor(p.getColor());
 
 			//checkbox listener
 			CheckBox cb = new CheckBox(ProductListActivity.this);
@@ -216,7 +216,7 @@ public class ProductListActivity extends Activity{
 					} 
 					else{
 						for(int j=0; j<SLKFarmActivity.prodotti_selezionati.size(); j++){
-							if(SLKFarmActivity.prodotti_selezionati.get(j).getNome()==p.getNome()){
+							if(SLKFarmActivity.prodotti_selezionati.get(j).getName()==p.getName()){
 								SLKFarmActivity.prodotti_selezionati.remove(j);
 							}
 						}

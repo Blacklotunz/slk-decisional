@@ -140,5 +140,10 @@
     <string name="no_label">NO</string>
     <string name="title_activity_detail">DetailActivity</string>
     <color name="transparent">#80000000</color>
+    <string name="maxProduction">Max production</string>
+    <string name="currProduction">Current production</string>
+    <string name="yProduction">Your prevision</string>
+    <string name="lastProduction">Last year production</string>
+    <string name="qLastYear">Quantity sold last year</string>
 
 </resources>
