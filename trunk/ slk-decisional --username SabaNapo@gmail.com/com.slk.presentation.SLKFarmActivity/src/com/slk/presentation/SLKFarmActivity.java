@@ -1,24 +1,25 @@
 package com.slk.presentation;
 
-import java.util.ArrayList;
 
+
+import java.util.ArrayList;
 import com.slk.R;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 import com.slk.storage.SLKStorage;
-
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,10 +36,9 @@ public class SLKFarmActivity extends TabActivity {
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
 	Bundle savedInstanceState;
-
-
 	private SLKApplication slk_utility;
 	ArrayList<Product> prodotti;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -51,14 +51,15 @@ public class SLKFarmActivity extends TabActivity {
 
 		//SLKStorage db = new SLKStorage(getApplicationContext());
 		//db.clear();
-
-		slk_utility = new SLKApplication(getApplicationContext());	
-
-		prodotti=slk_utility.getAllProducts();
+		
+		
+		slk_utility = new SLKApplication(getApplicationContext());
+		prodotti = slk_utility.getAllProducts();	
 		if(prodotti.isEmpty()){
 			slk_utility.setProducts();
 			prodotti = slk_utility.getAllProducts();
 		}
+		
 
 		TabHost tabHost = getTabHost();
 		Intent gIntent = new Intent (this, ProductListActivity.class);
@@ -118,7 +119,6 @@ public class SLKFarmActivity extends TabActivity {
 				}
 			}
 		});
-
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class SLKFarmActivity extends TabActivity {
 				String value = input.getText().toString();
 				value = value.toLowerCase();
 				for(int i=0; i<prodotti.size(); i++){
-					if(prodotti.get(i).getNome().toLowerCase().equals(value)){
+					if(prodotti.get(i).getName().toLowerCase().equals(value)){
 						flag = true;
 						Product p = prodotti.get(i);
 						Intent intent = new Intent(SLKFarmActivity.this, DetailActivity.class);
@@ -180,7 +180,6 @@ public class SLKFarmActivity extends TabActivity {
 		alert.show();
 	}
 
-	
 	/* method for don't give permission to use back button
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {

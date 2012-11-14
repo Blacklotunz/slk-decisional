@@ -1,8 +1,14 @@
 package com.slk.application;
 
 
+import http.HttpConnector;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.slk.R;
 import android.content.Context;
 import android.database.Cursor;
@@ -89,7 +95,7 @@ public class SLKApplication {
 	//metodo richiamato dagli altri metodi getProducts...in base al valore passato cambia la query e la fa eseguire allo storage layer
 	public ArrayList<Product> getSelectProducts(String ProdType){
 		db.open();
-	
+
 		ArrayList<Product> toReturn=new ArrayList<Product>();
 		Cursor c=null;
 		if(ProdType.equals("all")){
@@ -122,13 +128,13 @@ public class SLKApplication {
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
 		c.close();
-		
-		
+
+
 		if (!ProdType.equals("all")){
 			if (toReturn.size()!=0){
 				//set color for each product
 				for(Product p : toReturn){
-					p.setColore(ColorSetter.getColours(p.getProductionLevel(),p.getLista()));
+					p.setColor(ColorSetter.getColours(p.getProductionLevel(),p.getLista()));
 				}
 			}
 		}
@@ -229,22 +235,11 @@ public class SLKApplication {
 	}
 
 
-	/*
-	 * This method will fetch data from ws to initialize the data into mobile device'DB
-	 * Return a boolean flag if transaction'll succeded.
-	 */
-	public boolean fetchProductsFromWS(){
-		
-		
-		return true;
-	}
-	
-	
 	/*Inserisce i prodotti nel database per dettagli sulla firma del metodo insertProduct
 	 * fare riferimento alla classe SLKStorage nel package com.slk.storage*/
 	public void setProducts(){
 		db.open();
-		
+
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			Log.i("SLKApplication", "DB vuoto");
 			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,0);
@@ -275,5 +270,45 @@ public class SLKApplication {
 			db.insertProductInHistory("carrotid","carrot", "variety",2.3,"url",2, 2010,03,200,600,500);
 		}
 		db.close();
+	}
+
+	
+	/*
+	 * download the products from WS and set into DB
+	 */
+	public void setProductsFromWS() {
+		db.open();
+		HttpConnector http = new HttpConnector();
+		ArrayList<JSONObject> products = http.fetchProducts();
+		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
+			for(JSONObject obj : products){
+				try {
+					Log.i("obj",obj.getJSONObject(obj.names().getString(0)).toString());
+					JSONObject objj = obj.getJSONObject(obj.names().getString(0));
+					//Log.i("SLKApplication.setProdutsFromWS","id"+obj.getString("cropname")+obj.getString("cultivar_name")+" name:"+obj.getString("cropname")+" variety:"+obj.getString("cultivar_name")+" image: "+obj.getString("images")+" list:"+SLKApplication.getListOfProduct(Integer.parseInt(obj.getString("percentage_of_production")))+" supply level:"+Integer.parseInt(obj.getString("percentage_of_production"))+" max production:"+Integer.parseInt(obj.getString("max_production"))+" current production:"+Integer.parseInt(obj.getString("current_production")));
+					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct(Integer.parseInt(objj.getString("percentage_of_production"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		db.close();
+	}
+	
+	
+	/*
+	 * support method for give a list of production for a product based on supply level quantity
+	 */
+	private static int getListOfProduct(int productionLevel){
+		if (productionLevel<=33)
+			return 1;
+		else if (productionLevel>=34 && productionLevel<=67)
+			return 2;
+		else if (productionLevel>=68)
+			return 3;
+		else 
+			return 0;
 	}
 }

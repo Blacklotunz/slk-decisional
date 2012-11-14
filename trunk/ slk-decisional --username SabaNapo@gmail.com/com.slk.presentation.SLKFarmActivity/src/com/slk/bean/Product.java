@@ -7,72 +7,73 @@ import android.os.Parcelable;
 public class Product implements Parcelable{
 
 	/**
+	 * Product bean
 	 * 
 	 */
 	private String id;
-	private String nome;
+	private String name;
 	private String variety;
-	private double prezzo;
+	private double price;
 	private String imgURL;
-	private int colore;
+	private int color;
 	private int productionLevel;
 	private int lista; //1 green, 2 yellow, 3 red
-	private Double q_vend_anno_precedente;
-	private Double q_prev_anno_corrente;
+	private Double max_production;
+	private Double current_production;
 
-	public Product(String id, String nome, String variety, double prezzo, String imgURL, int productionLevel, int lista, Double q_vend_anno_precedente,Double q_prev_anno_corrente){
+	public Product(String id, String name, String variety, double price, String imgURL, int productionLevel, int lista, Double max_production,Double current_production){
 		this.id=id;
-		this.nome=nome;
+		this.name=name;
 		this.variety=variety;
-		this.prezzo=prezzo;
+		this.price=price;
 		this.imgURL=imgURL;
 		this.productionLevel=productionLevel;
 		this.lista=lista;
-		this.q_vend_anno_precedente=q_vend_anno_precedente;
-		this.q_prev_anno_corrente=q_prev_anno_corrente;
+		this.max_production=max_production;
+		this.current_production=current_production;
 		
 	}
 	
 	public Product(Parcel in) {
 		this.id = in.readString();
-		this.nome=in.readString();
+		this.name=in.readString();
 		this.variety=in.readString();
-		this.prezzo=in.readDouble();
+		this.price=in.readDouble();
 		this.imgURL=in.readString();
-		this.colore=in.readInt();
+		this.color=in.readInt();
 		this.productionLevel=in.readInt();
 		this.lista=in.readInt();
-		this.q_vend_anno_precedente=in.readDouble();
-		this.q_prev_anno_corrente=in.readDouble();	
+		this.max_production=in.readDouble();
+		this.current_production=in.readDouble();	
 	}
 	
 	public void writeToParcel(Parcel p, int flags) {
 		p.writeString(getId());
-		p.writeString(getNome());
+		p.writeString(getName());
 		p.writeString(getVariety());
-		p.writeDouble(getPrezzo());
+		p.writeDouble(getPrice());
 		p.writeString(getImg());
-		p.writeInt(getColore());
+		p.writeInt(getColor());
 		p.writeInt(getProductionLevel());
 		p.writeInt(getLista());
-		p.writeDouble(getQ_vend_anno_precedente());
-		p.writeDouble(getQ_prev_anno_corrente());
+		p.writeDouble(getMax_production());
+		p.writeDouble(getCurrent_production());
 	}
 
-	public Double getQ_prev_anno_corrente() {
-		return q_prev_anno_corrente;
+	public Double getCurrent_production() {
+		return current_production;
 	}
 
-	public void setQ_prev_anno_corrente(Double q_prev_anno_corrente) {
-		this.q_prev_anno_corrente = q_prev_anno_corrente;
+	public void setcurrent_production(Double current_production) {
+		this.current_production = current_production;
 	}
 
-	public Double getQ_vend_anno_precedente() {
-		return q_vend_anno_precedente;
+	public Double getMax_production() {
+		return max_production;
 	}
 
-	public void setQ_vend_anno_precedente(Double q_vend_anno_precedente) {
-		this.q_vend_anno_precedente = q_vend_anno_precedente;
+	public void setMax_production(Double max_production) {
+		this.max_production = max_production;
 	}
 
 	
@@ -94,28 +95,28 @@ public class Product implements Parcelable{
 		this.imgURL = img;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public double getPrezzo() {
-		return prezzo;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setPrezzo(int prezzo) {
-		this.prezzo = prezzo;
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
-	public int getColore() {
-		return colore;
+	public int getColor() {
+		return color;
 	}
 
-	public void setColore(int colore) {
-		this.colore = colore;
+	public void setColor(int color) {
+		this.color = color;
 	}
 
 

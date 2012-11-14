@@ -1,9 +1,19 @@
 package com.slk.presentation;
 
+import java.util.ArrayList;
+
 import com.slk.R;
+import com.slk.application.SLKApplication;
+import com.slk.bean.Product;
+import com.slk.storage.SLKStorage;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,36 +22,63 @@ public class ChoiceSupplyActivity extends Activity {
 	static final private int GREEN = 1;
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
+	private ProgressDialog pd;
+	private final Context c= this;
+	private SLKApplication slk_utility = new SLKApplication(c);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choicesupply);
+		
+		SLKStorage db = new SLKStorage(c);
+		db.clear();
 
 		Button green = (Button) findViewById(R.id.under);
 		green.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
-				intent.setAction(""+GREEN);
-				startActivity(intent);
+				if(slk_utility.getAllProducts().isEmpty()){
+				pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
+				Handler h = new Handler();
+				h.execute(GREEN);
+				}
+				else{
+					Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+					intent.setAction(""+GREEN);
+					startActivity(intent);
+				}
 			}
 		});
 
 		Button yellow = (Button) findViewById(R.id.normal);
 		yellow.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
-				intent.setAction(""+YELLOW);
-				startActivity(intent);
+				if(slk_utility.getAllProducts().isEmpty()){
+					pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
+					Handler h = new Handler();
+					h.execute(YELLOW);
+					}
+				else{
+					Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+					intent.setAction(""+YELLOW);
+					startActivity(intent);
+				}
 			}
 		});
 
 		Button red = (Button) findViewById(R.id.over);
 		red.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
-				intent.setAction(""+RED);
-				startActivity(intent);
+				if(slk_utility.getAllProducts().isEmpty()){
+					pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
+					Handler h = new Handler();
+					h.execute(RED);
+					}
+				else{
+					Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+					intent.setAction(""+RED);
+					startActivity(intent);
+				}
 			}
 		});
 
@@ -62,5 +99,33 @@ public class ChoiceSupplyActivity extends Activity {
 			startActivity(intent);
 		}
 			
+	}
+	
+	private class Handler extends AsyncTask<Integer,Integer,Integer>{
+		
+		@Override
+		protected Integer doInBackground(Integer...values) {
+			/*
+			 * initialize the products database fetching the products from WS, 
+			 * the connection will happen only if the db will be empty.
+			 */	
+			slk_utility.setProductsFromWS();
+			Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+			intent.setAction(""+values[0]);
+			startActivity(intent);
+			return values[0];
+		}
+		@Override
+	      protected void onProgressUpdate(Integer...values) {
+	         // aggiorno la progress dialog
+	         pd.setMessage("Connected!");
+	      }
+		 @Override
+	     protected void onPostExecute(Integer result) {
+	        // chiudo la progress dialog
+	        pd.dismiss();
+	     }
+
+		
 	}
 }
