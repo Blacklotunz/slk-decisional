@@ -43,6 +43,8 @@ public class SLKFarmActivity extends TabActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		MenuView.myLog.appendLog("SLKFarmActivity"+" activity "+"created");
+		
 		prodotti_selezionati = new ArrayList<Product>();
 		SLKFarmActivity.closeFlag=false;
 		this.savedInstanceState = savedInstanceState;
@@ -87,8 +89,8 @@ public class SLKFarmActivity extends TabActivity {
 
 		Button ricerca = (Button) findViewById(R.id.bottone_ricerca);
 		ricerca.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("search"+" button "+"clicked");
 				createTextSearchDialog();
 			}
 		});
@@ -96,8 +98,9 @@ public class SLKFarmActivity extends TabActivity {
 
 		confrontaButton = (Button) findViewById(R.id.confronta);
 		confrontaButton.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("compare"+" button "+"clicked");
+				
 				if(prodotti_selezionati.size()>0){
 					Intent intent = new Intent(SLKFarmActivity.this,CompareActivity.class);
 					intent.putParcelableArrayListExtra("prodotti_selezionati",prodotti_selezionati);
@@ -124,6 +127,8 @@ public class SLKFarmActivity extends TabActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
+		MenuView.myLog.appendLog("SLKFarmActivity"+" activity "+"resumed");
+		
 		if(closeFlag)
 			finish();
 	}
@@ -141,6 +146,8 @@ public class SLKFarmActivity extends TabActivity {
 		alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
+				MenuView.myLog.appendLog("ok"+" button "+"clicked");
+				
 				boolean flag=false;
 				String value = input.getText().toString();
 				value = value.toLowerCase();
@@ -170,16 +177,21 @@ public class SLKFarmActivity extends TabActivity {
 				}
 			}
 		});
-
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// Canceled.
+				MenuView.myLog.appendLog("cancel"+" button "+"clicked");
 			}
 		});
-
 		alert.show();
 	}
 
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+			MenuView.myLog.appendLog("SLKFarmActivity"+" activity "+"destroyed");
+	}
+	
 	/* method for don't give permission to use back button
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {

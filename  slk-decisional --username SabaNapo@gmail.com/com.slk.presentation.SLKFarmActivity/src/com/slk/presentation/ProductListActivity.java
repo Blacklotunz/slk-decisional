@@ -11,6 +11,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View.OnClickListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -45,11 +47,11 @@ public class ProductListActivity extends Activity{
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		MenuView.myLog.appendLog("ProductListActivity"+" activty "+"created");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista);
-
 		slk_utility = new SLKApplication(getApplicationContext());
-
 		if (getIntent().getAction().equals("1"))
 			prodotti = slk_utility.getGreenProducts();
 		else if (getIntent().getAction().equals("2"))
@@ -74,9 +76,9 @@ public class ProductListActivity extends Activity{
 		down.setVisibility(View.INVISIBLE);
 
 		down.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
-
+				MenuView.myLog.appendLog("down"+" button "+"clicked");
+				
 				up.setVisibility(View.VISIBLE);
 				View view;
 				if(!invisible_down.isEmpty())
@@ -88,25 +90,22 @@ public class ProductListActivity extends Activity{
 
 					if(invisible_down.isEmpty())
 						down.setVisibility(View.INVISIBLE);
-
 				}
 			}
 		});
 
 
 		up.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("down"+" button "+"clicked");
+				
 				down.setVisibility(View.VISIBLE);
-
 				if(!invisible_up.isEmpty())
 				{		
 					View view=LL_riga.getChildAt(LL_riga.getChildCount()-1);
 					LL_riga.removeView(view);
 					LL_riga.addView(invisible_up.pop(),0);
 					invisible_down.push(view);
-
-
 					if(invisible_up.isEmpty())
 						up.setVisibility(View.INVISIBLE);
 				}
@@ -114,7 +113,6 @@ public class ProductListActivity extends Activity{
 		});
 
 		setVisibleRow();
-
 	}
 
 
@@ -160,8 +158,11 @@ public class ProductListActivity extends Activity{
 
 			ImageView img = new ImageView(ProductListActivity.this);
 
-			int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
-			img.setImageResource(resId);
+			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
+			//img.setImageResource(resId);
+			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			img.setImageBitmap(bitmap);
+			
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 			LL_img.addView(img);
 			LL.addView(LL_img);
@@ -212,11 +213,15 @@ public class ProductListActivity extends Activity{
 			{
 				public void onClick(View v) {
 					if(((CheckBox) v).isChecked()) {
+						MenuView.myLog.appendLog(p.getId()+" checkbox "+"selected");
+						
 						SLKFarmActivity.prodotti_selezionati.add(p);
 					} 
 					else{
 						for(int j=0; j<SLKFarmActivity.prodotti_selezionati.size(); j++){
 							if(SLKFarmActivity.prodotti_selezionati.get(j).getName()==p.getName()){
+								MenuView.myLog.appendLog(p.getId()+" checkbox "+"deselected");
+								
 								SLKFarmActivity.prodotti_selezionati.remove(j);
 							}
 						}
@@ -227,6 +232,8 @@ public class ProductListActivity extends Activity{
 						SLKFarmActivity.confrontaButton.setText("Compare");
 						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 							public void onClick(View v) {
+								MenuView.myLog.appendLog("compare"+" button "+"clicked");
+								
 								LayoutInflater inflater = getLayoutInflater();
 								View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
 								ImageView image = (ImageView) layout.findViewById(R.id.image);
@@ -248,6 +255,8 @@ public class ProductListActivity extends Activity{
 							SLKFarmActivity.confrontaButton.setText("Select");
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
+									MenuView.myLog.appendLog("select product"+" button "+"clicked");
+									
 									if(SLKFarmActivity.prodotti_selezionati.size()>0){
 										Intent intent = new Intent(ProductListActivity.this,DetailActivity.class);
 										intent.putExtra("prodotto",SLKFarmActivity.prodotti_selezionati.get(0));
@@ -261,6 +270,8 @@ public class ProductListActivity extends Activity{
 							SLKFarmActivity.confrontaButton.setText("Compare");
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
+									MenuView.myLog.appendLog("compare"+" button "+"clicked");
+									
 									if(SLKFarmActivity.prodotti_selezionati.size()>0){
 										Intent intent = new Intent(ProductListActivity.this,CompareActivity.class);
 										intent.putParcelableArrayListExtra("prodotti_selezionati",SLKFarmActivity.prodotti_selezionati);
@@ -280,11 +291,12 @@ public class ProductListActivity extends Activity{
 						LL.setOnClickListener(new OnClickListener() {
 
 							public void onClick(View v) {
+								MenuView.myLog.appendLog(p.getId()+" product button "+"clicked");
+								
 								Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
 								intent.putExtra("prodotto", p);
 								startActivity(intent);
 								//finish();
-
 							}
 						});
 			}
@@ -305,15 +317,10 @@ public class ProductListActivity extends Activity{
 			}
 		}
 
-
-
-		/*
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			return false;
+		@Override
+		public void onDestroy(){
+			super.onDestroy();
+				MenuView.myLog.appendLog("ProductListActivity"+" activity "+"destroyed");
 		}
-		return super.onKeyDown(keyCode, event);
-	}
-		 */
 
 	}
