@@ -11,6 +11,8 @@ import com.slk.bean.Product;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +62,8 @@ public class CompareActivity extends Activity{
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		MenuView.myLog.appendLog(this.toString()+" ChoicheSupplyActivity "+"started");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.confronto);
 
@@ -90,6 +94,7 @@ public class CompareActivity extends Activity{
 		upButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("upButton"+" button "+"clicked");
 				if(cont>0 && cont<num_page){					
 					up_griglia(products_to_insert);					
 				}
@@ -103,6 +108,8 @@ public class CompareActivity extends Activity{
 		downButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("downButton"+" button "+"clicked");
+				
 				down_griglia(products_to_insert);
 				upButton.setVisibility(View.VISIBLE);
 				if(invisible_down.isEmpty())
@@ -120,6 +127,8 @@ public class CompareActivity extends Activity{
 
 	@Override
 	public void onResume(){
+		MenuView.myLog.appendLog("CompareActivity"+" activity "+"resumed");
+		
 		super.onResume();
 		if(SLKFarmActivity.closeFlag)
 			finish();
@@ -189,8 +198,11 @@ public class CompareActivity extends Activity{
 			p = products.get(0);
 			txt_nome_top.setText(p.getName());
 			
-			int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
-			img_top.setImageResource(resId);
+			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
+			//img_top.setImageResource(resId);
+			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			img_top.setImageBitmap(bitmap);
+			
 			//txt_avg_top.setText("Average price: "+p.getPrice());
 			txt_q_ven_anno_prec_top.setText(getString(R.string.qLastYear)+": "+slk_utility.getLastYearQuantity(p.getId()));
 			txt_q_prev_anno_corr_top.setText(getString(R.string.yProduction)+": "+p.getCurrent_production());
@@ -211,8 +223,11 @@ public class CompareActivity extends Activity{
 		if(products.size()==2){
 			p = products.get(1);
 			txt_nome_bot.setText(p.getName());
-			int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
-			img_bot.setImageResource(resId);
+			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
+			//img_bot.setImageResource(resId);
+			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			img_bot.setImageBitmap(bitmap);
+			
 			//txt_avg_bot.setText("Average price: "+p.getPrice());
 			txt_q_ven_anno_prec_bot.setText(getString(R.string.maxProduction)+": "+p.getMax_production());
 			txt_q_prev_anno_corr_bot.setText(getString(R.string.currProduction)+": "+p.getCurrent_production());
@@ -237,8 +252,10 @@ public class CompareActivity extends Activity{
 
 
 	private void addListenerProdotto(View LL, final Product p) {
-		LL.setOnClickListener(new OnClickListener() {	
+		LL.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				MenuView.myLog.appendLog(p.getId()+" button "+"clicked");
+
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);
 				//SLKFarmActivity.prodotti_selezionati.clear();
@@ -247,5 +264,11 @@ public class CompareActivity extends Activity{
 			}
 		});
 
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+			MenuView.myLog.appendLog(this.toString()+" CompareActivity "+"destroyed");
 	}
 }

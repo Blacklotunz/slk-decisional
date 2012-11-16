@@ -9,6 +9,8 @@ import com.slk.bean.HistoryProdotto;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +41,8 @@ public class HistoryActivity extends Activity{
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		MenuView.myLog.appendLog("HistoryActivity"+" activity "+"created");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.history);
 
@@ -63,9 +67,9 @@ public class HistoryActivity extends Activity{
 		up.setVisibility(View.INVISIBLE);
 		down.setVisibility(View.INVISIBLE);
 
-		down.setOnClickListener(new View.OnClickListener() {
-			
+		down.setOnClickListener(new View.OnClickListener() {	
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("down"+" button "+"clicked");
 				
 				up.setVisibility(View.VISIBLE);
 				View view;
@@ -75,28 +79,24 @@ public class HistoryActivity extends Activity{
 					LL_riga.removeView(view);
 					LL_riga.addView(invisible_down.pop(), LL_riga.getChildCount());
 					invisible_up.push(view);
-
 					if(invisible_down.isEmpty())
 						down.setVisibility(View.INVISIBLE);
-
 				}
 			}
 		});
 
 
 		up.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
+				MenuView.myLog.appendLog("up"+" button "+"clicked");
+				
 				down.setVisibility(View.VISIBLE);
-
 				if(!invisible_up.isEmpty())
 				{		
 					View view=LL_riga.getChildAt(LL_riga.getChildCount()-1);
 					LL_riga.removeView(view);
 					LL_riga.addView(invisible_up.pop(),0);
 					invisible_down.push(view);
-
-
 					if(invisible_up.isEmpty())
 						up.setVisibility(View.INVISIBLE);
 				}
@@ -140,15 +140,14 @@ public class HistoryActivity extends Activity{
 			LL_img = new LinearLayout(HistoryActivity.this);
 			LinearLayout.LayoutParams lp_img = new LinearLayout.LayoutParams(convertToSpInpixel(riga_dim_sp),convertToSpInpixel(riga_dim_sp));
 			LL_img.setLayoutParams(lp_img);
-
 			LL_img.setBackgroundColor(p.getColore());
-			
-			/**
-			 * to change: le immagini saranno salvate della cartella data
-			 */
 			ImageView img = new ImageView(HistoryActivity.this);
-			int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
-			img.setImageResource(resId);
+			
+			//int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
+			//img.setImageResource(resId);
+			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			img.setImageBitmap(bitmap);
+			
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 			LL_img.addView(img);
 			LL.addView(LL_img);
@@ -210,5 +209,11 @@ public class HistoryActivity extends Activity{
 			invisible_down.push(view);
 			LL_riga.removeView(view);  
 		}
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+			MenuView.myLog.appendLog("HistoryActivity"+" activity "+"destroyed");
 	}
 }
