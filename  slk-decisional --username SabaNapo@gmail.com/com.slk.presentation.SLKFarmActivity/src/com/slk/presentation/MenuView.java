@@ -103,7 +103,7 @@ public class MenuView extends Activity {
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"sabanapo@gmail.com"});
 		i.putExtra(Intent.EXTRA_SUBJECT, "SLK Log File");
-		i.putExtra(Intent.EXTRA_TEXT, "see attached file");
+		i.putExtra(Intent.EXTRA_TEXT, "look at the attached file!");
 		i.setType("application/txt");
 		final File file = new File(Environment.getExternalStorageDirectory(), "SLKlog.txt");
 		i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
