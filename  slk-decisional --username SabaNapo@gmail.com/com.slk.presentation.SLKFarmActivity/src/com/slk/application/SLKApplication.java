@@ -287,7 +287,7 @@ public class SLKApplication {
 					Log.i("obj",obj.getJSONObject(obj.names().getString(0)).toString());
 					JSONObject objj = obj.getJSONObject(obj.names().getString(0));
 					//Log.i("SLKApplication.setProdutsFromWS","id"+obj.getString("cropname")+obj.getString("cultivar_name")+" name:"+obj.getString("cropname")+" variety:"+obj.getString("cultivar_name")+" image: "+obj.getString("images")+" list:"+SLKApplication.getListOfProduct(Integer.parseInt(obj.getString("percentage_of_production")))+" supply level:"+Integer.parseInt(obj.getString("percentage_of_production"))+" max production:"+Integer.parseInt(obj.getString("max_production"))+" current production:"+Integer.parseInt(obj.getString("current_production")));
-					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct(Integer.parseInt(objj.getString("percentage_of_production"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
+					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct((objj.getString("croptype"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
 					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropname")+objj.getString("cultivar_name"));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
@@ -299,6 +299,15 @@ public class SLKApplication {
 			}
 		}
 		db.close();
+	}
+	
+	private static int getListOfProduct(String type){
+		if(type.equalsIgnoreCase("vegetable")){
+			return 1;
+		}else if(type.equalsIgnoreCase("fruit")){
+			return 2;
+		}else
+			return 3;
 	}
 	
 	

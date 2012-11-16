@@ -130,9 +130,9 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_menu_view">MenuView</string>
-    <string name="under">Low production</string>
-    <string name="normal">Normal production</string>
-    <string name="over">High production</string>
+    <string name="under">Vegetable</string>
+    <string name="normal">Fruits</string>
+    <string name="over">Other</string>
     <string name="history">History</string>
     <string name="title_activity_choice">ChoiceActivity</string>
     <string name="warning">Warning</string>
