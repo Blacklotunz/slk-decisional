@@ -193,7 +193,7 @@ public class DetailActivity extends Activity {
 	}
 	
 	//check supplyLevel for change background color and product's list
-	public void checkSupplyLevel(){
+	public void checkSupplyLevel(){/*
 		if (prodotto_selezionato.getProductionLevel()<=33)//green list
 			prodotto_selezionato.setLista(1);
 			
@@ -201,7 +201,7 @@ public class DetailActivity extends Activity {
 			prodotto_selezionato.setLista(2);
 			
 		else if(prodotto_selezionato.getProductionLevel()>=68)//red list
-			prodotto_selezionato.setLista(3);		
+			prodotto_selezionato.setLista(3);	*/	
 	}
 	
 
