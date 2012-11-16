@@ -1,8 +1,8 @@
 package com.slk.application;
 
 
-import http.HttpConnector;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.slk.bean.HistoryProdotto;
 import com.slk.bean.Product;
+import com.slk.http.HttpConnector;
 import com.slk.storage.SLKStorage;
 
 public class SLKApplication {
@@ -274,7 +275,7 @@ public class SLKApplication {
 
 	
 	/*
-	 * download the products from WS and set into DB
+	 * download the products from WS and set into DB, after insert download image from url and save in SD with name == id of product
 	 */
 	public void setProductsFromWS() {
 		db.open();
@@ -287,9 +288,12 @@ public class SLKApplication {
 					JSONObject objj = obj.getJSONObject(obj.names().getString(0));
 					//Log.i("SLKApplication.setProdutsFromWS","id"+obj.getString("cropname")+obj.getString("cultivar_name")+" name:"+obj.getString("cropname")+" variety:"+obj.getString("cultivar_name")+" image: "+obj.getString("images")+" list:"+SLKApplication.getListOfProduct(Integer.parseInt(obj.getString("percentage_of_production")))+" supply level:"+Integer.parseInt(obj.getString("percentage_of_production"))+" max production:"+Integer.parseInt(obj.getString("max_production"))+" current production:"+Integer.parseInt(obj.getString("current_production")));
 					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct(Integer.parseInt(objj.getString("percentage_of_production"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
+					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropname")+objj.getString("cultivar_name"));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
