@@ -45,7 +45,7 @@ public class ChoiceSupplyActivity extends Activity {
 				LogHandler.appendLog("under supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
-				pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
+				pd = ProgressDialog.show(c,"Wait please...","Retrieving data from server...",true,false);
 				Handler h = new Handler();
 				h.execute(GREEN);
 				}
@@ -63,7 +63,7 @@ public class ChoiceSupplyActivity extends Activity {
 				LogHandler.appendLog("normal supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
-					pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
+					pd = ProgressDialog.show(c,"Wait please...","Retrieving data from server...",true,false);
 					Handler h = new Handler();
 					h.execute(YELLOW);
 					}
@@ -81,7 +81,7 @@ public class ChoiceSupplyActivity extends Activity {
 				LogHandler.appendLog("over supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
-					pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
+					pd = ProgressDialog.show(c,"Wait please...","Retrieving data from server...",true,false);
 					Handler h = new Handler();
 					h.execute(RED);
 					}

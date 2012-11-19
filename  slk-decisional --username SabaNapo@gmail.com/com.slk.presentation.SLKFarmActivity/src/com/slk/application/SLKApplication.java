@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -282,7 +283,22 @@ public class SLKApplication {
 	public void setProductsFromWS() {
 		db.open();
 		HttpConnector http = new HttpConnector();
-		ArrayList<JSONObject> products = http.fetchProducts();
+		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
+		try {
+			products = http.fetchProducts();
+		} catch (ClientProtocolException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalStateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			for(JSONObject obj : products){
 				try {
@@ -326,4 +342,5 @@ public class SLKApplication {
 		else 
 			return 0;
 	}
+	
 }
