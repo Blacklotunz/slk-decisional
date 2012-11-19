@@ -7,6 +7,8 @@ import com.slk.R;
 import com.slk.application.ColorSetter;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
+import com.slk.log.LogHandler;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.View.OnClickListener;
@@ -32,7 +34,6 @@ public class ProductListActivity extends Activity{
 
 	private ArrayList<Product> prodotti;
 	private SLKApplication slk_utility;
-	//	private static Prodotto prodotto_selezionato;
 	protected boolean init=true;
 	private LinearLayout LL_riga;
 	private final int button_dim_sp=25;
@@ -42,12 +43,13 @@ public class ProductListActivity extends Activity{
 	protected int n_item_visible=4;
 	private static final int riga_dim_sp=50;
 
+	
 
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		MenuView.myLog.appendLog("ProductListActivity"+" activty "+"created");
+		LogHandler.appendLog("ProductListActivity"+" activty "+"created");
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista);
@@ -77,7 +79,7 @@ public class ProductListActivity extends Activity{
 
 		down.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("down"+" button "+"clicked");
+				LogHandler.appendLog("down"+" button "+"clicked");
 				
 				up.setVisibility(View.VISIBLE);
 				View view;
@@ -97,7 +99,7 @@ public class ProductListActivity extends Activity{
 
 		up.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("down"+" button "+"clicked");
+				LogHandler.appendLog("down"+" button "+"clicked");
 				
 				down.setVisibility(View.VISIBLE);
 				if(!invisible_up.isEmpty())
@@ -213,14 +215,14 @@ public class ProductListActivity extends Activity{
 			{
 				public void onClick(View v) {
 					if(((CheckBox) v).isChecked()) {
-						MenuView.myLog.appendLog(p.getId()+" checkbox "+"selected");
+						LogHandler.appendLog(p.getId()+" checkbox "+"selected");
 						
 						SLKFarmActivity.prodotti_selezionati.add(p);
 					} 
 					else{
 						for(int j=0; j<SLKFarmActivity.prodotti_selezionati.size(); j++){
 							if(SLKFarmActivity.prodotti_selezionati.get(j).getName()==p.getName()){
-								MenuView.myLog.appendLog(p.getId()+" checkbox "+"deselected");
+								//	myLog.appendLog(p.getId()+" checkbox "+"deselected");
 								
 								SLKFarmActivity.prodotti_selezionati.remove(j);
 							}
@@ -232,7 +234,7 @@ public class ProductListActivity extends Activity{
 						SLKFarmActivity.confrontaButton.setText("Compare");
 						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 							public void onClick(View v) {
-								MenuView.myLog.appendLog("compare"+" button "+"clicked");
+								LogHandler.appendLog("compare"+" button "+"clicked");
 								
 								LayoutInflater inflater = getLayoutInflater();
 								View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
@@ -255,7 +257,7 @@ public class ProductListActivity extends Activity{
 							SLKFarmActivity.confrontaButton.setText("Select");
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
-									MenuView.myLog.appendLog("select product"+" button "+"clicked");
+									//	myLog.appendLog("select product"+" button "+"clicked");
 									
 									if(SLKFarmActivity.prodotti_selezionati.size()>0){
 										Intent intent = new Intent(ProductListActivity.this,DetailActivity.class);
@@ -270,7 +272,7 @@ public class ProductListActivity extends Activity{
 							SLKFarmActivity.confrontaButton.setText("Compare");
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
-									MenuView.myLog.appendLog("compare"+" button "+"clicked");
+									LogHandler.appendLog("compare"+" button "+"clicked");
 									
 									if(SLKFarmActivity.prodotti_selezionati.size()>0){
 										Intent intent = new Intent(ProductListActivity.this,CompareActivity.class);
@@ -291,7 +293,7 @@ public class ProductListActivity extends Activity{
 						LL.setOnClickListener(new OnClickListener() {
 
 							public void onClick(View v) {
-								MenuView.myLog.appendLog(p.getId()+" product button "+"clicked");
+								LogHandler.appendLog(p.getId()+" product button "+"clicked");
 								
 								Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
 								intent.putExtra("prodotto", p);
@@ -320,7 +322,7 @@ public class ProductListActivity extends Activity{
 		@Override
 		public void onDestroy(){
 			super.onDestroy();
-				MenuView.myLog.appendLog("ProductListActivity"+" activity "+"destroyed");
+			LogHandler.appendLog("ProductListActivity"+" activity "+"destroyed");
 		}
 
 	}

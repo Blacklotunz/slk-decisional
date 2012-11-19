@@ -5,8 +5,10 @@ import java.util.Stack;
 
 import com.slk.R;
 import com.slk.application.ColorSetter;
+import com.slk.application.ImageHandler;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
+import com.slk.log.LogHandler;
 
 import android.app.Activity;
 import android.content.Context;
@@ -62,7 +64,7 @@ public class CompareActivity extends Activity{
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		MenuView.myLog.appendLog(this.toString()+" ChoicheSupplyActivity "+"started");
+		LogHandler.appendLog(this.toString()+" ChoicheSupplyActivity "+"started");
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.confronto);
@@ -94,7 +96,7 @@ public class CompareActivity extends Activity{
 		upButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("upButton"+" button "+"clicked");
+				LogHandler.appendLog("upButton"+" button "+"clicked");
 				if(cont>0 && cont<num_page){					
 					up_griglia(products_to_insert);					
 				}
@@ -108,7 +110,7 @@ public class CompareActivity extends Activity{
 		downButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("downButton"+" button "+"clicked");
+				LogHandler.appendLog("downButton"+" button "+"clicked");
 				
 				down_griglia(products_to_insert);
 				upButton.setVisibility(View.VISIBLE);
@@ -127,7 +129,7 @@ public class CompareActivity extends Activity{
 
 	@Override
 	public void onResume(){
-		MenuView.myLog.appendLog("CompareActivity"+" activity "+"resumed");
+		LogHandler.appendLog("CompareActivity"+" activity "+"resumed");
 		
 		super.onResume();
 		if(SLKFarmActivity.closeFlag)
@@ -200,7 +202,7 @@ public class CompareActivity extends Activity{
 			
 			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			//img_top.setImageResource(resId);
-			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, p.getId()).getAbsolutePath());
 			img_top.setImageBitmap(bitmap);
 			
 			//txt_avg_top.setText("Average price: "+p.getPrice());
@@ -254,7 +256,7 @@ public class CompareActivity extends Activity{
 	private void addListenerProdotto(View LL, final Product p) {
 		LL.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog(p.getId()+" button "+"clicked");
+				LogHandler.appendLog(p.getId()+" button "+"clicked");
 
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
 				intent.putExtra("prodotto",p);
@@ -269,6 +271,6 @@ public class CompareActivity extends Activity{
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-			MenuView.myLog.appendLog(this.toString()+" CompareActivity "+"destroyed");
+			LogHandler.appendLog(this.toString()+" CompareActivity "+"destroyed");
 	}
 }
