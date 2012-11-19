@@ -4,6 +4,8 @@ import com.slk.R;
 import com.slk.application.ColorSetter;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
+import com.slk.log.LogHandler;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,11 +46,13 @@ public class DetailActivity extends Activity {
 	private Double actualPrevisione=0.0;
 	private RelativeLayout relLay;
 	SLKApplication slk_utility;
+	
+	
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		MenuView.myLog.appendLog(this.toString()+" DetailActivity"+"created");
+		LogHandler.appendLog(this.toString()+" DetailActivity"+"created");
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product);
@@ -108,7 +112,7 @@ public class DetailActivity extends Activity {
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("Confirm"+" button "+"clicked");
+				LogHandler.appendLog("Confirm"+" button "+"clicked");
 				finish();
 			}
 		});
@@ -116,7 +120,7 @@ public class DetailActivity extends Activity {
 		final Button history = (Button) findViewById(R.id.historyd);
 		history.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("history"+" button "+"clicked");
+				LogHandler.appendLog("history"+" button "+"clicked");
 				
 				Intent intent = new Intent(DetailActivity.this, HistoryActivity.class);
 				startActivity(intent);
@@ -127,7 +131,7 @@ public class DetailActivity extends Activity {
 		final Button QuantityB = (Button) findViewById(R.id.set_quantity);
 		QuantityB.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("Quantity"+" button "+"clicked");
+				LogHandler.appendLog("Quantity"+" button "+"clicked");
 				
 				createTextChoiceDialog();
 			}
@@ -160,7 +164,7 @@ public class DetailActivity extends Activity {
 		alert.setView(input);
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				MenuView.myLog.appendLog("edit text OK"+" button "+"clicked");
+				LogHandler.appendLog("edit text OK"+" button "+"clicked");
 				
 				String value = input.getText().toString();
 				if(value.matches("^[-+]?\\d+(\\.{0,1}(\\d+?))?$")){ //input will accept only digits
@@ -186,7 +190,7 @@ public class DetailActivity extends Activity {
 
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				MenuView.myLog.appendLog("edit text Cancel"+" button "+"clicked");
+				LogHandler.appendLog("edit text Cancel"+" button "+"clicked");
 			}
 		});
 		alert.show();
@@ -264,7 +268,7 @@ public class DetailActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int id) {
-				MenuView.myLog.appendLog("yes"+" button "+"selected");
+				LogHandler.appendLog("yes"+" button "+"selected");
 				/**
 				 * choice is a simulated data from the backend
 				 */
@@ -285,7 +289,7 @@ public class DetailActivity extends Activity {
 		builder.setNegativeButton(R.string.no_label,
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				MenuView.myLog.appendLog("no"+" button "+"clicked");
+				LogHandler.appendLog("no"+" button "+"clicked");
 				
 				actualPrevisione=0.0;
 			}
@@ -300,7 +304,7 @@ public class DetailActivity extends Activity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-			MenuView.myLog.appendLog("DetailActivity"+" activity "+"destroyed");
+			LogHandler.appendLog("DetailActivity"+" activity "+"destroyed");
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Stack;
 import com.slk.R;
 import com.slk.application.SLKApplication;
 import com.slk.bean.HistoryProdotto;
+import com.slk.log.LogHandler;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,11 +38,11 @@ public class HistoryActivity extends Activity{
 	protected int n_item_visible;
 	private static final String TAG="ACTIVITY LISTA PRODOTTI"; 
 	private static final int riga_dim_sp=50;
-
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		MenuView.myLog.appendLog("HistoryActivity"+" activity "+"created");
+		LogHandler.appendLog("HistoryActivity"+" activity "+"created");
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.history);
@@ -69,7 +70,7 @@ public class HistoryActivity extends Activity{
 
 		down.setOnClickListener(new View.OnClickListener() {	
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("down"+" button "+"clicked");
+				LogHandler.appendLog("down"+" button "+"clicked");
 				
 				up.setVisibility(View.VISIBLE);
 				View view;
@@ -88,7 +89,7 @@ public class HistoryActivity extends Activity{
 
 		up.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("up"+" button "+"clicked");
+				LogHandler.appendLog("up"+" button "+"clicked");
 				
 				down.setVisibility(View.VISIBLE);
 				if(!invisible_up.isEmpty())
@@ -214,6 +215,6 @@ public class HistoryActivity extends Activity{
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-			MenuView.myLog.appendLog("HistoryActivity"+" activity "+"destroyed");
+			LogHandler.appendLog("HistoryActivity"+" activity "+"destroyed");
 	}
 }

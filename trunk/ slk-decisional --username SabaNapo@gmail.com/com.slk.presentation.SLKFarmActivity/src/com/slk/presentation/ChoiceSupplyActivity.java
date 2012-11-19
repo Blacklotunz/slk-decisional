@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.slk.R;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
+import com.slk.log.LogHandler;
 import com.slk.storage.SLKStorage;
 
 import android.os.AsyncTask;
@@ -27,9 +28,10 @@ public class ChoiceSupplyActivity extends Activity {
 	private final Context c= this;
 	private SLKApplication slk_utility = new SLKApplication(c);
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		MenuView.myLog.appendLog(this.toString()+" ChoicheSupplyActivity started");
+		LogHandler.appendLog(this.toString()+" ChoicheSupplyActivity started");
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choicesupply);
@@ -40,7 +42,7 @@ public class ChoiceSupplyActivity extends Activity {
 		Button green = (Button) findViewById(R.id.under);
 		green.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("under supply"+" button "+"cliked");
+				LogHandler.appendLog("under supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
 				pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
@@ -58,7 +60,7 @@ public class ChoiceSupplyActivity extends Activity {
 		Button yellow = (Button) findViewById(R.id.normal);
 		yellow.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("normal supply"+" button "+"cliked");
+				LogHandler.appendLog("normal supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
 					pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
@@ -76,7 +78,7 @@ public class ChoiceSupplyActivity extends Activity {
 		Button red = (Button) findViewById(R.id.over);
 		red.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("over supply"+" button "+"cliked");
+				LogHandler.appendLog("over supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
 					pd = ProgressDialog.show(c,"Loading...","Connecting...",true,false);
@@ -94,7 +96,7 @@ public class ChoiceSupplyActivity extends Activity {
 		Button history = (Button) findViewById(R.id.historyc);
 		history.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				MenuView.myLog.appendLog("history"+" button "+"cliked");
+				LogHandler.appendLog("history"+" button "+"cliked");
 				
 				Intent intent = new Intent(ChoiceSupplyActivity.this, HistoryActivity.class);
 				startActivity(intent);
@@ -104,7 +106,7 @@ public class ChoiceSupplyActivity extends Activity {
 
 	@Override
 	public void onResume(){
-		MenuView.myLog.appendLog("ChoiceSupply"+" Activity "+"resumed");
+		LogHandler.appendLog("ChoiceSupply"+" Activity "+"resumed");
 		
 		super.onResume();
 		if(SLKFarmActivity.closeFlag){
@@ -123,7 +125,7 @@ public class ChoiceSupplyActivity extends Activity {
 			 * the connection will happen only if the db will be empty.
 			 */	
 			slk_utility.setProductsFromWS();
-			MenuView.myLog.appendLog("setProductsFromWS"+" method "+"called");
+			LogHandler.appendLog("setProductsFromWS"+" method "+"called");
 			
 			Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
 			intent.setAction(""+values[0]);
@@ -138,7 +140,7 @@ public class ChoiceSupplyActivity extends Activity {
 		 @Override
 	     protected void onPostExecute(Integer result) {
 	        // chiudo la progress dialog
-			MenuView.myLog.appendLog("setProductsFromWS"+" data "+"received");
+			LogHandler.appendLog("setProductsFromWS"+" data "+"received");
 	        pd.dismiss();
 	     }
 	}
@@ -146,6 +148,6 @@ public class ChoiceSupplyActivity extends Activity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-			MenuView.myLog.appendLog("setProductsFromWS"+" activity "+"destroyed");
+			LogHandler.appendLog("setProductsFromWS"+" activity "+"destroyed");
 	}
 }

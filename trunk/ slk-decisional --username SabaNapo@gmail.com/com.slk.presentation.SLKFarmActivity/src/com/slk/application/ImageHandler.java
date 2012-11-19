@@ -14,6 +14,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -28,14 +29,16 @@ public class ImageHandler {
 	 * @param String imageName: the name of we want to give at image without extension. (set it as the product ID).
 	 * @throws IOException 
 	 */
-	public static void downloadImageFromUrl(String urll, String imgName) throws IOException{
+	
+	public static void downloadImageFromUrl(String urll, String imgName, Context c) throws IOException{
 		URL url = new URL (urll);
 		InputStream input = url.openStream();
 		try {
 			//The sdcard directory e.g. '/sdcard' can be used directly, or 
 			//more safely abstracted with getExternalStorageDirectory()
-			File storagePath = Environment.getExternalStorageDirectory();
-			Log.i("storage path", storagePath.getAbsolutePath());
+			//File storagePath = Environment.getExternalStorageDirectory();
+			
+			File storagePath = c.getDir("images", Context.MODE_PRIVATE); //Creating an internal dir;
 			OutputStream output = new FileOutputStream (new File(storagePath,imgName+".png"));
 			try {
 				byte[] buffer = new byte[8192];
@@ -54,5 +57,11 @@ public class ImageHandler {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static File loadImage(Context c, String imgName){
+		
+		File storagePath = c.getDir("images", Context.MODE_PRIVATE); //Creating an internal dir;
+		return new File(storagePath,imgName+".png");
 	}
 }

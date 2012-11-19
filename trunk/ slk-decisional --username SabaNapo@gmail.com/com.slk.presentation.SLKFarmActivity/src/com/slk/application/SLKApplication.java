@@ -22,10 +22,12 @@ import com.slk.storage.SLKStorage;
 
 public class SLKApplication {
 	SLKStorage db;
+	Context c;
 
 	public SLKApplication(Context ct){
 		//istanzia il layer storage
-		db=new SLKStorage(ct);	 
+		db=new SLKStorage(ct);
+		c = ct;
 	}
 
 	//return current year
@@ -288,7 +290,7 @@ public class SLKApplication {
 					JSONObject objj = obj.getJSONObject(obj.names().getString(0));
 					//Log.i("SLKApplication.setProdutsFromWS","id"+obj.getString("cropname")+obj.getString("cultivar_name")+" name:"+obj.getString("cropname")+" variety:"+obj.getString("cultivar_name")+" image: "+obj.getString("images")+" list:"+SLKApplication.getListOfProduct(Integer.parseInt(obj.getString("percentage_of_production")))+" supply level:"+Integer.parseInt(obj.getString("percentage_of_production"))+" max production:"+Integer.parseInt(obj.getString("max_production"))+" current production:"+Integer.parseInt(obj.getString("current_production")));
 					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct((objj.getString("croptype"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
-					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropname")+objj.getString("cultivar_name"));
+					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropname")+objj.getString("cultivar_name"), c);
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (JSONException e) {
