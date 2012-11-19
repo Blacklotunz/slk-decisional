@@ -227,7 +227,7 @@ public class CompareActivity extends Activity{
 			txt_nome_bot.setText(p.getName());
 			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			//img_bot.setImageResource(resId);
-			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, p.getId()).getAbsolutePath());
 			img_bot.setImageBitmap(bitmap);
 			
 			//txt_avg_bot.setText("Average price: "+p.getPrice());

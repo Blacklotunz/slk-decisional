@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.slk.R;
+import com.slk.application.ImageHandler;
 import com.slk.application.SLKApplication;
 import com.slk.bean.HistoryProdotto;
 import com.slk.log.LogHandler;
@@ -146,7 +147,7 @@ public class HistoryActivity extends Activity{
 			
 			//int resId = getResources().getIdentifier(p.getNome(), "drawable", getPackageName());
 			//img.setImageResource(resId);
-			Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+p.getId()+".png");
+			Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, p.getId()).getAbsolutePath());
 			img.setImageBitmap(bitmap);
 			
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));

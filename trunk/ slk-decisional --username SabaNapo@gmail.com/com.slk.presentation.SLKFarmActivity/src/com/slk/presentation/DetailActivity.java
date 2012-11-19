@@ -2,6 +2,7 @@ package com.slk.presentation;
 
 import com.slk.R;
 import com.slk.application.ColorSetter;
+import com.slk.application.ImageHandler;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
@@ -66,7 +67,7 @@ public class DetailActivity extends Activity {
 		relLay.setBackgroundResource(R.drawable.rounded_edittext);
 
 		ImageView image=(ImageView) findViewById(R.id.immagine_prodotto);
-		Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/"+prodotto_selezionato.getId()+".png");
+		Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, prodotto_selezionato.getId()).getAbsolutePath());
 		image.setImageBitmap(bitmap);
 
 

@@ -23,6 +23,8 @@ import android.util.Log;
 
 public class HttpConnector 
 {
+	public static String num, pin;
+	
 	private InputStream inputStream; 	
 	private JSONObject jsonObject;
 	private String jsonString;
@@ -82,13 +84,14 @@ public class HttpConnector
 	}
 
 
-	public ArrayList<JSONObject> fetchProducts(){
+	public ArrayList<JSONObject> fetchProducts() throws ClientProtocolException, IllegalStateException, IOException, JSONException {
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
 		//for test of httpConnector methods
 		HttpConnector http = new HttpConnector();
-		try {
-			//delete this call when test will finish
-			if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", "123456789", "1234")==200){
+			
+		//delete this call when test will finish
+			if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", num, pin)==200){
+				
 				JSONObject jsonObj = http.getJson();
 				if(jsonObj.getInt("success")==1){
 					String  secretkey = jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey");
@@ -114,15 +117,7 @@ public class HttpConnector
 			}
 			else
 				Log.e("HttpConnector.java", "error in http post request");
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+
 		return products;
 	}
 
