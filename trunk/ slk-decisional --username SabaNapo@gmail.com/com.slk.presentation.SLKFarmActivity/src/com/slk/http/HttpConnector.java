@@ -23,7 +23,7 @@ import android.util.Log;
 
 public class HttpConnector 
 {
-	public static String num, pin;
+	public static String num, pin, farmId="1";
 	
 	private InputStream inputStream; 	
 	private JSONObject jsonObject;
@@ -78,7 +78,7 @@ public class HttpConnector
 		inputStream.close();
 		reader.close();
 		jsonString = sb.toString();
-		//Log.i("HttpConnector",jsonString);
+		Log.i("HttpConnector",jsonString);
 		jsonObject = new JSONObject(jsonString);
 		return jsonObject;
 	}
@@ -96,16 +96,18 @@ public class HttpConnector
 				if(jsonObj.getInt("success")==1){
 					String  secretkey = jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey");
 					Log.i("HttpConnector.java", "secretkey = "+secretkey);
-					if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, "1")==200){
+					if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
 
 						ArrayList<String> strings = new ArrayList<String>();
 
-						JSONObject jsonObject= http.getJson().getJSONObject("cropInfo").getJSONObject("Vegetable");
+						JSONObject jsonObject= http.getJson();
+						JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");						
+						JSONObject	vegetable= cropInfo.getJSONObject("Vegetable");					
 						int i;
-						int size = jsonObject.names().length();
+						int size = vegetable.names().length();
 						for(i=0;i<size;i++){
-							strings.add((String) jsonObject.names().get(i));
-							products.add((JSONObject) jsonObject.get((String) jsonObject.names().get(i)));
+							strings.add((String) vegetable.names().get(i));
+							products.add((JSONObject) vegetable.get((String) vegetable.names().get(i)));
 						}
 						Log.i("names", strings.toString());
 						Log.i("products", products.toString());

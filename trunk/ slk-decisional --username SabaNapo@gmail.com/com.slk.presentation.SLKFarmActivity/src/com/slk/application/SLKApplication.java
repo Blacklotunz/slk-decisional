@@ -10,10 +10,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.slk.R;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.util.Log;
 
 import com.slk.bean.HistoryProdotto;
@@ -287,16 +286,12 @@ public class SLKApplication {
 		try {
 			products = http.fetchProducts();
 		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalStateException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
@@ -307,11 +302,11 @@ public class SLKApplication {
 					//Log.i("SLKApplication.setProdutsFromWS","id"+obj.getString("cropname")+obj.getString("cultivar_name")+" name:"+obj.getString("cropname")+" variety:"+obj.getString("cultivar_name")+" image: "+obj.getString("images")+" list:"+SLKApplication.getListOfProduct(Integer.parseInt(obj.getString("percentage_of_production")))+" supply level:"+Integer.parseInt(obj.getString("percentage_of_production"))+" max production:"+Integer.parseInt(obj.getString("max_production"))+" current production:"+Integer.parseInt(obj.getString("current_production")));
 					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct((objj.getString("croptype"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
 					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropname")+objj.getString("cultivar_name"), c);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException e) {					
 					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (JSONException e) {				
 					e.printStackTrace();
-				} catch (IOException e) {
+				} catch (IOException e) {					
 					e.printStackTrace();
 				}
 			}

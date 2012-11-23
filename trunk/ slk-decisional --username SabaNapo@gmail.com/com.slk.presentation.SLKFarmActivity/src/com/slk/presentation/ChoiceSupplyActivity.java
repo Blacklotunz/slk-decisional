@@ -1,10 +1,7 @@
 package com.slk.presentation;
 
-import java.util.ArrayList;
-
 import com.slk.R;
 import com.slk.application.SLKApplication;
-import com.slk.bean.Product;
 import com.slk.log.LogHandler;
 import com.slk.storage.SLKStorage;
 
@@ -14,8 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -45,7 +40,7 @@ public class ChoiceSupplyActivity extends Activity {
 				LogHandler.appendLog("under supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
-				pd = ProgressDialog.show(c,"Wait please...","Retrieving data from server...",true,false);
+				pd = ProgressDialog.show(c,getString(R.string.wait),getString(R.string.retrieving),true,false);
 				Handler h = new Handler();
 				h.execute(GREEN);
 				}
@@ -63,7 +58,7 @@ public class ChoiceSupplyActivity extends Activity {
 				LogHandler.appendLog("normal supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
-					pd = ProgressDialog.show(c,"Wait please...","Retrieving data from server...",true,false);
+					pd = ProgressDialog.show(c,getString(R.string.wait),getString(R.string.retrieving),true,false);
 					Handler h = new Handler();
 					h.execute(YELLOW);
 					}
@@ -81,7 +76,7 @@ public class ChoiceSupplyActivity extends Activity {
 				LogHandler.appendLog("over supply"+" button "+"cliked");
 				
 				if(slk_utility.getAllProducts().isEmpty()){
-					pd = ProgressDialog.show(c,"Wait please...","Retrieving data from server...",true,false);
+					pd = ProgressDialog.show(c,getString(R.string.wait),getString(R.string.retrieving),true,false);
 					Handler h = new Handler();
 					h.execute(RED);
 					}
@@ -135,7 +130,6 @@ public class ChoiceSupplyActivity extends Activity {
 		@Override
 	      protected void onProgressUpdate(Integer...values) {
 	         // aggiorno la progress dialog
-	         pd.setMessage("Connected!");
 	      }
 		 @Override
 	     protected void onPostExecute(Integer result) {

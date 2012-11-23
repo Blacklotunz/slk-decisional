@@ -2,23 +2,18 @@ package com.slk.presentation;
 
 import java.util.ArrayList;
 import java.util.Stack;
-
 import com.slk.R;
 import com.slk.application.ColorSetter;
 import com.slk.application.ImageHandler;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -208,7 +203,7 @@ public class CompareActivity extends Activity{
 			//txt_avg_top.setText("Average price: "+p.getPrice());
 			txt_q_ven_anno_prec_top.setText(getString(R.string.qLastYear)+": "+slk_utility.getLastYearQuantity(p.getId()));
 			txt_q_prev_anno_corr_top.setText(getString(R.string.yProduction)+": "+p.getCurrent_production());
-			LL_top.setVisibility(LinearLayout.VISIBLE);
+			LL_top.setVisibility(View.VISIBLE);
 			View top = findViewById(R.id.sfondo_prodotto_top);
 			//set color of  background 
 			ColorSetter.setBgColor(p,top);
@@ -233,7 +228,7 @@ public class CompareActivity extends Activity{
 			//txt_avg_bot.setText("Average price: "+p.getPrice());
 			txt_q_ven_anno_prec_bot.setText(getString(R.string.maxProduction)+": "+p.getMax_production());
 			txt_q_prev_anno_corr_bot.setText(getString(R.string.currProduction)+": "+p.getCurrent_production());
-			LL_bot.setVisibility(LinearLayout.VISIBLE);
+			LL_bot.setVisibility(View.VISIBLE);
 			View bot = findViewById(R.id.sfondo_prodotto_bot);
 			//set color of  background 
 			ColorSetter.setBgColor(p,bot);
@@ -248,7 +243,7 @@ public class CompareActivity extends Activity{
 			addListenerProdotto(bot,p);
 		}
 		if(products.size()==1){
-			LL_bot.setVisibility(LinearLayout.INVISIBLE);
+			LL_bot.setVisibility(View.INVISIBLE);
 		}
 	}
 

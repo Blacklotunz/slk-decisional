@@ -9,13 +9,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
 
 public class LogHandler{
 	private static File cacheFile;

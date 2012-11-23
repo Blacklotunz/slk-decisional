@@ -17,7 +17,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -168,7 +167,7 @@ public class HistoryActivity extends Activity{
 			LL_info.addView(txt_nome);
 
 			TextView txt_quantita_anno_corrente = new TextView(HistoryActivity.this);
-			txt_quantita_anno_corrente.setText("Planned: "+p.getQ_prodotta()+" Kg.");
+			txt_quantita_anno_corrente.setText(getString(R.string.planned)+": "+p.getQ_prodotta()+getString(R.string.kg)+".");
 			txt_quantita_anno_corrente.setGravity(Gravity.CENTER);
 			txt_quantita_anno_corrente.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
 			txt_quantita_anno_corrente.setTextColor(Color.BLACK);
@@ -182,11 +181,8 @@ public class HistoryActivity extends Activity{
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		Log.d(TAG, "onwindowsfocus ");
-
 		if(init && !history_prodotti.isEmpty())
 			setVisibleRow();
-
 		init=false;
 	}
 
@@ -199,7 +195,7 @@ public class HistoryActivity extends Activity{
 
 	private void setVisibleRow(){
 
-		n_item_visible=(int)(LL_riga.getHeight()/convertToSpInpixel(riga_dim_sp));
+		n_item_visible=LL_riga.getHeight()/convertToSpInpixel(riga_dim_sp);
 		if(n_item_visible<LL_riga.getChildCount())
 			down.setVisibility(View.VISIBLE);
 		View view;
