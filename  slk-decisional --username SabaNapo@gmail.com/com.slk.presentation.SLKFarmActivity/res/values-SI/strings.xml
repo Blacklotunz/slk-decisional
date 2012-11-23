@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_menu_view">MenuView</string>
+    <string name="title_activity_choice">ChoiceActivity</string>
+    <string name="title_activity_detail">DetailActivity</string>    
+  
+    <string name="app_name">SLK</string>
+    <string name="home">මුල් පිටුව</string>
+    <string name="back">ආපස්සට</string>
+    <string name="confronta">සසදන්න</string>
+    <string name="Search">සොයන්න</string>
+    <string name="menu_settings">පසුතලය</string>
+	<string name="under">එළවළු</string>
+    <string name="normal">පළතුරු</string>
+    <string name="over">වෙනත්</string>
+    <string name="history">ඉතිහාසය</string>
+    <string name="warning">අවවාදයයි</string>
+    <string name="yes_label">ඔව්</string>
+    <string name="no_label">නැත</string>
+    <string name="maxProduction">උපරිම නිෂ්පාදනය</string>
+    <string name="currProduction">වර්තමාන නිෂ්පාදනය</string>
+    <string name="yProduction">ඔබගේ අනා දැක්ම</string>
+    <string name="lastProduction">පසුගිය වර්ෂයේ නිෂ්පාදනය</string>
+    <string name="qLastYear">පසුගිය වර්ෂයේ විකිනුණු ප්‍රමාණය</string>
+    
+    <string name="wait"> Wait please#8230</string>
+    <string name="retrieving">Retrieving data from server#8230</string>
+    <string name="current">Current year production planned</string>
+    <string name="grow">You have selected to grow</string>
+    <string name="kg">Kg</string>
+    <string name="sure">Are you sure?</string>
+    <string name="planned">Planned</string>
+    <string name="no_products">No products selected. You must select at least one product.</string>
+    <string name="select">Select</string>
+
+</resources>

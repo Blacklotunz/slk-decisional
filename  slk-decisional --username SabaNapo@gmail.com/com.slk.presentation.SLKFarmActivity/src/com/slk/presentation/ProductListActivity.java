@@ -184,14 +184,14 @@ public class ProductListActivity extends Activity{
 			txt_nome.setText(p.getName());
 			txt_nome.setGravity(Gravity.CENTER);
 			txt_nome.setTextAppearance(getApplicationContext(), R.style.ButtonTextMedium);
-			txt_nome.setTextColor(getResources().getColor(R.color.Black));
+			txt_nome.setTextColor(Color.BLACK);
 			LL_info.addView(txt_nome);
 
 			TextView txt_price = new TextView(ProductListActivity.this);
 			txt_price.setText("Variety: "+p.getVariety());
 			txt_price.setGravity(Gravity.CENTER);
 			txt_price.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
-			txt_price.setTextColor(getResources().getColor(R.color.Black));
+			txt_price.setTextColor(Color.BLACK);
 			LL_info.addView(txt_price);
 			
 			//if background color is a dark red set textColor to white
@@ -232,7 +232,7 @@ public class ProductListActivity extends Activity{
 					//change the text and the listener of button compare when the number of products change.
 					//if there's no product selected
 					if(SLKFarmActivity.prodotti_selezionati.size()==0){
-						SLKFarmActivity.confrontaButton.setText("Compare");
+						SLKFarmActivity.confrontaButton.setText(getString(R.string.confronta));
 						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 							public void onClick(View v) {
 								LogHandler.appendLog("compare"+" button "+"clicked");
@@ -242,7 +242,7 @@ public class ProductListActivity extends Activity{
 								ImageView image = (ImageView) layout.findViewById(R.id.image);
 								image.setImageResource(R.drawable.warning);
 								TextView text = (TextView) layout.findViewById(R.id.text);
-								text.setText("No products selected! You must select at least one product!");
+								text.setText(R.string.no_products);
 								text.setGravity(Gravity.CENTER_VERTICAL);
 								Toast toast = new Toast(getApplicationContext());
 								toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -255,7 +255,7 @@ public class ProductListActivity extends Activity{
 	
 						//if just ONE products is selected the function is show the details of products.
 						if(SLKFarmActivity.prodotti_selezionati.size()==1){
-							SLKFarmActivity.confrontaButton.setText("Select");
+							SLKFarmActivity.confrontaButton.setText(getString(R.string.select));
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
 									//	myLog.appendLog("select product"+" button "+"clicked");
@@ -270,7 +270,7 @@ public class ProductListActivity extends Activity{
 						}
 
 						else{
-							SLKFarmActivity.confrontaButton.setText("Compare");
+							SLKFarmActivity.confrontaButton.setText(getString(R.string.confronta));
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
 									LogHandler.appendLog("compare"+" button "+"clicked");

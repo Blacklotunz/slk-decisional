@@ -16,15 +16,15 @@
         android:background="@color/White"
         android:orientation="vertical"
         android:padding="5sp" >
-
+
         <RelativeLayout
             android:id="@+id/border"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dip"
             android:layout_weight="1"
             android:background="@drawable/rounded_edittext"
             android:padding="3sp" >
-
+
             <RelativeLayout
                 android:id="@+id/prodotto"
                 android:layout_width="fill_parent"
@@ -34,8 +34,7 @@
                 <ImageView
                     android:id="@+id/immagine_prodotto"
                     android:layout_width="50sp"
-                    android:layout_height="50sp" />
-
+                    android:layout_height="50sp" />
                 <TextView
                     android:id="@+id/nome"
                     style="@style/TextMedium"
@@ -84,20 +83,19 @@
                     android:layout_marginTop="18dp"
                     android:shadowColor="@color/White"
                     android:textColor="@color/Black"
-                    android:textSize="14px" />
+                    android:textSize="14dp" />
 
             </RelativeLayout>
 
         </RelativeLayout>
-
+
         <Button
             android:id="@+id/set_quantity"
             style="@style/ButtonTextMedium"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/blackbuttons"
-            android:text="> Select quantity to grow &lt;" />
-
+            android:text="@string/togrow" />
         <TextView
             android:id="@+id/prevision"
             style="@style/ButtonTextSmall"
@@ -109,7 +107,7 @@
             android:text="Your last selection was:"
             android:textColor="@color/Black"
             android:textSize="16px" />
-
+
         <TextView
             android:id="@+id/last"
             style="@style/ButtonTextMedium"
@@ -124,8 +122,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0" >
-
+        android:layout_weight="0" >
         <Button
             android:id="@+id/historyd"
             style="@style/ButtonTextMedium"
@@ -135,7 +132,7 @@
             android:background="@drawable/blackbuttons"
             android:text="@string/history"
             android:textColor="@color/White" />
-
+       
         <Button
             android:id="@+id/Conferma"
             style="@style/ButtonTextMedium"
@@ -143,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.01"
             android:background="@drawable/blackbuttons"
-            android:text="OK" />
+            android:text="@string/ok" />
 
     </LinearLayout>
 

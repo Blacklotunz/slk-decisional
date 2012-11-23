@@ -262,7 +262,7 @@ public class DetailActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// Impostiamo il titolo, il messaggio ed una icona in chaining
 		builder.setTitle(getString(R.string.warning));
-		builder.setMessage("You have selected to grow "+actualPrevisione+"Kg. Are you sure?");
+		builder.setMessage(getString(R.string.grow)+": "+actualPrevisione+" "+getString(R.string.kg)+". "+getString(R.string.sure));
 
 		// Impostiamo il pulsante di Yes con il relativo listener
 		builder.setPositiveButton(R.string.yes_label,
@@ -281,7 +281,7 @@ public class DetailActivity extends Activity {
 				SLKFarmActivity.closeFlag=true;
 				SLKFarmActivity.prodotti_selezionati.clear();
 				TextView prevision = (TextView) findViewById(R.id.prevision);
-				prevision.setText("Current Year Production Planned: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
+				prevision.setText(getString(R.string.current)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 			}
 
 		});

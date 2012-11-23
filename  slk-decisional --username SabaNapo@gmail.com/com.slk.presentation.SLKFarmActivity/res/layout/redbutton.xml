@@ -3,7 +3,7 @@
     style="@style/ButtonTextSmall"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
-    android:background="@drawable/redbuttons"
+    android:background="@drawable/greybuttons"
     android:text="@string/over" >
 
 </Button>

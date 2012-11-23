@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/history"
+        android:id="@+id/choicesupply"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/White" >
@@ -15,9 +15,11 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/yellowbuttons"
+            android:background="@drawable/greybuttons"
             android:text="@string/normal"
-            android:textAppearance="@style/ButtonTextMedium" />
+            android:textAppearance="@style/ButtonTextMedium"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/under"
@@ -29,9 +31,11 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/greenbuttons"
+            android:background="@drawable/greybuttons"
             android:text="@string/under"
-            android:textAppearance="@style/ButtonTextMedium" />
+            android:textAppearance="@style/ButtonTextMedium"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/over"
@@ -43,19 +47,11 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/redbuttons"
+            android:background="@drawable/greybuttons"
             android:text="@string/over"
-            android:textAppearance="@style/ButtonTextMedium" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/under"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:text="CHOOSE PRODUCTION LEVEL"
-            android:textAppearance="@style/TextMedium" />
+            android:textAppearance="@style/ButtonTextMedium"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/historyc"
@@ -67,6 +63,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:text="@string/history" />
+            android:background="@drawable/greybuttons"
+            android:text="@string/history"
+            android:textColor="@color/White" />
 
     </RelativeLayout>

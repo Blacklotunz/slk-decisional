@@ -6,7 +6,6 @@ import com.slk.R;
 import com.slk.bean.Product;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
