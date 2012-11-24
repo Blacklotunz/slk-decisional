@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/White"
     android:gravity="center" >
-
+
     <TextView
         android:id="@+id/textView1"
         style="@style/TextMedium"
@@ -13,7 +13,7 @@
         android:layout_below="@+id/controlli"
         android:background="@color/White"
         android:gravity="center"
-        android:text="CLICK ON A PRODUCT TO SELECT"
+        android:text="@string/ptoselect"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/Black"
         android:textSize="16dp" />

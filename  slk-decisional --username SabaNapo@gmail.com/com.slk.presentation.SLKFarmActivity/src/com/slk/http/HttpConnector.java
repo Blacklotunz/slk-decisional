@@ -23,8 +23,8 @@ import android.util.Log;
 
 public class HttpConnector 
 {
-	public static String num, pin, farmId="1";
-	
+	public static String num, pin, farmId="2";
+
 	private InputStream inputStream; 	
 	private JSONObject jsonObject;
 	private String jsonString;
@@ -83,42 +83,66 @@ public class HttpConnector
 		return jsonObject;
 	}
 
+	public ArrayList<String> getFarms() throws ClientProtocolException, IllegalStateException, IOException, JSONException{
+		ArrayList<String>farms = new ArrayList<String>();
+
+		HttpConnector http = new HttpConnector();
+
+		//delete this call when test will finish
+		if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", num, pin)==200){
+
+			JSONObject jsonObj = http.getJson();
+			if(jsonObj.getInt("success")==1){
+				JSONObject farmss = jsonObj.getJSONObject("user").getJSONObject("farm");
+				int size = farmss.names().length();
+				
+				for(int i=0;i<size;i++){
+					farms.add((String)farmss.names().get(i));
+				}
+				Log.i("farms", farms.toString());
+			}
+			else{
+				Log.e("HttpConnector.java", "not successfull operation");
+			}
+		}
+		return farms;
+	}
 
 	public ArrayList<JSONObject> fetchProducts() throws ClientProtocolException, IllegalStateException, IOException, JSONException {
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
 		//for test of httpConnector methods
 		HttpConnector http = new HttpConnector();
-			
+
 		//delete this call when test will finish
-			if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", num, pin)==200){
-				
-				JSONObject jsonObj = http.getJson();
-				if(jsonObj.getInt("success")==1){
-					String  secretkey = jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey");
-					Log.i("HttpConnector.java", "secretkey = "+secretkey);
-					if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
+		if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", num, pin)==200){
 
-						ArrayList<String> strings = new ArrayList<String>();
+			JSONObject jsonObj = http.getJson();
+			if(jsonObj.getInt("success")==1){
+				String  secretkey = jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey");
+				Log.i("HttpConnector.java", "secretkey = "+secretkey);
+				if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
 
-						JSONObject jsonObject= http.getJson();
-						JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");						
-						JSONObject	vegetable= cropInfo.getJSONObject("Vegetable");					
-						int i;
-						int size = vegetable.names().length();
-						for(i=0;i<size;i++){
-							strings.add((String) vegetable.names().get(i));
-							products.add((JSONObject) vegetable.get((String) vegetable.names().get(i)));
-						}
-						Log.i("names", strings.toString());
-						Log.i("products", products.toString());
+					ArrayList<String> strings = new ArrayList<String>();
 
-					}else
-						Log.e("HttpConnector.java", "not successfull operation");
+					JSONObject jsonObject= http.getJson();
+					JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");						
+					JSONObject vegetable= cropInfo.getJSONObject("Vegetable");					
+					int i;
+					int size = vegetable.names().length();
+					for(i=0;i<size;i++){
+						strings.add((String) vegetable.names().get(i));
+						products.add((JSONObject) vegetable.get((String) vegetable.names().get(i)));
+					}
+					Log.i("names", strings.toString());
+					Log.i("products", products.toString());
+
 				}else
 					Log.e("HttpConnector.java", "not successfull operation");
-			}
-			else
-				Log.e("HttpConnector.java", "error in http post request");
+			}else
+				Log.e("HttpConnector.java", "not successfull operation");
+		}
+		else
+			Log.e("HttpConnector.java", "error in http post request");
 
 		return products;
 	}
