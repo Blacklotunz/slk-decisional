@@ -96,5 +96,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="phone">Insert phone number</string>
+    <string name="ptoselect">CLICK ON A PRODUCT TO SELECT</string>
 
 </resources>

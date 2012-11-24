@@ -44,14 +44,14 @@ public class ProductListActivity extends Activity{
 	protected int n_item_visible=4;
 	private static final int riga_dim_sp=50;
 
-	
+
 
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		LogHandler.appendLog("ProductListActivity"+" activty "+"created");
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista);
 		slk_utility = new SLKApplication(getApplicationContext());
@@ -81,7 +81,7 @@ public class ProductListActivity extends Activity{
 		down.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				LogHandler.appendLog("down"+" button "+"clicked");
-				
+
 				up.setVisibility(View.VISIBLE);
 				View view;
 				if(!invisible_down.isEmpty())
@@ -101,7 +101,7 @@ public class ProductListActivity extends Activity{
 		up.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				LogHandler.appendLog("down"+" button "+"clicked");
-				
+
 				down.setVisibility(View.VISIBLE);
 				if(!invisible_up.isEmpty())
 				{		
@@ -165,7 +165,7 @@ public class ProductListActivity extends Activity{
 			//img.setImageResource(resId);
 			Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, p.getId()).getAbsolutePath());
 			img.setImageBitmap(bitmap);
-			
+
 			img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 			LL_img.addView(img);
 			LL.addView(LL_img);
@@ -193,13 +193,13 @@ public class ProductListActivity extends Activity{
 			txt_price.setTextAppearance(getApplicationContext(), R.style.ButtonTextSmall);
 			txt_price.setTextColor(Color.BLACK);
 			LL_info.addView(txt_price);
-			
+
 			//if background color is a dark red set textColor to white
 			if(ColorSetter.getColours(p.getProductionLevel(), p.getLista())==-10417397){
 				txt_nome.setTextColor(Color.WHITE);
 				txt_price.setTextColor(Color.WHITE);
 			}
-			
+
 
 			LL.addView(LL_info);
 
@@ -211,20 +211,21 @@ public class ProductListActivity extends Activity{
 			LL_flag.setBackgroundColor(p.getColor());
 
 			//checkbox listener
-			CheckBox cb = new CheckBox(ProductListActivity.this);
+			final CheckBox cb = new CheckBox(ProductListActivity.this);
+			/*
 			cb.setOnClickListener(new OnClickListener() 
 			{
 				public void onClick(View v) {
 					if(((CheckBox) v).isChecked()) {
 						LogHandler.appendLog(p.getId()+" checkbox "+"selected");
-						
+
 						SLKFarmActivity.prodotti_selezionati.add(p);
 					} 
 					else{
 						for(int j=0; j<SLKFarmActivity.prodotti_selezionati.size(); j++){
 							if(SLKFarmActivity.prodotti_selezionati.get(j).getName()==p.getName()){
 								//	myLog.appendLog(p.getId()+" checkbox "+"deselected");
-								
+
 								SLKFarmActivity.prodotti_selezionati.remove(j);
 							}
 						}
@@ -236,7 +237,7 @@ public class ProductListActivity extends Activity{
 						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 							public void onClick(View v) {
 								LogHandler.appendLog("compare"+" button "+"clicked");
-								
+
 								LayoutInflater inflater = getLayoutInflater();
 								View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
 								ImageView image = (ImageView) layout.findViewById(R.id.image);
@@ -252,14 +253,14 @@ public class ProductListActivity extends Activity{
 							}
 						});
 					}
-	
+
 						//if just ONE products is selected the function is show the details of products.
 						if(SLKFarmActivity.prodotti_selezionati.size()==1){
 							SLKFarmActivity.confrontaButton.setText(getString(R.string.select));
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
-									//	myLog.appendLog("select product"+" button "+"clicked");
-									
+									//myLog.appendLog("select product"+" button "+"clicked");
+
 									if(SLKFarmActivity.prodotti_selezionati.size()>0){
 										Intent intent = new Intent(ProductListActivity.this,DetailActivity.class);
 										intent.putExtra("prodotto",SLKFarmActivity.prodotti_selezionati.get(0));
@@ -274,7 +275,7 @@ public class ProductListActivity extends Activity{
 							SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 								public void onClick(View v) {
 									LogHandler.appendLog("compare"+" button "+"clicked");
-									
+
 									if(SLKFarmActivity.prodotti_selezionati.size()>0){
 										Intent intent = new Intent(ProductListActivity.this,CompareActivity.class);
 										intent.putParcelableArrayListExtra("prodotti_selezionati",SLKFarmActivity.prodotti_selezionati);
@@ -286,44 +287,107 @@ public class ProductListActivity extends Activity{
 					}
 				});
 
-						LL_flag.addView(cb);
-						LL.addView(LL_flag);
-						LL_riga.addView(LL,0);
+			 */
 
-						//Listner of a single ROW
-						LL.setOnClickListener(new OnClickListener() {
+			LL_flag.addView(cb);
+			LL.addView(LL_flag);
+			LL_riga.addView(LL,0);
 
+			//Listner of a single ROW
+			LL.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					if(cb.isChecked())
+						cb.setChecked(false);
+					else
+						cb.setChecked(true);
+					
+					if(cb.isChecked()) {
+						LogHandler.appendLog(p.getId()+" product button "+"selected");
+						SLKFarmActivity.prodotti_selezionati.add(p);
+					}
+					else{
+						for(int j=0; j<SLKFarmActivity.prodotti_selezionati.size(); j++){
+							if(SLKFarmActivity.prodotti_selezionati.get(j).getName()==p.getName()){
+								SLKFarmActivity.prodotti_selezionati.remove(j);
+							}
+						}
+					}
+					//change the text and the listener of button compare when the number of products change.
+					//if there's no product selected
+					if(SLKFarmActivity.prodotti_selezionati.size()==0){
+						SLKFarmActivity.confrontaButton.setText(getString(R.string.confronta));		
+						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 							public void onClick(View v) {
-								LogHandler.appendLog(p.getId()+" product button "+"clicked");
-								
-								Intent intent=new Intent(ProductListActivity.this,DetailActivity.class);
-								intent.putExtra("prodotto", p);
-								startActivity(intent);
-								//finish();
+								LogHandler.appendLog("compare"+" button "+"clicked");
+
+								LayoutInflater inflater = getLayoutInflater();
+								View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
+								ImageView image = (ImageView) layout.findViewById(R.id.image);
+								image.setImageResource(R.drawable.warning);
+								TextView text = (TextView) layout.findViewById(R.id.text);
+								text.setText(R.string.no_products);
+								text.setGravity(Gravity.CENTER_VERTICAL);
+								Toast toast = new Toast(getApplicationContext());
+								toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+								toast.setDuration(Toast.LENGTH_LONG);
+								toast.setView(layout);
+								toast.show();
 							}
 						});
-			}
+					}
+
+					//if just ONE products is selected the function is show the details of products.
+					if(SLKFarmActivity.prodotti_selezionati.size()==1){
+						SLKFarmActivity.confrontaButton.setText(getString(R.string.select));
+						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+							public void onClick(View v) {
+								LogHandler.appendLog("select"+" button "+"clicked");
+								if(SLKFarmActivity.prodotti_selezionati.size()>0){
+									Intent intent = new Intent(ProductListActivity.this,DetailActivity.class);
+									intent.putExtra("prodotto",SLKFarmActivity.prodotti_selezionati.get(0));
+									startActivity(intent);
+								}
+							}
+						});
+					}
+
+					else{
+						SLKFarmActivity.confrontaButton.setText(getString(R.string.confronta));
+						SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+							public void onClick(View v) {
+								LogHandler.appendLog("compare"+" button "+"clicked");
+								if(SLKFarmActivity.prodotti_selezionati.size()>0){
+									Intent intent = new Intent(ProductListActivity.this,CompareActivity.class);
+									intent.putParcelableArrayListExtra("prodotti_selezionati",SLKFarmActivity.prodotti_selezionati);
+									startActivity(intent);
+								}
+							}
+						});
+					}
+				}
+			});
 		}
-
-		private void setVisibleRow(){
-
-			if(n_item_visible<LL_riga.getChildCount())
-				down.setVisibility(View.VISIBLE);
-			View view;
-			invisible_up=new Stack<View>();
-			invisible_down=new Stack<View>();
-			while(n_item_visible<LL_riga.getChildCount())
-			{
-				view=LL_riga.getChildAt(n_item_visible);
-				invisible_down.push(view);
-				LL_riga.removeView(view);  
-			}
-		}
-
-		@Override
-		public void onDestroy(){
-			super.onDestroy();
-			LogHandler.appendLog("ProductListActivity"+" activity "+"destroyed");
-		}
-
 	}
+
+	private void setVisibleRow(){
+
+		if(n_item_visible<LL_riga.getChildCount())
+			down.setVisibility(View.VISIBLE);
+		View view;
+		invisible_up=new Stack<View>();
+		invisible_down=new Stack<View>();
+		while(n_item_visible<LL_riga.getChildCount())
+		{
+			view=LL_riga.getChildAt(n_item_visible);
+			invisible_down.push(view);
+			LL_riga.removeView(view);  
+		}
+	}
+
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		LogHandler.appendLog("ProductListActivity"+" activity "+"destroyed");
+	}
+
+}
