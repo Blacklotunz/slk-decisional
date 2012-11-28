@@ -43,9 +43,9 @@ public class MenuActivity extends Activity {
 		
 		
 		/*To remove when relished*/
-		this.insertFarmId();
-		this.insertPin();
-		this.insertPhone();
+		//this.insertFarmId();
+		//this.insertPin();
+		//this.insertPhone();
 		/**/
 		
 		Button planning = (Button) findViewById(R.id.cropPlanning);

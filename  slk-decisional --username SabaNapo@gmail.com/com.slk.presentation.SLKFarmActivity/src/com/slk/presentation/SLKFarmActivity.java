@@ -4,14 +4,19 @@ package com.slk.presentation;
 
 import java.util.ArrayList;
 import com.slk.R;
+import com.slk.application.DialogBuilder;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
+
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,46 +32,51 @@ public class SLKFarmActivity extends TabActivity {
 
 	protected static ArrayList<Product> prodotti_selezionati;
 	protected static Button confrontaButton;
-	protected static boolean closeFlag = false;
 	static final private int GREEN = 1;
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
 	Bundle savedInstanceState;
 	private SLKApplication slk_utility;
 	ArrayList<Product> prodotti;
+	Context context;
 
 
 	/** Called when the activity is first created. */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		LogHandler.appendLog("SLKFarmActivity"+" activity "+"created");
-		
-		prodotti_selezionati = new ArrayList<Product>();
-		SLKFarmActivity.closeFlag=false;
-		this.savedInstanceState = savedInstanceState;
 		super.onCreate(savedInstanceState);
+
+		ChoiceSupplyActivity.closeFlag=false;
+
+		context = this;
+		prodotti_selezionati = new ArrayList<Product>();
+
+		this.savedInstanceState = savedInstanceState;
+
 		setContentView(R.layout.decidinglist);
 
 		//SLKStorage db = new SLKStorage(getApplicationContext());
 		//db.clear();
-		
-		
+
+
 		slk_utility = new SLKApplication(getApplicationContext());
 		prodotti = slk_utility.getAllProducts();	
 		if(prodotti.isEmpty()){
 			slk_utility.setProducts();
 			prodotti = slk_utility.getAllProducts();
 		}
-		
+
 
 		TabHost tabHost = getTabHost();
-		Intent gIntent = new Intent (this, ProductListActivity.class);
+		Intent gIntent = new Intent (this, ProductListActivity2.class);
 		gIntent.setAction(""+GREEN);
 		tabHost.addTab(tabHost.newTabSpec("GREEN").setContent(gIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.greenbutton, null)));
-		Intent yIntent = new Intent (this, ProductListActivity.class);
+		Intent yIntent = new Intent (this, ProductListActivity2.class);
 		yIntent.setAction(""+YELLOW);
 		tabHost.addTab(tabHost.newTabSpec("YELLOW").setContent(yIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.yellowbutton, null)));
-		Intent rIntent = new Intent (this, ProductListActivity.class);
+		Intent rIntent = new Intent (this, ProductListActivity2.class);
 		rIntent.setAction(""+RED);
 		tabHost.addTab(tabHost.newTabSpec("RED").setContent(rIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.redbutton, null)));
 
@@ -86,47 +96,36 @@ public class SLKFarmActivity extends TabActivity {
 		Button ricerca = (Button) findViewById(R.id.bottone_ricerca);
 		ricerca.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//		myLog.appendLog("search"+" button "+"clicked");
+				LogHandler.appendLog("search"+" button "+"clicked");
 				createTextSearchDialog();
 			}
 		});
-
-
 		confrontaButton = (Button) findViewById(R.id.confronta);
 		confrontaButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//	myLog.appendLog("compare"+" button "+"clicked");
-				
+				LogHandler.appendLog("compare"+" button "+"clicked");
+
 				if(prodotti_selezionati.size()>0){
 					Intent intent = new Intent(SLKFarmActivity.this,CompareActivity.class);
-					intent.putParcelableArrayListExtra("prodotti_selezionati",prodotti_selezionati);
 					startActivity(intent);
 				}
 				else if(prodotti_selezionati.isEmpty()){
-					LayoutInflater inflater = getLayoutInflater();
-					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
-					ImageView image = (ImageView) layout.findViewById(R.id.image);
-					image.setImageResource(R.drawable.warning);
-					TextView text = (TextView) layout.findViewById(R.id.text);
-					text.setText("No products selected! You must select at least one product!");
-					text.setGravity(Gravity.CENTER_VERTICAL);
-					Toast toast = new Toast(getApplicationContext());
-					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(layout);
-					toast.show();
+					LogHandler.appendLog("compare"+" button "+"clicked");
+					DialogBuilder dialogBuilder= new DialogBuilder(context);
+					dialogBuilder.createToast(R.string.no_products, "", (Activity)context).show();
 				}
 			}
 		});
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onResume(){
 		super.onResume();
 		LogHandler.appendLog("SLKFarmActivity"+" activity "+"resumed");
-		
-		if(closeFlag)
-			finish();
+		if(ChoiceSupplyActivity.closeFlag){
+			this.finish();
+		}
 	}
 
 
@@ -134,46 +133,56 @@ public class SLKFarmActivity extends TabActivity {
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		alert.setTitle("Type Crop To Search");
-		alert.setMessage("e.g., banana");
+		alert.setTitle(getString(R.string.hint3));
+		alert.setMessage(getString(R.string.hint4));
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(this);
 		alert.setView(input);
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		alert.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+			//search algorithm	
 			public void onClick(DialogInterface dialog, int whichButton) {
-				//	myLog.appendLog("ok"+" button "+"clicked");
-				
+
 				boolean flag=false;
 				String value = input.getText().toString();
-				value = value.toLowerCase();
-				for(int i=0; i<prodotti.size(); i++){
-					if(prodotti.get(i).getName().toLowerCase().equals(value)){
-						flag = true;
+				if(!value.contains(" ")){
+					Log.i("value-->",value);
+					for(int i=0; i<prodotti.size(); i++){
 						Product p = prodotti.get(i);
-						Intent intent = new Intent(SLKFarmActivity.this, DetailActivity.class);
-						intent.putExtra("prodotto", p);
-						startActivity(intent);
-						finish();
+						Log.i("prodott["+i+"]-->",p.getName());
+						if(p.getName().equalsIgnoreCase(value)){
+							flag = true;
+							SLKFarmActivity.prodotti_selezionati.add(p);
+						}
+					}
+				}
+				else{	
+					value = value.replaceAll(" ","");
+					Log.i("value-->",value);
+					for(int i=0; i<prodotti.size(); i++){
+						Product p = prodotti.get(i);
+						String idProductNoSpace = p.getId().replaceAll(" ", ""); 
+						Log.i("prodott["+i+"]-->",idProductNoSpace);
+						if(idProductNoSpace.equalsIgnoreCase(value)){
+							flag = true;
+							SLKFarmActivity.prodotti_selezionati.add(p);
+						}
 					}
 				}
 				if(flag==false){
-					LayoutInflater inflater = getLayoutInflater();
-					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
-					ImageView image = (ImageView) layout.findViewById(R.id.image);
-					image.setImageResource(R.drawable.warning);
-					TextView text = (TextView) layout.findViewById(R.id.text);
-					text.setText("Product not found!");
-					text.setGravity(Gravity.CENTER_VERTICAL);
-					Toast toast = new Toast(getApplicationContext());
-					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(layout);
-					toast.show();
+					DialogBuilder dialogBuilder = new DialogBuilder(context);
+					dialogBuilder.createToast(R.string.productNotFound, "", (Activity)context).show();
+				}
+				else{
+					Intent intent = new Intent(SLKFarmActivity.this, CompareActivity.class);
+					intent.putExtra("clear", false);
+					startActivity(intent);
 				}
 			}
 		});
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		//end of search algorithm
+
+		alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				//	myLog.appendLog("cancel"+" button "+"clicked");
 			}
@@ -181,25 +190,12 @@ public class SLKFarmActivity extends TabActivity {
 		alert.show();
 	}
 
-	
+
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
 		LogHandler.appendLog("SLKFarmActivity"+" activity "+"destroyed");
 	}
-	
-	/* method for don't give permission to use back button
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
-	}*/
 
-	/* method to use for show an advise before exit
-	@Override
-	public void onBackPressed() {
-		Log.i("SLKFARMACTIVITY","back pressed!");
-		finish();
-	}*/
 }
