@@ -23,7 +23,7 @@ import android.util.Log;
 
 public class HttpConnector 
 {
-	public static String num, pin, farmId="2";
+	public static String num, pin, farmId;
 
 	private InputStream inputStream; 	
 	private JSONObject jsonObject;
@@ -37,6 +37,16 @@ public class HttpConnector
 	public HttpConnector()
 	{
 		client = new DefaultHttpClient();
+	}
+
+
+	public int connect(String URL, List<NameValuePair> variables) throws ClientProtocolException, IOException
+	{
+		post = new HttpPost(URL);
+		if (variables != null) 
+			post.setEntity(new UrlEncodedFormEntity(variables));
+		response = client.execute(post);
+		return response.getStatusLine().getStatusCode();
 	}
 
 	public int login(String URL, String phoneNumber, String pin) throws ClientProtocolException, IOException
@@ -55,7 +65,7 @@ public class HttpConnector
 	{
 		post = new HttpPost(URL);
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-		nameValuePairs.add(new BasicNameValuePair("tag","getcrops"));
+		nameValuePairs.add(new BasicNameValuePair("tag","getcropstest"));
 		nameValuePairs.add(new BasicNameValuePair("secretkey",secretkey));
 		nameValuePairs.add(new BasicNameValuePair("farmid",farmid));
 		post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -95,7 +105,7 @@ public class HttpConnector
 			if(jsonObj.getInt("success")==1){
 				JSONObject farmss = jsonObj.getJSONObject("user").getJSONObject("farm");
 				int size = farmss.names().length();
-				
+
 				for(int i=0;i<size;i++){
 					farms.add((String)farmss.names().get(i));
 				}
@@ -108,6 +118,7 @@ public class HttpConnector
 		return farms;
 	}
 
+	//fetch only vegetables for now
 	public ArrayList<JSONObject> fetchProducts() throws ClientProtocolException, IllegalStateException, IOException, JSONException {
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
 		//for test of httpConnector methods
@@ -121,30 +132,78 @@ public class HttpConnector
 				String  secretkey = jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey");
 				Log.i("HttpConnector.java", "secretkey = "+secretkey);
 				if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
-
-					ArrayList<String> strings = new ArrayList<String>();
-
 					JSONObject jsonObject= http.getJson();
-					JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");						
-					JSONObject vegetable= cropInfo.getJSONObject("Vegetable");					
-					int i;
-					int size = vegetable.names().length();
-					for(i=0;i<size;i++){
-						strings.add((String) vegetable.names().get(i));
-						products.add((JSONObject) vegetable.get((String) vegetable.names().get(i)));
-					}
-					Log.i("names", strings.toString());
-					Log.i("products", products.toString());
-
-				}else
-					Log.e("HttpConnector.java", "not successfull operation");
+					//products = getProductListFromJSON(jsonObject);
+					products = getProductListFromJSONTEST(jsonObject);
+				}
 			}else
 				Log.e("HttpConnector.java", "not successfull operation");
-		}
-		else
-			Log.e("HttpConnector.java", "error in http post request");
+		}else
+			Log.e("HttpConnector.java", "not successfull operation");
 
 		return products;
+	}
+
+	private ArrayList<JSONObject> getProductListFromJSON(JSONObject jsonObject){
+		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
+		try {
+			JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");
+			JSONObject vegetable= cropInfo.getJSONObject("Vegetable");					
+			int i,j;
+			int size = vegetable.names().length();
+			for(i=0;i<size;i++){
+				//get the legth of each vegetable
+				Log.i("variety", "i="+i+" variety="+(String)vegetable.names().get(i));
+				JSONObject variety = vegetable.getJSONObject((String)vegetable.names().get(i));
+				int k = variety.names().length();
+				//get each vegetable
+				for(j=0;j<k;j++){
+					products.add(variety.getJSONObject((String)variety.names().get(j)));
+					Log.i("product",""+variety.getJSONObject((String)variety.names().get(j)));
+				}
+			}
+			Log.i("products", products.toString());
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}						
+
+		return products;
+	}
+
+	//method to get products from test JSONObject
+	private ArrayList<JSONObject> getProductListFromJSONTEST(JSONObject jsonObject){
+		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
+		try {
+			JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");
+			JSONObject vegetable= cropInfo.getJSONObject("Vegetable");				
+			int i,j;
+			int size = (vegetable.names().length());
+			Log.i("names", ""+vegetable.names());
+			for(i=0;i<size;i++){
+				//get the length of each vegetable
+				if(!((String)vegetable.names().get(i)).equalsIgnoreCase("label")){
+					JSONObject variety = vegetable.getJSONObject((String)vegetable.names().get(i));
+					JSONObject cultivar = variety.getJSONObject("cultivar");
+					int k = cultivar.names().length();
+					Log.i("cultivar names", ""+cultivar.names());
+					//get each vegetable
+					for(j=0;j<k;j++){
+						products.add(cultivar.getJSONObject((String)cultivar.names().get(j)));
+						Log.i("product",""+cultivar.getJSONObject((String)cultivar.names().get(j)));
+					}
+				}
+			}
+			Log.i("products", products.toString());
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}						
+
+		return products;
+
 	}
 
 }

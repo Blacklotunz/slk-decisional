@@ -45,12 +45,15 @@ public class SLKStorage {
 	 * q_venduta_anno_prec e' la quantita di prodotto venduta l'anno precedente
 	 * q_prev_anno_corr e' la quantita preventivata fino ad ora
 	 * */
-	public void insertProduct(String id, String name, String variety,double price,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){ //metodo per inserire i dati
+	public void insertProduct(String id, String name, String variety,double price,String color, String weight,String size,String img,int lista,double supp,double q_venduta_anno_prec,double q_prev_anno_corr){ //metodo per inserire i dati
 		ContentValues cv=new ContentValues();
 		cv.put(ProductsMetaData.PRODUCT_ID, id);
 		cv.put(ProductsMetaData.PRODUCT_NAME, name);
 		cv.put(ProductsMetaData.PRODUCT_VARIETY, variety);
 		cv.put(ProductsMetaData.PRODUCT_PRICE, price);
+		cv.put(ProductsMetaData.PRODUCT_COLOR, color);
+		cv.put(ProductsMetaData.PRODUCT_WEIGHT, weight);
+		cv.put(ProductsMetaData.PRODUCT_SIZE, size);
 		cv.put(ProductsMetaData.PRODUCT_IMG, img);
 		cv.put(ProductsMetaData.PRODUCT_LISTA, lista);
 		cv.put(ProductsMetaData.PRODUCT_PRODUCTION_LEVEL, supp);
@@ -132,27 +135,27 @@ public class SLKStorage {
 	/*Metodo che restituisce tutti gli elementi 
 	 *contenuti nella tabella products*/
 	public Cursor fetchProducts(){
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,null,null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,null,null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" ASC",null);               
 	}
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria sottoproduzione(verdi)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchGreenProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==1",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==1",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" ASC",null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria mediaproduzione(gialli)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchYellowProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==2",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==2",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" ASC",null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla categoria sovrapproduzione(rossi)
 	 *ordinati in base al prezzo*/	
 	public Cursor fetchRedProducts(){ 
-		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" DESC",null);               
+		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" ASC",null);               
 	}
 
 	// i metadati della tabella products, accessibili ovunque
@@ -162,6 +165,9 @@ public class SLKStorage {
 		static public final String PRODUCT_NAME = "name";
 		static public final String PRODUCT_VARIETY = "variety";
 		static public final String PRODUCT_PRICE = "price";
+		static public final String PRODUCT_COLOR ="color";
+		static public final String PRODUCT_WEIGHT ="weight";
+		static public final String PRODUCT_SIZE ="size";
 		static public final String PRODUCT_IMG = "immagine";
 		static public final String PRODUCT_LISTA = "app_lista";
 		static public final String PRODUCT_QUANT_VEND_ANNO_PREC = "q_vend_anno_prec";
@@ -195,11 +201,14 @@ public class SLKStorage {
 			+ ProductsMetaData.PRODUCT_NAME + " text not null, "
 			+ ProductsMetaData.PRODUCT_VARIETY + " varchar[12], "
 			+ ProductsMetaData.PRODUCT_PRICE + " double,"
-			+ ProductsMetaData.PRODUCT_IMG + " text ,"
-			+ ProductsMetaData.PRODUCT_LISTA + " int,"
+			+ ProductsMetaData.PRODUCT_COLOR + " text,"
+			+ ProductsMetaData.PRODUCT_WEIGHT + " text,"
+			+ ProductsMetaData.PRODUCT_SIZE + " text,"
+			+ ProductsMetaData.PRODUCT_IMG + " text,"
+			+ ProductsMetaData.PRODUCT_LISTA + " double,"
 			+ ProductsMetaData.PRODUCT_PRODUCTION_LEVEL + " int not null, "
-			+ ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC + " int,"
-			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " int);";
+			+ ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC + " double,"
+			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " double);";
 
 	//sql code for the creation of HISTORY table
 	private static final String HISTORY_TABLE_CREATE = "CREATE TABLE "  
