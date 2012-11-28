@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/White"
+    android:padding="10dip">
+
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Large Text"
+        android:gravity="center"
+        android:textColor="@color/Black"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tvDialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDialogTitle"
+        android:layout_centerHorizontal="true"
+        android:text="Medium Text"
+        android:layout_marginTop="15dip"
+        android:textColor="@color/Black"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/btnDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDialogMessage"
+        android:layout_centerHorizontal="true"
+        android:text="@string/ok" 
+        android:layout_marginTop="15dip"
+        android:textColor="@color/White"
+        android:background="@drawable/greybuttons"
+        android:padding="7dip"/>
+
+</RelativeLayout>
