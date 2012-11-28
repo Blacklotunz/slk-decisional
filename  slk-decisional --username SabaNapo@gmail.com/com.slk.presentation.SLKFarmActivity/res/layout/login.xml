@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:background="@color/White"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <EditText
+        android:id="@+id/etPinLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:inputType="number" 
+        android:password="true"
+        android:maxLength="4"
+        android:gravity="left"
+        android:padding="10dip"
+        android:textColor="@color/Black"
+        android:layout_marginLeft="25dip"
+        android:layout_marginRight="25dip"
+        android:background="@+drawable/rounded_edittext"
+        android:hint="Insert Pin">
+    </EditText>
+
+    <TextView
+        android:id="@+id/tvLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dip"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Black"
+        android:textSize="55dip" />
+
+    <EditText
+        android:id="@+id/etPhoneLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etPinLogin"
+        android:layout_alignLeft="@+id/etPinLogin"
+        android:layout_marginBottom="15dip"
+        android:layout_marginRight="25dip"
+        android:gravity="left"
+        android:hint="Insert Phone"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:padding="10dip"
+        android:background="@+drawable/rounded_edittext"
+        android:textColor="@color/Black" >
+
+    </EditText>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etPinLogin"
+        android:layout_alignRight="@+id/etPinLogin"
+        android:layout_below="@+id/etPinLogin"
+        android:layout_marginTop="100dip"
+        android:background="@drawable/greybuttons"
+        android:padding="7dip"
+        android:text="Login"
+        android:textColor="@color/White"
+        android:textStyle="bold" />
+
+</RelativeLayout>
