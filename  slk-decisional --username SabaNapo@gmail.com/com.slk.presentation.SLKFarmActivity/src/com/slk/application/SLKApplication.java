@@ -57,6 +57,7 @@ public class SLKApplication {
 		else{
 			toReturn="Not have produced this product last year";
 		}
+		c.close();
 		db.close();
 		return toReturn;
 	}
@@ -121,16 +122,18 @@ public class SLKApplication {
 		int qPrevAnnCorrCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR);
 		int productionLevelCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_PRODUCTION_LEVEL);
 		int varietyCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_VARIETY);
+		int colCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_COLOR);
+		int weightCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_WEIGHT);
+		int sizeCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_SIZE);
 		Product prod;
 
 		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
-				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
+				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(colCol),c.getString(weightCol),c.getString(sizeCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
 				toReturn.add(prod);
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
-		c.close();
 
 
 		if (!ProdType.equals("all")){
@@ -141,6 +144,7 @@ public class SLKApplication {
 				}
 			}
 		}
+		c.close();
 		db.close();
 		return toReturn;
 	}
@@ -215,11 +219,9 @@ public class SLKApplication {
 		db.close();
 	}
 	//Metodo di inserimento di un prodotto nella tabella Products
-	//Non ci sono controlli fare attenzione nell uso potrebbe dare errori dato che la chiave è il nome del prodotto
-	//due prodotti con lo stesso nome creerebbero problemi
-	public void insertProduct(String id, String name,String variety,double price,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){
+	public void insertProduct(String id, String name,String variety,double price,String color, String weight, String size,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){
 		db.open();
-		db.insertProduct(id,name, variety, price, img, lista, supp,q_venduta_anno_prec, q_prev_anno_corr);
+		db.insertProduct(id,name, variety, price,color,weight,size,img, lista, supp,q_venduta_anno_prec, q_prev_anno_corr);
 		db.close();		
 	}
 
@@ -245,7 +247,7 @@ public class SLKApplication {
 
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			Log.i("SLKApplication", "DB vuoto");
-			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,0);
+/*			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,0);
 			db.insertProduct("carrotid","carrot", "variety",2.1,"url",1,1, 1000,0);
 			db.insertProduct("cabbageid", "cabbage", "variety",1.3,"url",1, 12,2000,0);
 			db.insertProduct("cucumberid","cucumber",	"variety",1.5, "url",1,16,500,0);
@@ -257,7 +259,7 @@ public class SLKApplication {
 			db.insertProduct("zucchiniid","zucchini", "variety",	1.0, "url", 3, 79,200,	0);
 			db.insertProduct("watermelonid","watermelon", "variety",	0.4, "url", 3, 80,3450,	0);
 			db.insertProduct("khakiid","khaki", "variety",	1.1, "url", 3,92, 1200,0);
-
+*/
 			db.close();
 		}
 	}
@@ -296,12 +298,15 @@ public class SLKApplication {
 		}
 		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
 			for(JSONObject obj : products){
+				Log.i("names",""+obj.names());
 				try {
-					Log.i("obj",obj.getJSONObject(obj.names().getString(0)).toString());
-					JSONObject objj = obj.getJSONObject(obj.names().getString(0));
-					//Log.i("SLKApplication.setProdutsFromWS","id"+obj.getString("cropname")+obj.getString("cultivar_name")+" name:"+obj.getString("cropname")+" variety:"+obj.getString("cultivar_name")+" image: "+obj.getString("images")+" list:"+SLKApplication.getListOfProduct(Integer.parseInt(obj.getString("percentage_of_production")))+" supply level:"+Integer.parseInt(obj.getString("percentage_of_production"))+" max production:"+Integer.parseInt(obj.getString("max_production"))+" current production:"+Integer.parseInt(obj.getString("current_production")));
-					db.insertProduct(""+objj.getString("cropname")+objj.getString("cultivar_name"), objj.getString("cropname"), objj.getString("cultivar_name"), 0.0, objj.getString("images"), SLKApplication.getListOfProduct((objj.getString("croptype"))), Integer.parseInt(objj.getString("percentage_of_production")), Integer.parseInt(objj.getString("max_production")), Integer.parseInt(objj.getString("current_production")));
-					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropname")+objj.getString("cultivar_name"), c);
+					JSONObject objj = obj;
+					JSONObject pobjj=obj.getJSONObject("production");
+					JSONObject cobjj=obj.getJSONObject("characteristics");
+					
+					db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), SLKApplication.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), Double.parseDouble(pobjj.getString("currentProduction")));
+					
+					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropName")+objj.getString("cultivarName"), c);			
 				} catch (NumberFormatException e) {					
 					e.printStackTrace();
 				} catch (JSONException e) {				

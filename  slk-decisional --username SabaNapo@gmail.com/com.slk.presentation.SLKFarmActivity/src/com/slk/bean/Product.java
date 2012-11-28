@@ -1,10 +1,6 @@
 package com.slk.bean;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Product implements Parcelable{
+public class Product{
 
 	/**
 	 * Product bean
@@ -20,46 +16,23 @@ public class Product implements Parcelable{
 	private int lista; //1 green, 2 yellow, 3 red
 	private Double max_production;
 	private Double current_production;
+	private String colorr,weight,size;
 
-	public Product(String id, String name, String variety, double price, String imgURL, int productionLevel, int lista, Double max_production,Double current_production){
+	public Product(String id, String name, String variety, double price, String color,String weight,String size,String imgURL, int productionLevel, int lista, Double max_production,Double current_production){
 		this.id=id;
 		this.name=name;
 		this.variety=variety;
 		this.price=price;
+		this.setColorr(color);
+		this.setWeight(weight);
+		this.setSize(size);
 		this.imgURL=imgURL;
 		this.productionLevel=productionLevel;
 		this.lista=lista;
 		this.max_production=max_production;
-		this.current_production=current_production;
-		
+		this.current_production=current_production;	
 	}
 	
-	public Product(Parcel in) {
-		this.id = in.readString();
-		this.name=in.readString();
-		this.variety=in.readString();
-		this.price=in.readDouble();
-		this.imgURL=in.readString();
-		this.color=in.readInt();
-		this.productionLevel=in.readInt();
-		this.lista=in.readInt();
-		this.max_production=in.readDouble();
-		this.current_production=in.readDouble();	
-	}
-	
-	public void writeToParcel(Parcel p, int flags) {
-		p.writeString(getId());
-		p.writeString(getName());
-		p.writeString(getVariety());
-		p.writeDouble(getPrice());
-		p.writeString(getImg());
-		p.writeInt(getColor());
-		p.writeInt(getProductionLevel());
-		p.writeInt(getLista());
-		p.writeDouble(getMax_production());
-		p.writeDouble(getCurrent_production());
-	}
-
 	public Double getCurrent_production() {
 		return current_production;
 	}
@@ -119,12 +92,6 @@ public class Product implements Parcelable{
 		this.color = color;
 	}
 
-
-	
-	public int describeContents() {
-		return 0;
-	}
-
 	public int getProductionLevel() {
 		return productionLevel;
 	}
@@ -151,13 +118,30 @@ public class Product implements Parcelable{
 	}
 
 
-	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-		public Product createFromParcel(Parcel in) {
-			return new Product(in);
-		}
-		public Product[] newArray(int size) {
-			return new Product[size];
-		}
-	};
+	public String getColorr() {
+		return colorr;
+	}
+
+	public void setColorr(String colorr) {
+		this.colorr = colorr;
+	}
+
+
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
 
 }

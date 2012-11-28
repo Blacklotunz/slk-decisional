@@ -1,10 +1,6 @@
 package com.slk.bean;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class HistoryProdotto implements Parcelable{
+public class HistoryProdotto{
 
 	private String nome, id, variety;
 	private double prezzo;
@@ -28,35 +24,6 @@ public class HistoryProdotto implements Parcelable{
 		this.q_vend_anno_precedente=q_vend_anno_precedente;
 		this.q_prev_anno_corrente=q_prev_anno_corrente;
 		this.q_prodotta=q_prodotta;
-	}
-	
-	public HistoryProdotto(Parcel in) {
-		this.id=in.readString();
-		this.nome=in.readString();
-		this.variety=in.readString();
-		this.prezzo=in.readDouble();
-		this.img=in.readString();
-		this.colore=in.readInt();
-		this.anno=in.readInt();
-		this.mese=in.readInt();
-		this.q_vend_anno_precedente=in.readDouble();
-		this.q_prev_anno_corrente=in.readDouble();
-		this.q_prodotta=in.readDouble();
-		
-	}
-	
-	public void writeToParcel(Parcel p, int flags) {
-		p.writeString(getId());
-		p.writeString(getNome());
-		p.writeString(getVariety());
-		p.writeDouble(getPrezzo());
-		p.writeString(getImg());
-		p.writeInt(getColore());
-		p.writeInt(getAnno());
-		p.writeInt(getMese());
-		p.writeDouble(getQ_vend_anno_precedente());
-		p.writeDouble(getQ_prev_anno_corrente());
-		p.writeDouble(getQ_prodotta());
 	}
 
 	public int getAnno() {
@@ -133,10 +100,7 @@ public class HistoryProdotto implements Parcelable{
 	public void setColore(int colore) {
 		this.colore = colore;
 	}
-	
-	public int describeContents() {
-		return 0;
-	}
+
 
 	public String getId() {
 		return id;
@@ -153,14 +117,4 @@ public class HistoryProdotto implements Parcelable{
 	public void setVariety(String variety) {
 		this.variety = variety;
 	}
-
-	public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
-		public Product createFromParcel(Parcel in) {
-			return new Product(in);
-		}
-		public Product[] newArray(int size) {
-			return new Product[size];
-		}
-	};
-
 }

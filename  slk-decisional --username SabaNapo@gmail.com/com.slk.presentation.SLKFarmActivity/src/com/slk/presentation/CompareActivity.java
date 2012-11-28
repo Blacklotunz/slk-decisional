@@ -55,7 +55,6 @@ public class CompareActivity extends Activity{
 	private ArrayList<TextView> vListTop = new ArrayList<TextView>();
 	private ArrayList<TextView> vListBot = new ArrayList<TextView>();
 	
-	public static boolean closeFlag;
 
 
 	/** Called when the activity is first created. */
@@ -66,7 +65,6 @@ public class CompareActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.confronto);
 		
-		closeFlag = false;
 		
 		Intent intent = getIntent();
 		if(intent.getBooleanExtra("clear", false))
@@ -134,12 +132,10 @@ public class CompareActivity extends Activity{
 	public void onResume(){
 		LogHandler.appendLog("CompareActivity"+" activity "+"resumed");	
 		super.onResume();
-		if(CompareActivity.closeFlag){
-			CompareActivity.closeFlag=true;
-			finish();
-			Intent intent = new Intent(this,CompareActivity.class);
-			startActivity(intent);
-		}
+		
+		caricaLayout(getApplicationContext(), products_to_insert);
+		
+		
 	}
 	
 	private void caricaLayout(Context applicationContext, ArrayList<Product> products_to_insert) {
