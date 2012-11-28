@@ -22,7 +22,7 @@ public class ChoiceSupplyActivity extends Activity {
 	private ProgressDialog pd;
 	private final Context c= this;
 	private SLKApplication slk_utility = new SLKApplication(c);
-
+	static boolean closeFlag=false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,6 @@ public class ChoiceSupplyActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choicesupply);
-		
-		SLKStorage db = new SLKStorage(c);
-		db.clear();
 
 		Button green = (Button) findViewById(R.id.under);
 		green.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +101,8 @@ public class ChoiceSupplyActivity extends Activity {
 		LogHandler.appendLog("ChoiceSupply"+" Activity "+"resumed");
 		
 		super.onResume();
-		if(SLKFarmActivity.closeFlag){
+		if(ChoiceSupplyActivity.closeFlag){
+			SLKFarmActivity.prodotti_selezionati.clear();
 			Intent intent = new Intent(this,SLKFarmActivity.class);
 			startActivity(intent);
 		}

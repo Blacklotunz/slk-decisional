@@ -54,6 +54,8 @@ public class CompareActivity extends Activity{
 	
 	private ArrayList<TextView> vListTop = new ArrayList<TextView>();
 	private ArrayList<TextView> vListBot = new ArrayList<TextView>();
+	
+	public static boolean closeFlag;
 
 
 	/** Called when the activity is first created. */
@@ -63,7 +65,13 @@ public class CompareActivity extends Activity{
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.confronto);
-
+		
+		closeFlag = false;
+		
+		Intent intent = getIntent();
+		if(intent.getBooleanExtra("clear", false))
+			ChoiceSupplyActivity.closeFlag=true;
+		
 		slk_utility = new SLKApplication(getApplicationContext());
 
 		if(SLKFarmActivity.prodotti_selezionati.size()>2){
@@ -124,11 +132,14 @@ public class CompareActivity extends Activity{
 
 	@Override
 	public void onResume(){
-		LogHandler.appendLog("CompareActivity"+" activity "+"resumed");
-		
+		LogHandler.appendLog("CompareActivity"+" activity "+"resumed");	
 		super.onResume();
-		if(SLKFarmActivity.closeFlag)
+		if(CompareActivity.closeFlag){
+			CompareActivity.closeFlag=true;
 			finish();
+			Intent intent = new Intent(this,CompareActivity.class);
+			startActivity(intent);
+		}
 	}
 	
 	private void caricaLayout(Context applicationContext, ArrayList<Product> products_to_insert) {
@@ -201,8 +212,8 @@ public class CompareActivity extends Activity{
 			img_top.setImageBitmap(bitmap);
 			
 			//txt_avg_top.setText("Average price: "+p.getPrice());
-			txt_q_ven_anno_prec_top.setText(getString(R.string.qLastYear)+": "+slk_utility.getLastYearQuantity(p.getId()));
-			txt_q_prev_anno_corr_top.setText(getString(R.string.yProduction)+": "+p.getCurrent_production());
+			txt_q_ven_anno_prec_top.setText(getString(R.string.maxProduction)+": "+p.getMax_production());
+			txt_q_prev_anno_corr_top.setText(getString(R.string.currProduction)+": "+p.getCurrent_production());
 			LL_top.setVisibility(View.VISIBLE);
 			View top = findViewById(R.id.sfondo_prodotto_top);
 			//set color of  background 
@@ -249,12 +260,20 @@ public class CompareActivity extends Activity{
 
 
 	private void addListenerProdotto(View LL, final Product p) {
+		final Product pp = p;
 		LL.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				LogHandler.appendLog(p.getId()+" button "+"clicked");
-
+				
+				//get index of product
+				int index=0;
+				for(Product p:SLKFarmActivity.prodotti_selezionati){
+					if(p.getId().equalsIgnoreCase(pp.getId()))
+						break;
+					index++;
+				}
 				Intent intent = new Intent(CompareActivity.this, DetailActivity.class);
-				intent.putExtra("prodotto",p);
+				intent.putExtra("productIndex",index);
 				//SLKFarmActivity.prodotti_selezionati.clear();
 				startActivity(intent);
 				//finish();
@@ -267,5 +286,11 @@ public class CompareActivity extends Activity{
 	public void onDestroy(){
 		super.onDestroy();
 			LogHandler.appendLog(this.toString()+" CompareActivity "+"destroyed");
+			Intent intent = getIntent();
+			if(intent.getBooleanExtra("clear", false)){
+				ChoiceSupplyActivity.closeFlag=true;
+				SLKFarmActivity.prodotti_selezionati.clear();
+				}
+			
 	}
 }

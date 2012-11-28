@@ -1,7 +1,10 @@
 package com.slk.presentation;
 
+import java.util.ArrayList;
+
 import com.slk.R;
 import com.slk.application.ColorSetter;
+import com.slk.application.DialogBuilder;
 import com.slk.application.ImageHandler;
 import com.slk.application.SLKApplication;
 import com.slk.bean.Product;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,8 +51,8 @@ public class DetailActivity extends Activity {
 	private Double actualPrevisione=0.0;
 	private RelativeLayout relLay;
 	SLKApplication slk_utility;
-	
-	
+	private Context context;
+	private int index;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -57,11 +61,13 @@ public class DetailActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product);
-		slk_utility= new SLKApplication(getApplicationContext());
+		
+		context = this;
+		slk_utility= new SLKApplication(context);
 
 		Intent intent = getIntent();
-		prodotto_selezionato=intent.getParcelableExtra("prodotto");
-
+		index = intent.getIntExtra("productIndex", 0);
+		prodotto_selezionato = SLKFarmActivity.prodotti_selezionati.get(index);
 
 		relLay=(RelativeLayout)findViewById(R.id.prodotto);
 		relLay.setBackgroundResource(R.drawable.rounded_edittext);
@@ -156,14 +162,14 @@ public class DetailActivity extends Activity {
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		alert.setTitle("Type Quantity to grow");
-		alert.setMessage("e.g., 123.4");
+		alert.setTitle(getString(R.string.hint1));
+		alert.setMessage(getString(R.string.hint2));
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(this);
 		input.setInputType(InputType.TYPE_CLASS_PHONE);
 		alert.setView(input);
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		alert.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				LogHandler.appendLog("edit text OK"+" button "+"clicked");
 				
@@ -173,23 +179,13 @@ public class DetailActivity extends Activity {
 					createYesNoDialog().show();
 				}
 				else{
-					LayoutInflater inflater = getLayoutInflater();
-					View layout = inflater.inflate(R.layout.toast,(ViewGroup) findViewById(R.id.toast_layout_root));
-					ImageView image = (ImageView) layout.findViewById(R.id.image);
-					image.setImageResource(R.drawable.warning);
-					TextView text = (TextView) layout.findViewById(R.id.text);
-					text.setText("Wrong number format.");
-					text.setGravity(Gravity.CENTER_VERTICAL);
-					Toast toast = new Toast(getApplicationContext());
-					toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(layout);
-					toast.show();
+					DialogBuilder dialogBuilder = new DialogBuilder(context);
+					dialogBuilder.createToast(R.string.errnumber, "", (Activity)context).show();
 				}
 			}
 		});
 
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				LogHandler.appendLog("edit text Cancel"+" button "+"clicked");
 			}
@@ -197,7 +193,7 @@ public class DetailActivity extends Activity {
 		alert.show();
 	}
 	
-	//check supplyLevel for change background color and product's list
+	//check supplyLevel for change background color and product's list. This method won't be used since the 1st branch cause funtional differences
 	public void checkSupplyLevel(){/*
 		if (prodotto_selezionato.getProductionLevel()<=33)//green list
 			prodotto_selezionato.setLista(1);
@@ -278,8 +274,9 @@ public class DetailActivity extends Activity {
 				setSupplyLevel(); //change the background color and set the supply level into the bean
 				checkSupplyLevel();
 				inserisciProdottoPianificato(prodotto_selezionato);
-				SLKFarmActivity.closeFlag=true;
-				SLKFarmActivity.prodotti_selezionati.clear();
+				
+				ChoiceSupplyActivity.closeFlag=true;
+				
 				TextView prevision = (TextView) findViewById(R.id.prevision);
 				prevision.setText(getString(R.string.current)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 			}
