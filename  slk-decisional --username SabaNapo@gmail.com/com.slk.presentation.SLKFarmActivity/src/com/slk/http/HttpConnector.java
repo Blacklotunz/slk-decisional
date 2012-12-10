@@ -175,6 +175,9 @@ public class HttpConnector
 	//method to get products from test JSONObject
 	private ArrayList<JSONObject> getProductListFromJSONTEST(JSONObject jsonObject){
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
+		
+		
+		
 		try {
 			//fetch vegetable here
 			JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");
@@ -215,7 +218,7 @@ public class HttpConnector
 				}
 			}
 			Log.i("fruits", products.toString());
-*/	
+			*/
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,5 +227,7 @@ public class HttpConnector
 		return products;
 
 	}
+	
+	
 
 }
