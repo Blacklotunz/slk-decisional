@@ -176,11 +176,11 @@ public class HttpConnector
 	private ArrayList<JSONObject> getProductListFromJSONTEST(JSONObject jsonObject){
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
 		try {
+			//fetch vegetable here
 			JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");
 			JSONObject vegetable= cropInfo.getJSONObject("Vegetable");				
 			int i,j;
 			int size = (vegetable.names().length());
-			Log.i("names", ""+vegetable.names());
 			for(i=0;i<size;i++){
 				//get the length of each vegetable
 				if(!((String)vegetable.names().get(i)).equalsIgnoreCase("label")){
@@ -195,8 +195,27 @@ public class HttpConnector
 					}
 				}
 			}
-			Log.i("products", products.toString());
-
+			Log.i("vegetables", products.toString());
+/*
+			//fetch fruits here	
+			JSONObject fruits= cropInfo.getJSONObject("Fruits");				
+			size = (fruits.names().length());
+			for(i=0;i<size;i++){
+				//get the length of each vegetable
+				if(!((String)fruits.names().get(i)).equalsIgnoreCase("label")){
+					JSONObject variety = fruits.getJSONObject((String)fruits.names().get(i));
+					JSONObject cultivar = variety.getJSONObject("cultivar");
+					int k = cultivar.names().length();
+					Log.i("cultivar names", ""+cultivar.names());
+					//get each fruit
+					for(j=0;j<k;j++){
+						products.add(cultivar.getJSONObject((String)cultivar.names().get(j)));
+						Log.i("product",""+cultivar.getJSONObject((String)cultivar.names().get(j)));
+					}
+				}
+			}
+			Log.i("fruits", products.toString());
+*/	
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

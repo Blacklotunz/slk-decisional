@@ -47,7 +47,7 @@ public class LogHandler{
 		}
 
 		FileOutputStream fos = new FileOutputStream(cacheFile);
-		OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF8");
+		OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF8");
 		PrintWriter pw = new PrintWriter(osw);
 
 		pw.println(content);
@@ -69,11 +69,8 @@ public class LogHandler{
 
 		//Add the recipients
 		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { email });
-
 		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-
 		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-
 		//Add the attachment by specifying a reference to our custom ContentProvider
 		//and the specific file of interest
 		emailIntent.putExtra(Intent.EXTRA_STREAM,

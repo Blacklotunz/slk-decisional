@@ -5,7 +5,7 @@ import java.util.Stack;
 
 import com.slk.R;
 import com.slk.application.ImageHandler;
-import com.slk.application.SLKApplication;
+import com.slk.application.Application;
 import com.slk.bean.HistoryProdotto;
 import com.slk.log.LogHandler;
 
@@ -28,7 +28,7 @@ public class HistoryActivity extends Activity{
 
 	protected static final int HISTORY_HOME = 10;
 	protected ArrayList<HistoryProdotto> history_prodotti;
-	protected SLKApplication slk_utility;
+	protected Application slk_utility;
 
 	protected boolean init=true;
 	private LinearLayout LL_riga;
@@ -48,7 +48,7 @@ public class HistoryActivity extends Activity{
 		setContentView(R.layout.history);
 
 		history_prodotti = new ArrayList<HistoryProdotto>();
-		slk_utility = new SLKApplication(getApplicationContext());
+		slk_utility = new Application(getApplicationContext());
 		history_prodotti = slk_utility.getHistoryProducts();
 
 		//metodo che crea il layout quando viene premuto il pulsante history nella home page.

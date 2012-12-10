@@ -3,7 +3,7 @@ package com.slk.presentation;
 import java.util.ArrayList;
 
 import com.slk.R;
-import com.slk.application.SLKApplication;
+import com.slk.application.Application;
 import com.slk.bean.Product;
 
 import android.app.Activity;
@@ -14,17 +14,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ProductListActivity2 extends ListActivity{
+public class ProductListActivity extends ListActivity{
 
 	private ListView listView;
 	private ArrayList<Product> prodotti;
-	private SLKApplication slk_utility;
+	private Application slk_utility;
 
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
 
-		slk_utility = new SLKApplication(getApplicationContext());
+		slk_utility = new Application(getApplicationContext());
 		if (getIntent().getAction().equals("1"))
 			prodotti = slk_utility.getGreenProducts();
 		else if (getIntent().getAction().equals("2"))
@@ -43,7 +43,6 @@ public class ProductListActivity2 extends ListActivity{
 
 
 		ProductAdapter adapter = new ProductAdapter(this, R.layout.listview_item_row, product_data);
-
 		listView = (ListView)findViewById(android.R.id.list);	        
 		listView.setAdapter(adapter);
 		

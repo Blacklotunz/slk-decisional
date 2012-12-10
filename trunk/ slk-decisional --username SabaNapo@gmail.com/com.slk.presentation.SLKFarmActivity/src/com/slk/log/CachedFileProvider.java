@@ -68,7 +68,7 @@ public class CachedFileProvider extends ContentProvider {
     }
  
     // //////////////////////////////////////////////////////////////
-    // Not supported / used / required for this example
+    // Not supported / used / required
     // //////////////////////////////////////////////////////////////
  
     @Override

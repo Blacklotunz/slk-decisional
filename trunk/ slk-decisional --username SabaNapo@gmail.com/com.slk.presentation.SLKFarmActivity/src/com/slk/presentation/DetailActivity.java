@@ -1,12 +1,10 @@
 package com.slk.presentation;
 
-import java.util.ArrayList;
-
 import com.slk.R;
 import com.slk.application.ColorSetter;
 import com.slk.application.DialogBuilder;
 import com.slk.application.ImageHandler;
-import com.slk.application.SLKApplication;
+import com.slk.application.Application;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
 
@@ -21,16 +19,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.InputType;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DetailActivity extends Activity {
 	private static final String UNDER_SUPPLY_0_11 = "#82FA58";
@@ -50,7 +45,7 @@ public class DetailActivity extends Activity {
 	private int choice;
 	private Double actualPrevisione=0.0;
 	private RelativeLayout relLay;
-	SLKApplication slk_utility;
+	Application slk_utility;
 	private Context context;
 	private int index;
 
@@ -58,16 +53,16 @@ public class DetailActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		LogHandler.appendLog(this.toString()+" DetailActivity"+"created");
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product);
-		
+
 		context = this;
-		slk_utility= new SLKApplication(context);
+		slk_utility= new Application(context);
 
 		Intent intent = getIntent();
 		index = intent.getIntExtra("productIndex", 0);
-		prodotto_selezionato = SLKFarmActivity.prodotti_selezionati.get(index);
+		prodotto_selezionato = MainListActivity.prodotti_selezionati.get(index);
 
 		relLay=(RelativeLayout)findViewById(R.id.prodotto);
 		relLay.setBackgroundResource(R.drawable.rounded_edittext);
@@ -76,34 +71,39 @@ public class DetailActivity extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, prodotto_selezionato.getId()).getAbsolutePath());
 		image.setImageBitmap(bitmap);
 
-
+/*
 		TextView nome=(TextView)findViewById(R.id.nome);
 		nome.setText(prodotto_selezionato.getName().toUpperCase());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
-		nome.setTextColor(Color.WHITE);
+			nome.setTextColor(Color.WHITE);
 
 		TextView info1=(TextView)findViewById(R.id.info1);
 		info1.setText("Variety: "+prodotto_selezionato.getVariety());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info1.setTextColor(Color.WHITE);
-		
+
 		TextView info2=(TextView)findViewById(R.id.info2);
 		info2.setText(getString(R.string.maxProduction)+": "+prodotto_selezionato.getMax_production());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info2.setTextColor(Color.WHITE);
-		
+
 		TextView info3=(TextView)findViewById(R.id.info3);
 		info3.setText(getString(R.string.currProduction)+": "+prodotto_selezionato.getCurrent_production());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info3.setTextColor(Color.WHITE);
-		
-		//TextView info4=(TextView)findViewById(R.id.info4);
-		//info4.setText("Current production plan: "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 
+		TextView info4=(TextView)findViewById(R.id.info4);
+		info4.setText(getString(R.string.pergentage)+" : "+prodotto_selezionato.getProductionLevel()+"%"+"\n\n"
+				+"Product characteristics"+":"+"\n Color :"+prodotto_selezionato.getColorr()+"\n Size: "
+					+prodotto_selezionato.getSize()+"\n Weight: "+prodotto_selezionato.getWeight());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info4.setTextColor(Color.WHITE);
+*/
 
 		TextView prevision = (TextView) findViewById(R.id.prevision);
 		prevision.setText(getString(R.string.yProduction)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId()));
@@ -112,9 +112,8 @@ public class DetailActivity extends Activity {
 		lastYear.setText(getString(R.string.lastProduction)+": "+slk_utility.getLastYearQuantity(prodotto_selezionato.getId()));
 
 		relLay.setBackgroundColor(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista()));
-		
-		//Log.i("color--->", ""+ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista()));
-		
+
+
 		final Button confirmButton = (Button) findViewById(R.id.Conferma);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
@@ -128,7 +127,7 @@ public class DetailActivity extends Activity {
 		history.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				LogHandler.appendLog("history"+" button "+"clicked");
-				
+
 				Intent intent = new Intent(DetailActivity.this, HistoryActivity.class);
 				startActivity(intent);
 			}
@@ -139,14 +138,55 @@ public class DetailActivity extends Activity {
 		QuantityB.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				LogHandler.appendLog("Quantity"+" button "+"clicked");
-				
+
 				createTextChoiceDialog();
 			}
 		});
 
 	}
 
-	
+	@Override
+	public void onResume(){
+		super.onResume();
+		//force a clear of array of selected products and force the restart of listActivity
+		MainListActivity.prodotti_selezionati.clear();
+		ChoiceSupplyActivity.closeFlag=true;
+		//
+		//
+		TextView nome=(TextView)findViewById(R.id.nome);
+		nome.setText(prodotto_selezionato.getName().toUpperCase());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			nome.setTextColor(Color.WHITE);
+
+		TextView info1=(TextView)findViewById(R.id.info1);
+		info1.setText("Variety: "+prodotto_selezionato.getVariety());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info1.setTextColor(Color.WHITE);
+
+		TextView info2=(TextView)findViewById(R.id.info2);
+		info2.setText(getString(R.string.maxProduction)+": "+prodotto_selezionato.getMax_production());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info2.setTextColor(Color.WHITE);
+
+		TextView info3=(TextView)findViewById(R.id.info3);
+		info3.setText(getString(R.string.currProduction)+": "+prodotto_selezionato.getCurrent_production());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info3.setTextColor(Color.WHITE);
+
+		TextView info4=(TextView)findViewById(R.id.info4);
+		info4.setText(getString(R.string.pergentage)+" : "+prodotto_selezionato.getProductionLevel()+"%"+"\n\n"
+				+"Product characteristics"+"\n Color: "+prodotto_selezionato.getColorr()+"\n Size: "
+					+prodotto_selezionato.getSize()+"\n Weight: "+prodotto_selezionato.getWeight());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info4.setTextColor(Color.WHITE);
+
+	}
+
 	private void inserisciProdottoPianificato(Product prod_selezionato){
 
 		/**
@@ -155,6 +195,8 @@ public class DetailActivity extends Activity {
 		slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getCurrent_production(),actualPrevisione);
 		slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
 		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getName(),prod_selezionato.getVariety(), prod_selezionato.getPrice(), prodotto_selezionato.getImg(), prod_selezionato.getColor(), slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getMax_production(), prod_selezionato.getCurrent_production(), actualPrevisione);
+	
+		this.onResume();
 	}
 
 
@@ -172,7 +214,7 @@ public class DetailActivity extends Activity {
 		alert.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				LogHandler.appendLog("edit text OK"+" button "+"clicked");
-				
+
 				String value = input.getText().toString();
 				if(value.matches("^[-+]?\\d+(\\.{0,1}(\\d+?))?$")){ //input will accept only digits
 					actualPrevisione = Double.parseDouble(value);
@@ -192,24 +234,24 @@ public class DetailActivity extends Activity {
 		});
 		alert.show();
 	}
-	
+
 	//check supplyLevel for change background color and product's list. This method won't be used since the 1st branch cause funtional differences
 	public void checkSupplyLevel(){/*
 		if (prodotto_selezionato.getProductionLevel()<=33)//green list
 			prodotto_selezionato.setLista(1);
-			
+
 		else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67)//yellow list
 			prodotto_selezionato.setLista(2);
-			
+
 		else if(prodotto_selezionato.getProductionLevel()>=68)//red list
 			prodotto_selezionato.setLista(3);	*/	
 	}
-	
+
 
 	//set new supply level (simulate the method that should run on back-end)
 	public void setSupplyLevel(){
 		if (prodotto_selezionato.getProductionLevel()<=33){//green list
-			
+
 			if(prodotto_selezionato.getProductionLevel()<=11){
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_0_11));
 				prodotto_selezionato.setColor(Color.parseColor(UNDER_SUPPLY_0_11));		
@@ -223,7 +265,7 @@ public class DetailActivity extends Activity {
 				prodotto_selezionato.setColor(Color.parseColor(UNDER_SUPPLY_23_33));
 			}
 		}else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67){//yellow list
-			
+
 			if(prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=45){
 				relLay.setBackgroundColor(Color.parseColor(NORMAL_SUPPLY_34_45));
 				prodotto_selezionato.setColor(Color.parseColor(NORMAL_SUPPLY_34_45));
@@ -237,7 +279,7 @@ public class DetailActivity extends Activity {
 				prodotto_selezionato.setColor(Color.parseColor(NORMAL_SUPPLY_58_67));
 			}
 		}else if(prodotto_selezionato.getProductionLevel()>=68){//red list
-			
+
 			if(prodotto_selezionato.getProductionLevel()>=68 && prodotto_selezionato.getProductionLevel()<=79){
 				relLay.setBackgroundColor(Color.parseColor(OVER_SUPPLY_68_79));
 				prodotto_selezionato.setColor(Color.parseColor(OVER_SUPPLY_68_79));
@@ -274,9 +316,9 @@ public class DetailActivity extends Activity {
 				setSupplyLevel(); //change the background color and set the supply level into the bean
 				checkSupplyLevel();
 				inserisciProdottoPianificato(prodotto_selezionato);
-				
+
 				ChoiceSupplyActivity.closeFlag=true;
-				
+
 				TextView prevision = (TextView) findViewById(R.id.prevision);
 				prevision.setText(getString(R.string.current)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 			}
@@ -288,7 +330,7 @@ public class DetailActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				LogHandler.appendLog("no"+" button "+"clicked");
-				
+
 				actualPrevisione=0.0;
 			}
 
@@ -298,11 +340,11 @@ public class DetailActivity extends Activity {
 		return builder.create();
 
 	}
-	
+
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-			LogHandler.appendLog("DetailActivity"+" activity "+"destroyed");
+		LogHandler.appendLog("DetailActivity"+" activity "+"destroyed");
 	}
 
 }

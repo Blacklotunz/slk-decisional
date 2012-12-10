@@ -1,7 +1,7 @@
 package com.slk.presentation;
 
 import com.slk.R;
-import com.slk.application.SLKApplication;
+import com.slk.application.Application;
 import com.slk.log.LogHandler;
 import com.slk.storage.SLKStorage;
 
@@ -21,7 +21,7 @@ public class ChoiceSupplyActivity extends Activity {
 	static final private int RED = 3;
 	private ProgressDialog pd;
 	private final Context c= this;
-	private SLKApplication slk_utility = new SLKApplication(c);
+	private Application slk_utility = new Application(c);
 	static boolean closeFlag=false;
 	
 	@Override
@@ -42,7 +42,7 @@ public class ChoiceSupplyActivity extends Activity {
 				h.execute(GREEN);
 				}
 				else{
-					Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+					Intent intent = new Intent(ChoiceSupplyActivity.this, MainListActivity.class);
 					intent.setAction(""+GREEN);
 					startActivity(intent);
 				}
@@ -60,7 +60,7 @@ public class ChoiceSupplyActivity extends Activity {
 					h.execute(YELLOW);
 					}
 				else{
-					Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+					Intent intent = new Intent(ChoiceSupplyActivity.this, MainListActivity.class);
 					intent.setAction(""+YELLOW);
 					startActivity(intent);
 				}
@@ -78,7 +78,7 @@ public class ChoiceSupplyActivity extends Activity {
 					h.execute(RED);
 					}
 				else{
-					Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+					Intent intent = new Intent(ChoiceSupplyActivity.this, MainListActivity.class);
 					intent.setAction(""+RED);
 					startActivity(intent);
 				}
@@ -102,8 +102,8 @@ public class ChoiceSupplyActivity extends Activity {
 		
 		super.onResume();
 		if(ChoiceSupplyActivity.closeFlag){
-			SLKFarmActivity.prodotti_selezionati.clear();
-			Intent intent = new Intent(this,SLKFarmActivity.class);
+			MainListActivity.prodotti_selezionati.clear();
+			Intent intent = new Intent(this,MainListActivity.class);
 			startActivity(intent);
 		}
 			
@@ -120,7 +120,7 @@ public class ChoiceSupplyActivity extends Activity {
 			slk_utility.setProductsFromWS();
 			LogHandler.appendLog("setProductsFromWS"+" method "+"called");
 			
-			Intent intent = new Intent(ChoiceSupplyActivity.this, SLKFarmActivity.class);
+			Intent intent = new Intent(ChoiceSupplyActivity.this, MainListActivity.class);
 			intent.setAction(""+values[0]);
 			startActivity(intent);
 			return values[0];

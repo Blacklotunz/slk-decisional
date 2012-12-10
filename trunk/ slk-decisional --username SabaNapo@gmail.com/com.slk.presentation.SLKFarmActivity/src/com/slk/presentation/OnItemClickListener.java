@@ -34,20 +34,20 @@ public class OnItemClickListener implements OnClickListener {
 
 		if(cb.isChecked()) {
 			LogHandler.appendLog(data[mPosition].getId()+" product button "+"selected");
-			SLKFarmActivity.prodotti_selezionati.add(data[mPosition]);
+			MainListActivity.prodotti_selezionati.add(data[mPosition]);
 		}
 		else{
-			for(int j=0; j<SLKFarmActivity.prodotti_selezionati.size(); j++){
-				if(SLKFarmActivity.prodotti_selezionati.get(j).getId()==data[mPosition].getId()){
-					SLKFarmActivity.prodotti_selezionati.remove(j);
+			for(int j=0; j<MainListActivity.prodotti_selezionati.size(); j++){
+				if(MainListActivity.prodotti_selezionati.get(j).getId()==data[mPosition].getId()){
+					MainListActivity.prodotti_selezionati.remove(j);
 				}
 			}
 		}
 		//change the text and the listener of button compare when the number of products change.
 		//if there's no product selected
-		if(SLKFarmActivity.prodotti_selezionati.size()==0){
-			SLKFarmActivity.confrontaButton.setText(context.getString(R.string.confronta));		
-			SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+		if(MainListActivity.prodotti_selezionati.size()==0){
+			MainListActivity.confrontaButton.setText(context.getString(R.string.confronta));		
+			MainListActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					LogHandler.appendLog("compare"+" button "+"clicked");
 					DialogBuilder dialogBuilder= new DialogBuilder(context);
@@ -57,9 +57,9 @@ public class OnItemClickListener implements OnClickListener {
 		}
 
 		//if just ONE product is selected the function of button is show the details of products.
-		else if(SLKFarmActivity.prodotti_selezionati.size()==1){
-			SLKFarmActivity.confrontaButton.setText(context.getString(R.string.select));
-			SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+		else if(MainListActivity.prodotti_selezionati.size()==1){
+			MainListActivity.confrontaButton.setText(context.getString(R.string.select));
+			MainListActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					LogHandler.appendLog("select"+" button "+"clicked");
 					Intent intent = new Intent(context,DetailActivity.class);
@@ -70,8 +70,8 @@ public class OnItemClickListener implements OnClickListener {
 		}
 		//if MORE than ONE product is selected the function is show compare
 		else{
-			SLKFarmActivity.confrontaButton.setText(context.getString(R.string.confronta));
-			SLKFarmActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
+			MainListActivity.confrontaButton.setText(context.getString(R.string.confronta));
+			MainListActivity.confrontaButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					LogHandler.appendLog("compare"+" button "+"clicked");
 					Intent intent = new Intent(context,CompareActivity.class);

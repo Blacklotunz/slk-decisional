@@ -5,7 +5,7 @@ import java.util.Stack;
 import com.slk.R;
 import com.slk.application.ColorSetter;
 import com.slk.application.ImageHandler;
-import com.slk.application.SLKApplication;
+import com.slk.application.Application;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
 import android.app.Activity;
@@ -27,7 +27,7 @@ public class CompareActivity extends Activity{
 
 	ArrayList<Product> products_to_insert = new ArrayList<Product>();
 	protected ArrayList<Product> sec_prodotti;
-	protected SLKApplication slk_utility;
+	protected Application slk_utility;
 	protected Stack<Product> invisible_up = new Stack<Product>();
 	protected Stack<Product> invisible_down = new Stack<Product>();
 
@@ -70,13 +70,13 @@ public class CompareActivity extends Activity{
 		if(intent.getBooleanExtra("clear", false))
 			ChoiceSupplyActivity.closeFlag=true;
 		
-		slk_utility = new SLKApplication(getApplicationContext());
+		slk_utility = new Application(getApplicationContext());
 
-		if(SLKFarmActivity.prodotti_selezionati.size()>2){
+		if(MainListActivity.prodotti_selezionati.size()>2){
 			int i=0;
-			for(Product p: SLKFarmActivity.prodotti_selezionati){
+			for(Product p: MainListActivity.prodotti_selezionati){
 				if(i==0 || i==1)
-					products_to_insert.add(i, SLKFarmActivity.prodotti_selezionati.get(i));
+					products_to_insert.add(i, MainListActivity.prodotti_selezionati.get(i));
 				else
 					invisible_down.push(p);
 
@@ -84,7 +84,7 @@ public class CompareActivity extends Activity{
 			}
 		}
 		else
-			products_to_insert = SLKFarmActivity.prodotti_selezionati;
+			products_to_insert = MainListActivity.prodotti_selezionati;
 
 
 		caricaLayout(getApplicationContext(), products_to_insert);
@@ -132,15 +132,16 @@ public class CompareActivity extends Activity{
 	public void onResume(){
 		LogHandler.appendLog("CompareActivity"+" activity "+"resumed");	
 		super.onResume();
-		
+		//per resettare la memoria dei dati selezionati tenere questa riga. Cancellarla altrimenti.
+		ChoiceSupplyActivity.closeFlag=true;
 		caricaLayout(getApplicationContext(), products_to_insert);
 		
 		
 	}
 	
 	private void caricaLayout(Context applicationContext, ArrayList<Product> products_to_insert) {
-		num_page = SLKFarmActivity.prodotti_selezionati.size()/2;
-		if(SLKFarmActivity.prodotti_selezionati.size()%2 > 0)
+		num_page = MainListActivity.prodotti_selezionati.size()/2;
+		if(MainListActivity.prodotti_selezionati.size()%2 > 0)
 			num_page = num_page + 1;
 
 		LL_top = (RelativeLayout) findViewById(R.id.Layout_top);
@@ -200,7 +201,7 @@ public class CompareActivity extends Activity{
 
 		if(products.size()>0){
 			p = products.get(0);
-			txt_nome_top.setText(p.getName());
+			txt_nome_top.setText(p.getName()+"\n"+getString(R.string.variety)+": "+p.getVariety());
 			
 			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			//img_top.setImageResource(resId);
@@ -226,7 +227,7 @@ public class CompareActivity extends Activity{
 		}
 		if(products.size()==2){
 			p = products.get(1);
-			txt_nome_bot.setText(p.getName());
+			txt_nome_bot.setText(p.getName()+"\n"+getString(R.string.variety)+": "+p.getVariety());
 			//int resId = getResources().getIdentifier(p.getName(), "drawable", getPackageName());
 			//img_bot.setImageResource(resId);
 			Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, p.getId()).getAbsolutePath());
@@ -263,7 +264,7 @@ public class CompareActivity extends Activity{
 				
 				//get index of product
 				int index=0;
-				for(Product p:SLKFarmActivity.prodotti_selezionati){
+				for(Product p:MainListActivity.prodotti_selezionati){
 					if(p.getId().equalsIgnoreCase(pp.getId()))
 						break;
 					index++;
@@ -285,7 +286,7 @@ public class CompareActivity extends Activity{
 			Intent intent = getIntent();
 			if(intent.getBooleanExtra("clear", false)){
 				ChoiceSupplyActivity.closeFlag=true;
-				SLKFarmActivity.prodotti_selezionati.clear();
+				MainListActivity.prodotti_selezionati.clear();
 				}
 			
 	}

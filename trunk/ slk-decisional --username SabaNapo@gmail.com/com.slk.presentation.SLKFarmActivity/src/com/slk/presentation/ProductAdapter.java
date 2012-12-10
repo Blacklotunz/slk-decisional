@@ -61,15 +61,18 @@ public class ProductAdapter extends ArrayAdapter<Product>{
 		{
 			holder = (ProductHolder)row.getTag();
 		}
-		holder.txtTitle.setText(product.getName()+" ("+product.getVariety()+")");
+		
+		holder.txtTitle.setText(product.getName()+" "+product.getVariety()+" ");
 		holder.txtTitle.setTextColor(context.getResources().getColor(R.color.text));
 		Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(context, product.getId()).getAbsolutePath());
 		if(bitmap==null){
 			bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 		}
 		holder.imgIcon.setImageBitmap(bitmap);
-		holder.cb.setChecked(false);
 		holder.row.setBackgroundColor(product.getColor());
+		if(product.getColor() == -10417397){
+			holder.txtTitle.setTextColor(context.getResources().getColor(R.color.White));
+		}
 		row.setOnClickListener(new OnItemClickListener(position, data, holder.cb,context));
 		return row;
 	}

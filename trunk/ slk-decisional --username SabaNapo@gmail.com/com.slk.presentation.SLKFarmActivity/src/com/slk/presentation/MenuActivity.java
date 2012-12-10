@@ -41,20 +41,10 @@ public class MenuActivity extends Activity {
 		//write on log file
 		LogHandler.appendLog(this.toString()+" MenuViewActivity "+"created");
 		
-		
-		/*To remove when relished*/
-		//this.insertFarmId();
-		//this.insertPin();
-		//this.insertPhone();
-		/**/
-		
 		Button planning = (Button) findViewById(R.id.cropPlanning);
 		planning.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
 				LogHandler.appendLog("crop selection"+" button "+"clicked");
-
-				Log.i("debug------------", "pin "+HttpConnector.pin);
-				Log.i("debug------------", "phone "+HttpConnector.num);
 				
 				Intent intent = new Intent(MenuActivity.this,ChoiceSupplyActivity.class);
 				startActivity(intent);
