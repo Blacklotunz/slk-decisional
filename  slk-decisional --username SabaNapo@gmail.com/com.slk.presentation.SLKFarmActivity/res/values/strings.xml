@@ -120,7 +120,7 @@
    <string name="no_update">Don\'t update</string>
    <string name="update_message">You want to update current crop list?</string>
    <string name="waiting">Waiting...</string>
-   <string name="no_farm">No farm selected!</string>  
+   <string name="no_farm">No farm selected, please select a farm.</string>  
    <string name="handler_noconnection">No Wi-Fi or 3GS enabled</string>
    <string name="handler_server_no">Impossible to connect to the server</string>
    <string name="handler_login_error_phone">Phone number not found</string>
@@ -138,4 +138,6 @@
    <string name="productNotFound">Sorry, no product was found</string>
    <string name="hint3">Type crop to ssearch</string>
    <string name="hint4">e.g., Tomato</string>
+   <string name="variety">variety</string>
+   <string name="pergentage">percentage of production</string>
 </resources>

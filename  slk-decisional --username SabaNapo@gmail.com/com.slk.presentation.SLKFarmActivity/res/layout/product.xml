@@ -132,7 +132,7 @@
             android:background="@drawable/blackbuttons"
             android:text="@string/history"
             android:textColor="@color/White" />
-       
+       
         <Button
             android:id="@+id/Conferma"
             style="@style/ButtonTextMedium"
@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.01"
             android:background="@drawable/blackbuttons"
-            android:text="@string/ok" />
+            android:text="@string/back" />
 
     </LinearLayout>
 
