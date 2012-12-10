@@ -25,14 +25,68 @@
     <string name="lastProduction">පසුගිය වර්ෂයේ නිෂ්පාදනය</string>
     <string name="qLastYear">පසුගිය වර්ෂයේ විකිනුණු ප්‍රමාණය</string>
     
-    <string name="wait"> Wait please#8230</string>
-    <string name="retrieving">Retrieving data from server#8230</string>
-    <string name="current">Current year production planned</string>
-    <string name="grow">You have selected to grow</string>
-    <string name="kg">Kg</string>
-    <string name="sure">Are you sure?</string>
-    <string name="planned">Planned</string>
-    <string name="no_products">No products selected. You must select at least one product.</string>
-    <string name="select">Select</string>
+    <string name="wait"> **Wait please#8230</string>
+    <string name="retrieving">**Retrieving data from server#8230</string>
+    <string name="current">**Current year production planned</string>
+    <string name="grow">**You have selected to grow</string>
+    <string name="kg">**Kg</string>
+    <string name="sure">**Are you sure?</string>
+    <string name="planned">**Planned</string>
+    <string name="no_products">**No products selected. You must select at least one product.</string>
+    <string name="select">**Select</string>
+    
+    <string name="planning">**Crop Planning</string>
+    <string name="seeding">**Seeding</string>
+    <string name="planting">**Planting and Nursery Management</string>
+    <string name="growing">**Growing</string>
+    <string name="harvesting">**Harvesting Packing and Storing</string>
+    <string name="selling">**Selling</string>
+    <string name="togrow"> **Select quantity to grow </string>
+    <string name="ok">**OK</string>
+    <string name="cancel">**Cancel</string>
+    <string name="phone">**Insert phone number</string>
+    <string name="ptoselect">**CLICK ON A PRODUCT TO SELECT</string>
+    
+    <string name="error">**Error</string>
+   <string name="error_length_pin_phone">**Phone Number and Pin are null or incomplete</string>
+   <string name="error_length_pin">**Pin is null or incomplete</string>
+   <string name="error_length_phone">**Phone number is null or incomplete</string>
+   <string name="error_form">**This fields are incorrect:</string>
+   <string name="error_name">**Firstname (Illegal character or lenght)</string>
+   <string name="error_lastname">**Lastname (Illegal character or lenght)</string>
+   <string name="error_pin">**Pin (Four number required)</string>
+   <string name="error_mail">**E-Mail (Illegal character or format)</string>
+   <string name="error_number">**Phone number (Ten numbers required)</string>
+   <string name="error_provider_gps">**Your GPS in disabled</string>
+   <string name="error_login">**Doesn\'t exist a farmer with this Pin</string>
+   <string name="error_menu">**Can\'t load menu</string>
+   <string name="error_location">**Your position is in the ocean or not in Sri Lanka</string>
+   <string name="error_farm">**Insert farm name</string>
+   <string name="error_duplicate">**Farmer with this phonenumber already exists</string>
+   
+   <string name="update">**Update</string>
+   <string name="no_update">**Don\'t update</string>
+   <string name="update_message">**You want to update current crop list?</string>
+   <string name="waiting">**Waiting...</string>
+   <string name="no_farm">**No farm selected!</string>  
+   <string name="handler_noconnection">**No Wi-Fi or 3GS enabled</string>
+   <string name="handler_server_no">**Impossible to connect to the server</string>
+   <string name="handler_login_error_phone">**Phone number not found</string>
+   <string name="handler_login_error_pin">**Pin doesn\'t match with phone number</string>
+   <string name="handler_error_update_key">**Cant\'update access key! Please try again</string>
+   <string name="handler_error_get_farm">**Cant\'load farm list! Please try again</string>
+   <string name="handler_error_storage">**Cant\'t store farmer infomation! Please try again</string>
+   <string name="handler_error_crop">**Error during crops download! Please try again</string>
+   <string name="handler_error_storage_crop">**Error during crops storage! Please try again</string>
+   <string name="dialogSelectFarm"> **Select a farm</string>
+   
+   <string name="hint1">**Type quantity to grow</string>
+   <string name="hint2">**e.g., 123.4</string>
+   <string name="errnumber">**Wrong number format</string>
+   <string name="productNotFound">**Sorry, no product was found</string>
+   <string name="hint3">**Type crop to ssearch</string>
+   <string name="hint4">**e.g., Tomato</string>
+   <string name="variety">**variety</string>
+   <string name="pergentage">**percentage of production</string>
 
 </resources>
