@@ -20,11 +20,11 @@ import com.slk.bean.Product;
 import com.slk.http.HttpConnector;
 import com.slk.storage.SLKStorage;
 
-public class SLKApplication {
+public class Application {
 	SLKStorage db;
 	Context c;
 
-	public SLKApplication(Context ct){
+	public Application(Context ct){
 		//istanzia il layer storage
 		db=new SLKStorage(ct);
 		c = ct;
@@ -304,7 +304,7 @@ public class SLKApplication {
 					JSONObject pobjj=obj.getJSONObject("production");
 					JSONObject cobjj=obj.getJSONObject("characteristics");
 					
-					db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), SLKApplication.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), Double.parseDouble(pobjj.getString("currentProduction")));
+					db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), Double.parseDouble(pobjj.getString("currentProduction")));
 					
 					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropName")+objj.getString("cultivarName"), c);			
 				} catch (NumberFormatException e) {					

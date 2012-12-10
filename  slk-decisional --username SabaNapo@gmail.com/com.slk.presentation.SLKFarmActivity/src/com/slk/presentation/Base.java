@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.http.HttpConnection;
 
-import com.slk.application.DBAdapter;
+import com.slk.storage.DBAdapter;
 
 
 import android.accounts.Account;

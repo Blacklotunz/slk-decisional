@@ -185,8 +185,6 @@ public class DialogBuilder
 				{					
 					dialog.dismiss();
 					Intent i = new Intent(context,com.slk.presentation.MenuActivity.class);
-					Log.i("checked", ""+group.getCheckedRadioButtonId());
-					Log.i("farm selected", ""+list.get((group.getCheckedRadioButtonId()-300)).getId());
 					HttpConnector.farmId = ""+list.get((group.getCheckedRadioButtonId()-300)).getId();
 					i.putExtra(context.getPackageName() + ".farm", list.get(group.getCheckedRadioButtonId()-300));
 					i.putExtra(context.getPackageName() + ".farmer", farmer);
@@ -196,7 +194,7 @@ public class DialogBuilder
 				else
 				{
 					
-					Toast t = createToast(R.string.no_products, null, activity);
+					Toast t = createToast(R.string.no_farm, null, activity);
 					t.show();
 				}
 			}

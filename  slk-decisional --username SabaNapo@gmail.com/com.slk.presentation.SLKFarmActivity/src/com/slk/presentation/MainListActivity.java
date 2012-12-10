@@ -1,11 +1,9 @@
 package com.slk.presentation;
 
-
-
 import java.util.ArrayList;
 import com.slk.R;
 import com.slk.application.DialogBuilder;
-import com.slk.application.SLKApplication;
+import com.slk.application.Application;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
 
@@ -28,7 +26,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SLKFarmActivity extends TabActivity {
+public class MainListActivity extends TabActivity {
 
 	protected static ArrayList<Product> prodotti_selezionati;
 	protected static Button confrontaButton;
@@ -36,7 +34,7 @@ public class SLKFarmActivity extends TabActivity {
 	static final private int YELLOW = 2;
 	static final private int RED = 3;
 	Bundle savedInstanceState;
-	private SLKApplication slk_utility;
+	private Application slk_utility;
 	ArrayList<Product> prodotti;
 	Context context;
 
@@ -61,7 +59,7 @@ public class SLKFarmActivity extends TabActivity {
 		//db.clear();
 
 
-		slk_utility = new SLKApplication(getApplicationContext());
+		slk_utility = new Application(getApplicationContext());
 		prodotti = slk_utility.getAllProducts();	
 		if(prodotti.isEmpty()){
 			slk_utility.setProducts();
@@ -70,13 +68,13 @@ public class SLKFarmActivity extends TabActivity {
 
 
 		TabHost tabHost = getTabHost();
-		Intent gIntent = new Intent (this, ProductListActivity2.class);
+		Intent gIntent = new Intent (this, ProductListActivity.class);
 		gIntent.setAction(""+GREEN);
 		tabHost.addTab(tabHost.newTabSpec("GREEN").setContent(gIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.greenbutton, null)));
-		Intent yIntent = new Intent (this, ProductListActivity2.class);
+		Intent yIntent = new Intent (this, ProductListActivity.class);
 		yIntent.setAction(""+YELLOW);
 		tabHost.addTab(tabHost.newTabSpec("YELLOW").setContent(yIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.yellowbutton, null)));
-		Intent rIntent = new Intent (this, ProductListActivity2.class);
+		Intent rIntent = new Intent (this, ProductListActivity.class);
 		rIntent.setAction(""+RED);
 		tabHost.addTab(tabHost.newTabSpec("RED").setContent(rIntent).setIndicator(View.inflate(getApplicationContext(), R.layout.redbutton, null)));
 
@@ -106,7 +104,7 @@ public class SLKFarmActivity extends TabActivity {
 				LogHandler.appendLog("compare"+" button "+"clicked");
 
 				if(prodotti_selezionati.size()>0){
-					Intent intent = new Intent(SLKFarmActivity.this,CompareActivity.class);
+					Intent intent = new Intent(MainListActivity.this,CompareActivity.class);
 					startActivity(intent);
 				}
 				else if(prodotti_selezionati.isEmpty()){
@@ -146,13 +144,21 @@ public class SLKFarmActivity extends TabActivity {
 				boolean flag=false;
 				String value = input.getText().toString();
 				if(!value.contains(" ")){
-					Log.i("value-->",value);
 					for(int i=0; i<prodotti.size(); i++){
 						Product p = prodotti.get(i);
 						Log.i("prodott["+i+"]-->",p.getName());
 						if(p.getName().equalsIgnoreCase(value)){
 							flag = true;
-							SLKFarmActivity.prodotti_selezionati.add(p);
+							MainListActivity.prodotti_selezionati.add(p);
+						}
+					}
+					if(!flag){
+						for(int i=0; i<prodotti.size(); i++){
+							Product p = prodotti.get(i);
+							if(p.getVariety().equalsIgnoreCase(value)){
+								flag = true;
+								MainListActivity.prodotti_selezionati.add(p);
+							}
 						}
 					}
 				}
@@ -165,7 +171,7 @@ public class SLKFarmActivity extends TabActivity {
 						Log.i("prodott["+i+"]-->",idProductNoSpace);
 						if(idProductNoSpace.equalsIgnoreCase(value)){
 							flag = true;
-							SLKFarmActivity.prodotti_selezionati.add(p);
+							MainListActivity.prodotti_selezionati.add(p);
 						}
 					}
 				}
@@ -174,7 +180,7 @@ public class SLKFarmActivity extends TabActivity {
 					dialogBuilder.createToast(R.string.productNotFound, "", (Activity)context).show();
 				}
 				else{
-					Intent intent = new Intent(SLKFarmActivity.this, CompareActivity.class);
+					Intent intent = new Intent(MainListActivity.this, CompareActivity.class);
 					intent.putExtra("clear", false);
 					startActivity(intent);
 				}
