@@ -37,6 +37,18 @@ public class SLKStorage {
 		mDbHelper.close();
 	}
 
+	public void insertProduction(String production_id, String production_quantity, String farm_id){
+		ContentValues cv = new ContentValues();
+		cv.put(ProductionMetaData.PRODUCTION_ID, production_id);
+		cv.put(ProductionMetaData.PRODUCTION_QUANTITY, production_quantity);
+		cv.put(ProductionMetaData.FARM_ID, farm_id);
+		mDb.insert(ProductionMetaData.PRODUCTION_TABLE, null, cv);
+	}
+	
+	public void getProduction(){
+		//To Do
+	}
+	
 	/* Con questo metodi si inseriscono i prodotti nel database
 	 * name prende in input il nome del prodotto che è anche la chiave
 	 * price il prezzo del prodotto
@@ -45,7 +57,7 @@ public class SLKStorage {
 	 * q_venduta_anno_prec e' la quantita di prodotto venduta l'anno precedente
 	 * q_prev_anno_corr e' la quantita preventivata fino ad ora
 	 * */
-	public void insertProduct(String id, String name, String variety,double price,String color, String weight,String size,String img,int lista,double supp,double q_venduta_anno_prec,double q_prev_anno_corr){ //metodo per inserire i dati
+	public void insertProduct(String id, String name, String variety,double price,String color, String weight,String size,String img,int lista,double supp,double q_venduta_anno_prec,double q_prev_anno_corr,String cropId,String cultivarId){ //metodo per inserire i dati
 		ContentValues cv=new ContentValues();
 		cv.put(ProductsMetaData.PRODUCT_ID, id);
 		cv.put(ProductsMetaData.PRODUCT_NAME, name);
@@ -59,6 +71,8 @@ public class SLKStorage {
 		cv.put(ProductsMetaData.PRODUCT_PRODUCTION_LEVEL, supp);
 		cv.put(ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC, q_venduta_anno_prec);
 		cv.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
+		cv.put(ProductsMetaData.PRODUCT_CROPID, cropId);
+		cv.put(ProductsMetaData.PRODUCT_CULTIVARID, cultivarId);
 		mDb.insert(ProductsMetaData.PRODUCTS_TABLE, null, cv);
 	}
 	/*Metodo per incrementare la quantità di prodotto dopo che è stata modificata nella schermata finale*/
@@ -158,6 +172,14 @@ public class SLKStorage {
 		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" ASC",null);               
 	}
 
+	//metadati della tabella production
+	static public class ProductionMetaData {
+		static public final String PRODUCTION_TABLE = "Production";
+		static public final String PRODUCTION_ID = "productionid";
+		static public final String PRODUCTION_QUANTITY = "quantity";
+		static public final String FARM_ID = "farmid";
+	}
+	
 	// i metadati della tabella products, accessibili ovunque
 	static public class ProductsMetaData {  
 		static public final String PRODUCTS_TABLE = "Crops";
@@ -173,6 +195,8 @@ public class SLKStorage {
 		static public final String PRODUCT_QUANT_VEND_ANNO_PREC = "q_vend_anno_prec";
 		static public final String PRODUCT_QUANT_PREV_ANNO_CORR = "q_prev_anno_corr";
 		static public final String PRODUCT_PRODUCTION_LEVEL = "productionLevel";
+		static public final String PRODUCT_CROPID = "cropId";
+		static public final String PRODUCT_CULTIVARID = "cultivarId";
 	}
 
 	// i metadati della tabella HISTORY, accessibili ovunque
@@ -193,6 +217,12 @@ public class SLKStorage {
 		public static final String PRODUCT_VARIETY = "variety";
 	}
 
+	//sql code for the creation of PRODUCTION table
+	private static final String PRODUCTION_TABLE_CREATE = "CREATE TABLE "
+			+ ProductionMetaData.PRODUCTION_TABLE + " ("
+			+ ProductionMetaData.PRODUCTION_ID + " text primary key, "
+			+ ProductionMetaData.PRODUCTION_QUANTITY + " text, "
+			+ ProductionMetaData.FARM_ID + " text);";
 	
 	//sql code for the creation of PRODUCTS table
 	private static final String PRODUCTS_TABLE_CREATE = "CREATE TABLE "  
@@ -208,7 +238,9 @@ public class SLKStorage {
 			+ ProductsMetaData.PRODUCT_LISTA + " double,"
 			+ ProductsMetaData.PRODUCT_PRODUCTION_LEVEL + " int not null, "
 			+ ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC + " double,"
-			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " double);";
+			+ ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR + " double,"
+			+ ProductsMetaData.PRODUCT_CROPID + " text,"
+			+ ProductsMetaData.PRODUCT_CULTIVARID + " text);";
 
 	//sql code for the creation of HISTORY table
 	private static final String HISTORY_TABLE_CREATE = "CREATE TABLE "  
@@ -237,6 +269,7 @@ public class SLKStorage {
 		public void onCreate(SQLiteDatabase _db) { 
 			_db.execSQL(PRODUCTS_TABLE_CREATE);
 			_db.execSQL(HISTORY_TABLE_CREATE);
+			_db.execSQL(PRODUCTION_TABLE_CREATE);
 		}
 
 

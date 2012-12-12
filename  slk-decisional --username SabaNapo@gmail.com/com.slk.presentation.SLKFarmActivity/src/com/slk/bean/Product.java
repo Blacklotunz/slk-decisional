@@ -17,8 +17,15 @@ public class Product{
 	private Double max_production;
 	private Double current_production;
 	private String colorr,weight,size;
+	private String cropId, cultivarId;
+	
+	public Product(){
+		
+	}
 
-	public Product(String id, String name, String variety, double price, String color,String weight,String size,String imgURL, int productionLevel, int lista, Double max_production,Double current_production){
+	public Product( String cropId, String cultivarId,String id, String name, String variety, double price, String color,String weight,String size,String imgURL, int productionLevel, int lista, Double max_production,Double current_production){
+		this.setCropId(cropId);
+		this.setCultivarId(cultivarId);
 		this.id=id;
 		this.name=name;
 		this.variety=variety;
@@ -142,6 +149,22 @@ public class Product{
 
 	public void setSize(String size) {
 		this.size = size;
+	}
+
+	public String getCropId() {
+		return cropId;
+	}
+
+	public void setCropId(String cropId) {
+		this.cropId = cropId;
+	}
+
+	public String getCultivarId() {
+		return cultivarId;
+	}
+
+	public void setCultivarId(String cultivarId) {
+		this.cultivarId = cultivarId;
 	}
 
 }
