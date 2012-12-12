@@ -8,10 +8,12 @@ import com.slk.application.Application;
 import com.slk.bean.Product;
 import com.slk.log.LogHandler;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +50,7 @@ public class DetailActivity extends Activity {
 	Application slk_utility;
 	private Context context;
 	private int index;
+	private ProgressDialog pd;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -192,8 +195,8 @@ public class DetailActivity extends Activity {
 		/**
 		 * lavorare da qui. Il nuovo algoritmo deve inviare messaggi JSon al backend e memorizzare le risposte.
 		 */
-		slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getCurrent_production(),actualPrevisione);
-		slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
+		//slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getCurrent_production(),actualPrevisione);
+		//slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
 		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getName(),prod_selezionato.getVariety(), prod_selezionato.getPrice(), prodotto_selezionato.getImg(), prod_selezionato.getColor(), slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getMax_production(), prod_selezionato.getCurrent_production(), actualPrevisione);
 	
 		this.onResume();
@@ -235,21 +238,15 @@ public class DetailActivity extends Activity {
 		alert.show();
 	}
 
-	//check supplyLevel for change background color and product's list. This method won't be used since the 1st branch cause funtional differences
-	public void checkSupplyLevel(){/*
-		if (prodotto_selezionato.getProductionLevel()<=33)//green list
-			prodotto_selezionato.setLista(1);
 
-		else if (prodotto_selezionato.getProductionLevel()>=34 && prodotto_selezionato.getProductionLevel()<=67)//yellow list
-			prodotto_selezionato.setLista(2);
-
-		else if(prodotto_selezionato.getProductionLevel()>=68)//red list
-			prodotto_selezionato.setLista(3);	*/	
+	public void setSupplyLevel(){
+			slk_utility.insertProductInWS(this.actualPrevisione, prodotto_selezionato.getCropId(), prodotto_selezionato.getCultivarId());
+			 
 	}
 
 
 	//set new supply level (simulate the method that should run on back-end)
-	public void setSupplyLevel(){
+	public void checkSupplyLevel(){
 		if (prodotto_selezionato.getProductionLevel()<=33){//green list
 
 			if(prodotto_selezionato.getProductionLevel()<=11){
@@ -308,12 +305,18 @@ public class DetailActivity extends Activity {
 
 			public void onClick(DialogInterface dialog, int id) {
 				LogHandler.appendLog("yes"+" button "+"selected");
+				
 				/**
 				 * choice is a simulated data from the backend
 				 */
-				choice = (int) (actualPrevisione/10);
-				prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
-				setSupplyLevel(); //change the background color and set the supply level into the bean
+				//choice = (int) (actualPrevisione/10);
+				//prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
+				
+				pd = ProgressDialog.show(context,getString(R.string.wait),getString(R.string.retrieving),true,false);
+				Handler h = new Handler();
+				h.execute();
+				
+				
 				checkSupplyLevel();
 				inserisciProdottoPianificato(prodotto_selezionato);
 
@@ -346,5 +349,30 @@ public class DetailActivity extends Activity {
 		super.onDestroy();
 		LogHandler.appendLog("DetailActivity"+" activity "+"destroyed");
 	}
+	
+private class Handler extends AsyncTask<Integer,Integer,Integer>{
+		
+		@Override
+		protected Integer doInBackground(Integer...values) {
+			/*
+			 * initialize the products database fetching the products from WS, 
+			 * the connection will happen only if the db will be empty.
+			 */	
+			setSupplyLevel();
+			LogHandler.appendLog("insertProduction"+" method "+"called");
+			return values[0];
+		}
+		@Override
+	      protected void onProgressUpdate(Integer...values) {
+	         // aggiorno la progress dialog
+	      }
+		 @Override
+	     protected void onPostExecute(Integer result) {
+	        // chiudo la progress dialog
+			LogHandler.appendLog("insertProduction"+" data "+"received");
+	        pd.dismiss();
+	     }
+	}
+	
 
 }

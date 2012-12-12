@@ -5,6 +5,7 @@ package com.slk.application;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -125,12 +126,14 @@ public class Application {
 		int colCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_COLOR);
 		int weightCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_WEIGHT);
 		int sizeCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_SIZE);
+		int cropIdCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_CROPID);
+		int cultivIdCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_CULTIVARID);
 		Product prod;
 
 		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
-				prod=new Product(c.getString(idCol),c.getString(nameCol), c.getString(varietyCol),c.getDouble(priceCol),c.getString(colCol),c.getString(weightCol),c.getString(sizeCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
+				prod=new Product(c.getString(cropIdCol),c.getString(cultivIdCol),c.getString(idCol),c.getString(nameCol),c.getString(varietyCol),c.getDouble(priceCol),c.getString(colCol),c.getString(weightCol),c.getString(sizeCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
 				toReturn.add(prod);
 			} while (c.moveToNext());//iteriamo al prossimo elemento
 		}
@@ -219,9 +222,9 @@ public class Application {
 		db.close();
 	}
 	//Metodo di inserimento di un prodotto nella tabella Products
-	public void insertProduct(String id, String name,String variety,double price,String color, String weight, String size,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr){
+	public void insertProduct(String id, String name,String variety,double price,String color, String weight, String size,String img,int lista,int supp,int q_venduta_anno_prec,int q_prev_anno_corr, String cropId, String cultivarId){
 		db.open();
-		db.insertProduct(id,name, variety, price,color,weight,size,img, lista, supp,q_venduta_anno_prec, q_prev_anno_corr);
+		db.insertProduct(id,name, variety, price,color,weight,size,img, lista, supp,q_venduta_anno_prec, q_prev_anno_corr, cropId, cultivarId);
 		db.close();		
 	}
 
@@ -304,8 +307,16 @@ public class Application {
 					JSONObject pobjj=obj.getJSONObject("production");
 					JSONObject cobjj=obj.getJSONObject("characteristics");
 					
-					db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), Double.parseDouble(pobjj.getString("currentProduction")));
+					/*avoid error on parse*/
+					Double currentProduction;
+					if(pobjj.getString("currentProduction").equalsIgnoreCase("null"))
+						currentProduction = 0.0;
+					else
+						currentProduction = Double.parseDouble(pobjj.getString("currentProduction"));
+					/* */
+					db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), currentProduction, objj.getString("cropId"),objj.getString("cultivarId"));
 					
+					//download image
 					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropName")+objj.getString("cultivarName"), c);			
 				} catch (NumberFormatException e) {					
 					e.printStackTrace();
@@ -322,7 +333,7 @@ public class Application {
 	private static int getListOfProduct(String type){
 		if(type.equalsIgnoreCase("vegetable")){
 			return 1;
-		}else if(type.equalsIgnoreCase("fruit")){
+		}else if(type.equalsIgnoreCase("fruits")){
 			return 2;
 		}else
 			return 3;
@@ -342,5 +353,48 @@ public class Application {
 		else 
 			return 0;
 	}
+	
+	
+	
+	public Product insertProductInWS(Double quantity, String cropid, String cultivarid){
+		HttpConnector http = new HttpConnector();
+		Map<String,String> map = http.insertProduction(quantity, cropid, cultivarid);
+		String production_id = map.get("production_id");
+		String production_quantity = map.get("production_quantity");
+		String farm_id = map.get("farm_id");
+		db.insertProduction(production_id, production_quantity, farm_id);
+		setProductsFromWS();
+		Product toReturn= new Product();
+		Cursor c = db.fetchProducts();
+		//indici delle colonne
+		int idCol =c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_ID);
+		int nameCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_NAME);  
+		int priceCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_PRICE);
+		int imgCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_IMG);
+		int listaCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_LISTA);
+		int qVendAnnPreCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC);
+		int qPrevAnnCorrCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR);
+		int productionLevelCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_PRODUCTION_LEVEL);
+		int varietyCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_VARIETY);
+		int colCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_COLOR);
+		int weightCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_WEIGHT);
+		int sizeCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_SIZE);
+		int cropIdCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_CROPID);
+		int cultivIdCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_CULTIVARID);
+		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
+			do {
+				//estrazione dei dati dalla entry del cursor
+				Product prod = new Product(c.getString(cropIdCol),c.getString(cultivIdCol),c.getString(idCol),c.getString(nameCol),c.getString(varietyCol),c.getDouble(priceCol),c.getString(colCol),c.getString(weightCol),c.getString(sizeCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
+				if((prod.getCropId()==cropid) && (prod.getCultivarId()==cultivarid))
+					toReturn = prod;
+			} while (c.moveToNext());//iteriamo al prossimo elemento
+		}
+		else{
+			Log.e("error", "no products found");
+		}
+		
+		return toReturn;
+	}
+	
 	
 }

@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,7 +27,7 @@ import android.util.Log;
 
 public class HttpConnector 
 {
-	public static String num, pin, farmId;
+	public static String num, pin, farmId, secretkey;
 
 	private InputStream inputStream; 	
 	private JSONObject jsonObject;
@@ -118,29 +122,18 @@ public class HttpConnector
 		return farms;
 	}
 
-	//fetch only vegetables for now
+	//fetch all products now!!
 	public ArrayList<JSONObject> fetchProducts() throws ClientProtocolException, IllegalStateException, IOException, JSONException {
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
-		//for test of httpConnector methods
 		HttpConnector http = new HttpConnector();
+		
+		Log.i("HttpConnector.java", "secretkey = "+secretkey);
 
-		//delete this call when test will finish
-		if(http.login("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/registration", num, pin)==200){
-
-			JSONObject jsonObj = http.getJson();
-			if(jsonObj.getInt("success")==1){
-				String  secretkey = jsonObj.getJSONObject("user").getJSONObject("farmer").getString("secretkey");
-				Log.i("HttpConnector.java", "secretkey = "+secretkey);
-				if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
-					JSONObject jsonObject= http.getJson();
-					//products = getProductListFromJSON(jsonObject);
-					products = getProductListFromJSONTEST(jsonObject);
-				}
-			}else
-				Log.e("HttpConnector.java", "not successfull operation");
+		if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
+			JSONObject jsonObject= http.getJson();
+			products = getProductListFromJSONTEST(jsonObject);
 		}else
 			Log.e("HttpConnector.java", "not successfull operation");
-
 		return products;
 	}
 
@@ -175,59 +168,147 @@ public class HttpConnector
 	//method to get products from test JSONObject
 	private ArrayList<JSONObject> getProductListFromJSONTEST(JSONObject jsonObject){
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
-		
-		
-		
+
 		try {
-			//fetch vegetable here
 			JSONObject cropInfo = jsonObject.getJSONObject("cropInfo");
-			JSONObject vegetable= cropInfo.getJSONObject("Vegetable");				
-			int i,j;
-			int size = (vegetable.names().length());
-			for(i=0;i<size;i++){
-				//get the length of each vegetable
-				if(!((String)vegetable.names().get(i)).equalsIgnoreCase("label")){
-					JSONObject variety = vegetable.getJSONObject((String)vegetable.names().get(i));
-					JSONObject cultivar = variety.getJSONObject("cultivar");
-					int k = cultivar.names().length();
-					Log.i("cultivar names", ""+cultivar.names());
-					//get each vegetable
-					for(j=0;j<k;j++){
-						products.add(cultivar.getJSONObject((String)cultivar.names().get(j)));
-						Log.i("product",""+cultivar.getJSONObject((String)cultivar.names().get(j)));
+			ArrayList<String>cropTypes = new ArrayList<String>();
+			Iterator keys =cropInfo.keys();
+			//itera tutte le tipologie di prodotti
+			while(keys.hasNext()){
+				String s = keys.next().toString();
+				cropTypes.add(s);
+			}
+			for(String crop : cropTypes){
+				JSONObject vegetable= cropInfo.getJSONObject(crop);				
+				int i,j;
+				int size = (vegetable.names().length());
+				for(i=0;i<size;i++){
+					//get the length of each vegetable
+					if(!((String)vegetable.names().get(i)).equalsIgnoreCase("label")){
+						JSONObject variety = vegetable.getJSONObject((String)vegetable.names().get(i));
+						JSONObject cultivar = variety.getJSONObject("cultivar");
+						int k = cultivar.names().length();
+						Log.i("cultivar names", ""+cultivar.names());
+						//get each vegetable
+						for(j=0;j<k;j++){
+							products.add(cultivar.getJSONObject((String)cultivar.names().get(j)));
+							Log.i("product",""+cultivar.getJSONObject((String)cultivar.names().get(j)));
+						}
 					}
 				}
 			}
-			Log.i("vegetables", products.toString());
-/*
-			//fetch fruits here	
-			JSONObject fruits= cropInfo.getJSONObject("Fruits");				
-			size = (fruits.names().length());
-			for(i=0;i<size;i++){
-				//get the length of each vegetable
-				if(!((String)fruits.names().get(i)).equalsIgnoreCase("label")){
-					JSONObject variety = fruits.getJSONObject((String)fruits.names().get(i));
-					JSONObject cultivar = variety.getJSONObject("cultivar");
-					int k = cultivar.names().length();
-					Log.i("cultivar names", ""+cultivar.names());
-					//get each fruit
-					for(j=0;j<k;j++){
-						products.add(cultivar.getJSONObject((String)cultivar.names().get(j)));
-						Log.i("product",""+cultivar.getJSONObject((String)cultivar.names().get(j)));
-					}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}						
+		return products;
+	}
+
+	public Map<String,String> insertProduction(Double quantity, String cropid, String cultivarid){
+		post = new HttpPost("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop");
+		Map<String,String> toReturn = new HashMap<String,String>();
+		
+		//Tag – “production” 
+		//secretkey, control,farmid – quantity, cropid, cultivarid, timestamp
+		Date timestamp = new Date();
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(8);
+		nameValuePairs.add(new BasicNameValuePair("tag","production"));
+		nameValuePairs.add(new BasicNameValuePair("secretkey",secretkey));
+		nameValuePairs.add(new BasicNameValuePair("farmid",farmId));
+		nameValuePairs.add(new BasicNameValuePair("control","insert"));
+		nameValuePairs.add(new BasicNameValuePair("quantity",quantity+""));
+		nameValuePairs.add(new BasicNameValuePair("cropid",cropid));
+		nameValuePairs.add(new BasicNameValuePair("cultivarid",cultivarid));
+		nameValuePairs.add(new BasicNameValuePair("cultivarid",cultivarid));
+		nameValuePairs.add(new BasicNameValuePair("timestamp",timestamp.getTime()+""));
+
+		try {
+			post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			response = client.execute(post);
+			if (response.getStatusLine().getStatusCode()==200){
+				//OK
+				JSONObject json = getJson();
+				if(!(json.getString("error").equalsIgnoreCase("1"))){
+					
+				toReturn.put("production_id",json.getString("production_id"));
+				toReturn.put("production_quantity",json.getString("production_quantity"));
+				toReturn.put("farm_id",json.getString("farm_id"));
+				}
+				else{
+					Log.e("error", "1");
 				}
 			}
-			Log.i("fruits", products.toString());
-			*/
+			else{
+				Log.e("error", "http error");
+			}
+			
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}						
+		}
 
-		return products;
-
+		return toReturn;
 	}
-	
-	
+
+
+
+
+	public Map<String,String> updateProduction(Double quantity, String productionid){
+
+		post = new HttpPost("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop");
+		Map<String,String> toReturn = new HashMap<String,String>();
+		
+		//Tag – “production” 
+		//secretkey, control,farmid – quantity, productionid
+		Date timestamp = new Date();
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(8);
+		nameValuePairs.add(new BasicNameValuePair("tag","production"));
+		nameValuePairs.add(new BasicNameValuePair("secretkey",secretkey));
+		nameValuePairs.add(new BasicNameValuePair("farmid",farmId));
+		nameValuePairs.add(new BasicNameValuePair("control","update"));
+		nameValuePairs.add(new BasicNameValuePair("quantity",quantity+""));
+		nameValuePairs.add(new BasicNameValuePair("productionid",productionid));
+
+		try {
+			post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			response = client.execute(post);
+			if (response.getStatusLine().getStatusCode()==200){
+				//OK
+				JSONObject json = getJson();
+				if(!(json.getString("error").equalsIgnoreCase("1"))){
+					
+				toReturn.put("production_id",json.getString("production_id"));
+				toReturn.put("production_quantity",json.getString("production_quantity"));
+				toReturn.put("farm_id",json.getString("farm_id"));
+				}
+				else{
+					Log.e("error", "1");
+				}
+			}
+			else{
+				Log.e("error", "http error");
+			}
+			
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return toReturn;
+	}
 
 }

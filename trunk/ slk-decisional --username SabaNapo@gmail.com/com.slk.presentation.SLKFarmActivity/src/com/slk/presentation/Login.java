@@ -310,6 +310,10 @@ public class Login extends Base implements OnClickListener, Runnable
 							JSONObject farmerJson = json.getJSONObject("user").getJSONObject("farmer");
 							String secretKey = farmerJson.getString("secretkey");
 							Log.i("secretKey", secretKey);
+							
+							HttpConnector.secretkey = secretKey;
+							
+							
 							int n = dbAdapter.updateSecretKey(farmer.getId(), secretKey);
 							Log.i("result update", String.valueOf(n));
 							if (n != -1)
