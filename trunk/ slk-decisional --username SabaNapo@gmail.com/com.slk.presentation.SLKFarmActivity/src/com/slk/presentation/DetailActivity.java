@@ -41,7 +41,7 @@ public class DetailActivity extends Activity {
 	private static final String OVER_SUPPLY_68_79 = "#FE2E2E";
 	private static final String OVER_SUPPLY_80_91 = "#B40404";
 	private static final String OVER_SUPPLY_92_100 = "#610B0B";
-	private Product prodotto_selezionato; 
+	private static Product prodotto_selezionato; 
 
 	protected static final int SINGLE_CHOICE_DIALOG = 1;
 	private int choice;
@@ -74,7 +74,7 @@ public class DetailActivity extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(ImageHandler.loadImage(this, prodotto_selezionato.getId()).getAbsolutePath());
 		image.setImageBitmap(bitmap);
 
-/*
+		/*
 		TextView nome=(TextView)findViewById(R.id.nome);
 		nome.setText(prodotto_selezionato.getName().toUpperCase());
 		//if background color is a dark red set textColor to white
@@ -106,7 +106,7 @@ public class DetailActivity extends Activity {
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info4.setTextColor(Color.WHITE);
-*/
+		 */
 
 		TextView prevision = (TextView) findViewById(R.id.prevision);
 		prevision.setText(getString(R.string.yProduction)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId()));
@@ -183,7 +183,7 @@ public class DetailActivity extends Activity {
 		TextView info4=(TextView)findViewById(R.id.info4);
 		info4.setText(getString(R.string.pergentage)+" : "+prodotto_selezionato.getProductionLevel()+"%"+"\n\n"
 				+"Product characteristics"+"\n Color: "+prodotto_selezionato.getColorr()+"\n Size: "
-					+prodotto_selezionato.getSize()+"\n Weight: "+prodotto_selezionato.getWeight());
+				+prodotto_selezionato.getSize()+"\n Weight: "+prodotto_selezionato.getWeight());
 		//if background color is a dark red set textColor to white
 		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
 			info4.setTextColor(Color.WHITE);
@@ -198,7 +198,7 @@ public class DetailActivity extends Activity {
 		//slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getCurrent_production(),actualPrevisione);
 		//slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
 		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getName(),prod_selezionato.getVariety(), prod_selezionato.getPrice(), prodotto_selezionato.getImg(), prod_selezionato.getColor(), slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getMax_production(), prod_selezionato.getCurrent_production(), actualPrevisione);
-	
+
 		this.onResume();
 	}
 
@@ -240,15 +240,13 @@ public class DetailActivity extends Activity {
 
 
 	public void setSupplyLevel(){
-			slk_utility.insertProductInWS(this.actualPrevisione, prodotto_selezionato.getCropId(), prodotto_selezionato.getCultivarId());
-			 
+		prodotto_selezionato = slk_utility.insertProductInWS(this.actualPrevisione, prodotto_selezionato.getCropId(), prodotto_selezionato.getCultivarId());
 	}
 
 
-	//set new supply level (simulate the method that should run on back-end)
-	public void checkSupplyLevel(){
+	//check new supply level
+	public synchronized void checkSupplyLevel(){
 		if (prodotto_selezionato.getProductionLevel()<=33){//green list
-
 			if(prodotto_selezionato.getProductionLevel()<=11){
 				relLay.setBackgroundColor(Color.parseColor(UNDER_SUPPLY_0_11));
 				prodotto_selezionato.setColor(Color.parseColor(UNDER_SUPPLY_0_11));		
@@ -290,6 +288,16 @@ public class DetailActivity extends Activity {
 				prodotto_selezionato.setColor(Color.parseColor(OVER_SUPPLY_92_100));
 			}
 		}
+		
+		//refresh text
+		TextView info3=(TextView)findViewById(R.id.info3);
+		info3.setText(getString(R.string.currProduction)+": "+prodotto_selezionato.getCurrent_production());
+		//if background color is a dark red set textColor to white
+		if(ColorSetter.getColours(prodotto_selezionato.getProductionLevel(), prodotto_selezionato.getLista())==-10417397)
+			info3.setTextColor(Color.WHITE);
+		
+		TextView prevision = (TextView) findViewById(R.id.prevision);
+		prevision.setText(getString(R.string.current)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 	}
 
 	private final Dialog createYesNoDialog() {
@@ -305,25 +313,22 @@ public class DetailActivity extends Activity {
 
 			public void onClick(DialogInterface dialog, int id) {
 				LogHandler.appendLog("yes"+" button "+"selected");
-				
+
 				/**
 				 * choice is a simulated data from the backend
 				 */
 				//choice = (int) (actualPrevisione/10);
 				//prodotto_selezionato.setProductionLevel(prodotto_selezionato.getProductionLevel()+choice);
-				
+
 				pd = ProgressDialog.show(context,getString(R.string.wait),getString(R.string.retrieving),true,false);
 				Handler h = new Handler();
 				h.execute();
-				
-				
-				checkSupplyLevel();
-				inserisciProdottoPianificato(prodotto_selezionato);
+
+
+				//checkSupplyLevel();
+				//inserisciProdottoPianificato(prodotto_selezionato);
 
 				ChoiceSupplyActivity.closeFlag=true;
-
-				TextView prevision = (TextView) findViewById(R.id.prevision);
-				prevision.setText(getString(R.string.current)+": "+slk_utility.getCurrentQuantity(prodotto_selezionato.getId())+" Kg");
 			}
 
 		});
@@ -349,30 +354,33 @@ public class DetailActivity extends Activity {
 		super.onDestroy();
 		LogHandler.appendLog("DetailActivity"+" activity "+"destroyed");
 	}
-	
-private class Handler extends AsyncTask<Integer,Integer,Integer>{
-		
+
+	private class Handler extends AsyncTask<Integer,Integer,Integer>{
+
 		@Override
 		protected Integer doInBackground(Integer...values) {
 			/*
 			 * initialize the products database fetching the products from WS, 
 			 * the connection will happen only if the db will be empty.
 			 */	
-			setSupplyLevel();
 			LogHandler.appendLog("insertProduction"+" method "+"called");
-			return values[0];
+			setSupplyLevel();
+			return 0;
 		}
 		@Override
-	      protected void onProgressUpdate(Integer...values) {
-	         // aggiorno la progress dialog
-	      }
-		 @Override
-	     protected void onPostExecute(Integer result) {
-	        // chiudo la progress dialog
+		protected void onProgressUpdate(Integer...values) {
+			// aggiorno la progress dialog
+			
+		}
+		@Override
+		protected void onPostExecute(Integer result) {
+			checkSupplyLevel();
+			inserisciProdottoPianificato(prodotto_selezionato);
+			// chiudo la progress dialog
 			LogHandler.appendLog("insertProduction"+" data "+"received");
-	        pd.dismiss();
-	     }
+			pd.dismiss();	        
+		}
 	}
-	
+
 
 }

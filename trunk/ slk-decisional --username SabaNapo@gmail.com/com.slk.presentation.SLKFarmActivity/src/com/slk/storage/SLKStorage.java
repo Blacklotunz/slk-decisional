@@ -76,12 +76,23 @@ public class SLKStorage {
 		mDb.insert(ProductsMetaData.PRODUCTS_TABLE, null, cv);
 	}
 	/*Metodo per incrementare la quantità di prodotto dopo che è stata modificata nella schermata finale*/
-	public void updateProduct(String id,int productionLevel,Double q_prev_anno_corr){
-		String strFilter = "id='" + id+"'";
-		ContentValues args = new ContentValues();
-		args.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
-		args.put(ProductsMetaData.PRODUCT_PRODUCTION_LEVEL,  productionLevel);
-		mDb.update("Crops", args, strFilter, null);	
+	public void updateProduct(String id, String name, String variety,double price,String color, String weight,String size,String img,int lista,double supp,double q_venduta_anno_prec,double q_prev_anno_corr,String cropId,String cultivarId){
+		ContentValues cv=new ContentValues();
+		cv.put(ProductsMetaData.PRODUCT_ID, id);
+		cv.put(ProductsMetaData.PRODUCT_NAME, name);
+		cv.put(ProductsMetaData.PRODUCT_VARIETY, variety);
+		cv.put(ProductsMetaData.PRODUCT_PRICE, price);
+		cv.put(ProductsMetaData.PRODUCT_COLOR, color);
+		cv.put(ProductsMetaData.PRODUCT_WEIGHT, weight);
+		cv.put(ProductsMetaData.PRODUCT_SIZE, size);
+		cv.put(ProductsMetaData.PRODUCT_IMG, img);
+		cv.put(ProductsMetaData.PRODUCT_LISTA, lista);
+		cv.put(ProductsMetaData.PRODUCT_PRODUCTION_LEVEL, supp);
+		cv.put(ProductsMetaData.PRODUCT_QUANT_VEND_ANNO_PREC, q_venduta_anno_prec);
+		cv.put(ProductsMetaData.PRODUCT_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
+		cv.put(ProductsMetaData.PRODUCT_CROPID, cropId);
+		cv.put(ProductsMetaData.PRODUCT_CULTIVARID, cultivarId);
+		mDb.update(ProductsMetaData.PRODUCTS_TABLE, cv, ProductsMetaData.PRODUCT_ID+" = ?", new String[]{id});	
 	}
 
 	public void updateListaProduct(String id, int lista) {
