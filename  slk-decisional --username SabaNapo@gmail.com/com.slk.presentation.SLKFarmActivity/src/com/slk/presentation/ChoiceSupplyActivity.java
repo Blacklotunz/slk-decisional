@@ -117,7 +117,7 @@ public class ChoiceSupplyActivity extends Activity {
 			 * initialize the products database fetching the products from WS, 
 			 * the connection will happen only if the db will be empty.
 			 */	
-			slk_utility.setProductsFromWS();
+			slk_utility.setProductsFromWS(false);
 			LogHandler.appendLog("setProductsFromWS"+" method "+"called");
 			
 			Intent intent = new Intent(ChoiceSupplyActivity.this, MainListActivity.class);
