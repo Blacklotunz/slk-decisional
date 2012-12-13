@@ -32,12 +32,13 @@ public class MenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menuview);
 
-		//create the Log file where log is saved.
-		try {
-			LogHandler.createCachedFile(MenuActivity.this, "Log.txt", "Log created \n ------------------ \n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//create the Log file where log is saved. (Now it's created in ChoiceLanguageActivity)
+		/*		try {
+					LogHandler.createCachedFile(MenuActivity.this, "Log.txt", "Log created \n ------------------ \n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		*/
 		//write on log file
 		LogHandler.appendLog(this.toString()+" MenuViewActivity "+"created");
 		
@@ -104,10 +105,7 @@ public class MenuActivity extends Activity {
 		LogHandler.appendLog(this.toString()+" MenuViewActivity "+"destroyed");
 		LogHandler.appendLog("Application closed! \n ------------------------------ \n");		
 		try {
-			startActivity(LogHandler.getSendEmailIntent(
-					MenuActivity.this,
-					"sabanapo@gmail.com", "Log",
-					"See attached", "Log.txt"));
+			LogHandler.sendMail(MenuActivity.this);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(MenuActivity.this,"Gmail is not available on this device.",Toast.LENGTH_SHORT).show();
 		}

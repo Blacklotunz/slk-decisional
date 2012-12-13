@@ -23,11 +23,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.slk.application.Application;
+
 import android.util.Log;
 
 public class HttpConnector 
 {
-	public static String num, pin, farmId, secretkey;
+	public static String num, pin, farmId, secretkey, farmerId;
 
 	private InputStream inputStream; 	
 	private JSONObject jsonObject;
@@ -72,6 +74,11 @@ public class HttpConnector
 		nameValuePairs.add(new BasicNameValuePair("tag","getcropstest"));
 		nameValuePairs.add(new BasicNameValuePair("secretkey",secretkey));
 		nameValuePairs.add(new BasicNameValuePair("farmid",farmid));
+		if(Application.local.equalsIgnoreCase("en"))
+			nameValuePairs.add(new BasicNameValuePair("lang","en"));
+		else //if((Application.local.getDisplayLanguage().equalsIgnoreCase("sinhala")))
+			nameValuePairs.add(new BasicNameValuePair("lang","si"));
+	
 		post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		response = client.execute(post);
 		return response.getStatusLine().getStatusCode();
@@ -127,8 +134,6 @@ public class HttpConnector
 		ArrayList<JSONObject> products = new ArrayList<JSONObject>();
 		HttpConnector http = new HttpConnector();
 		
-		Log.i("HttpConnector.java", "secretkey = "+secretkey);
-
 		if(http.getCrops("http://webe1.scem.uws.edu.au/index.php/agriculture/web_services/index/crop", secretkey, farmId)==200){
 			JSONObject jsonObject= http.getJson();
 			products = getProductListFromJSONTEST(jsonObject);
@@ -179,6 +184,7 @@ public class HttpConnector
 				cropTypes.add(s);
 			}
 			for(String crop : cropTypes){
+				Log.i("-----------------", crop);
 				JSONObject vegetable= cropInfo.getJSONObject(crop);				
 				int i,j;
 				int size = (vegetable.names().length());
@@ -191,7 +197,9 @@ public class HttpConnector
 						Log.i("cultivar names", ""+cultivar.names());
 						//get each vegetable
 						for(j=0;j<k;j++){
-							products.add(cultivar.getJSONObject((String)cultivar.names().get(j)));
+							JSONObject product = cultivar.getJSONObject((String)cultivar.names().get(j));
+							product.put("myType", crop);
+							products.add(product);
 							Log.i("product",""+cultivar.getJSONObject((String)cultivar.names().get(j)));
 						}
 					}
