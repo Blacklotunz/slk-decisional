@@ -115,7 +115,7 @@ public class SLKStorage {
 	 * stagione distingue la stagione in cui si coltiva il prodotto: 1=primavera, 2=estate, 3=autunno, 4=inverno
 	 * q_prodotta e' la quantita' che è stata prodotta dall utente nell anno preso in considerazione
 	 * */
-	public void insertProductInHistory(String id, String name, String variety, double price, String imgURL, int colore, int anno,int mese,double q_venduta_anno_prec,double q_prev_anno_corr, double q_prodotta){
+	public void insertProductInHistory(String id, String name, String variety, double price, String imgURL, int colore, int anno,int mese,double q_venduta_anno_prec,double q_prev_anno_corr, double q_prodotta, String farmerId){
 		ContentValues cv=new ContentValues();
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_ID, id);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_NAME, name);
@@ -128,33 +128,35 @@ public class SLKStorage {
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_QUANT_VEND_ANNO_PREC, q_venduta_anno_prec);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_QUANT_PREV_ANNO_CORR, q_prev_anno_corr);
 		cv.put(HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA, q_prodotta);
+		cv.put(HistoryMetaData.PRODUCT_HISTORY_FARMERID, farmerId);
 		mDb.insert(HistoryMetaData.HISTORY_TABLE, null, cv);
 	}
 
-	public void updateProductInHistory(String id,double q_prodotta){
-		String strFilter = "id='" + id+"'";
+	public void updateProductInHistory(String id,double q_prodotta, String farmerId){
+		String strFilter = HistoryMetaData.PRODUCT_HISTORY_ID+" = '"+id+"' AND "+HistoryMetaData.PRODUCT_HISTORY_FARMERID+" = '"+farmerId+"'";
 		ContentValues args = new ContentValues();
 		args.put(HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA, q_prodotta);
 		mDb.update("history", args, strFilter, null);	
 	}
-	public void updateProductColorInHistory(String id,int colore){
-		String strFilter = "id='" + id+"'";
+	public void updateProductColorInHistory(String id,int colore, String farmerId){
+		String strFilter = HistoryMetaData.PRODUCT_HISTORY_ID+" = '"+id+"' AND "+HistoryMetaData.PRODUCT_HISTORY_FARMERID+" = '"+farmerId+"'";
 		ContentValues args = new ContentValues();
 		args.put(HistoryMetaData.PRODUCT_HISTORY_COLOR, colore);
 		mDb.update("history", args, strFilter, null);	
 	}
 
 	/*Metodo che ritorna il prodotto passato da name in un determinato anno(se è presente)*/
-	public Cursor getHistoryProductbyYear(String id,int anno){ 
-		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,HistoryMetaData.PRODUCT_HISTORY_ID+"='" + id + "'"+" and "+HistoryMetaData.PRODUCT_HISTORY_ANNO+"='" + anno + "'",null,null,null,null);
-		//return mDb.query("history", null,"id='" + id + "' and anno ='" + anno + "'",null,null,null,null);          
+	public Cursor getHistoryProductbyYear(String id,int anno, String farmerId){ 
+		String strFilter = HistoryMetaData.PRODUCT_HISTORY_ID+"='" + id + "'"+" AND "+HistoryMetaData.PRODUCT_HISTORY_ANNO+"='" + anno + "' AND "+HistoryMetaData.PRODUCT_HISTORY_FARMERID+" ='"+farmerId+"'";
+		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,strFilter,null,null,null,null);          
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
 	 *appartenenti alla tabella history
 	 *ordinati in base all anno*/	
-	public Cursor fetchHistoryProducts(){ 
-		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,null,null,null,null,"anno",null);               
+	public Cursor fetchHistoryProducts(String farmerId){
+		String strFilter = HistoryMetaData.PRODUCT_HISTORY_FARMERID +"='"+farmerId+"'";
+		return mDb.query(HistoryMetaData.HISTORY_TABLE, null,strFilter,null,null,null,"anno",null);               
 	}
 
 	/*Metodo che restituisce tutti gli elementi 
@@ -183,6 +185,19 @@ public class SLKStorage {
 		return mDb.query(ProductsMetaData.PRODUCTS_TABLE, null,ProductsMetaData.PRODUCT_LISTA+"==3",null,null,null,ProductsMetaData.PRODUCT_PRODUCTION_LEVEL+" ASC",null);               
 	}
 
+	public void dropProductTable(){
+		//mDb.execSQL("DROP TABLE IF EXISTS "+ProductsMetaData.PRODUCTS_TABLE);
+		mDb.delete(ProductsMetaData.PRODUCTS_TABLE, null, null);
+	}
+	
+	/*public void dropHistoryTable(){
+	    mDb.execSQL("DROP TABLE IF EXISTS "+HistoryMetaData.HISTORY_TABLE);
+	}
+	
+	public void dropProductionTable(){
+		mDb.execSQL("DROP TABLE IF EXISTS "
+		mDb.delete(ProductionMetaData.PRODUCTION_TABLE, null, null);
+	}*/
 	//metadati della tabella production
 	static public class ProductionMetaData {
 		static public final String PRODUCTION_TABLE = "Production";
@@ -226,6 +241,7 @@ public class SLKStorage {
 		static public final String PRODUCT_HISTORY_QUANT_PREV_ANNO_CORR = "q_prev_anno_corr";
 		static public final String PRODUCT_HISTORY_QUANTIT_PRODOTTA =	"q_prodotta";
 		public static final String PRODUCT_VARIETY = "variety";
+		public static final String PRODUCT_HISTORY_FARMERID = "farmerid";
 	}
 
 	//sql code for the creation of PRODUCTION table
@@ -266,7 +282,8 @@ public class SLKStorage {
 			+ HistoryMetaData.PRODUCT_HISTORY_MESE + " int,"
 			+ HistoryMetaData.PRODUCT_HISTORY_QUANT_VEND_ANNO_PREC + " double,"
 			+ HistoryMetaData.PRODUCT_HISTORY_QUANT_PREV_ANNO_CORR + " double,"
-			+ HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA + " double);";
+			+ HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA + " double, "
+			+ HistoryMetaData.PRODUCT_HISTORY_FARMERID + " text );";
 
 
 	//classe che ci aiuta nella creazione del db

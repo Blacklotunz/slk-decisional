@@ -198,8 +198,6 @@ public class DetailActivity extends Activity {
 		//slk_utility.updateProduct(prod_selezionato.getId(),prod_selezionato.getProductionLevel(),prod_selezionato.getCurrent_production(),actualPrevisione);
 		//slk_utility.updateListProduct(prod_selezionato.getId(),prod_selezionato.getLista());
 		slk_utility.insertOrUpdateProductInHistory(prod_selezionato.getId(), prod_selezionato.getName(),prod_selezionato.getVariety(), prod_selezionato.getPrice(), prodotto_selezionato.getImg(), prod_selezionato.getColor(), slk_utility.getCurrentYear(), slk_utility.getCurrentMonth(), prod_selezionato.getMax_production(), prod_selezionato.getCurrent_production(), actualPrevisione);
-
-		this.onResume();
 	}
 
 
@@ -374,8 +372,9 @@ public class DetailActivity extends Activity {
 		}
 		@Override
 		protected void onPostExecute(Integer result) {
-			checkSupplyLevel();
 			inserisciProdottoPianificato(prodotto_selezionato);
+			checkSupplyLevel();
+			
 			// chiudo la progress dialog
 			LogHandler.appendLog("insertProduction"+" data "+"received");
 			pd.dismiss();	        

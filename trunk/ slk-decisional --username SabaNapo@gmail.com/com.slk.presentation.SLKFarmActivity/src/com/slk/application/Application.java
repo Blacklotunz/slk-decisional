@@ -5,6 +5,7 @@ package com.slk.application;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
@@ -13,7 +14,9 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.slk.bean.HistoryProdotto;
@@ -24,6 +27,7 @@ import com.slk.storage.SLKStorage;
 public class Application {
 	SLKStorage db;
 	Context c;
+	public static String local="en";
 
 	public Application(Context ct){
 		//istanzia il layer storage
@@ -50,7 +54,7 @@ public class Application {
 		int lastYear=this.getCurrentYear()-1;
 		String toReturn;
 		db.open();
-		Cursor c=db.getHistoryProductbyYear(id, lastYear);
+		Cursor c=db.getHistoryProductbyYear(id, lastYear, HttpConnector.farmerId);
 		if(c.moveToFirst()){
 			int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
 			toReturn="Last production: "+c.getInt(quantCol)+" Kg";
@@ -66,7 +70,7 @@ public class Application {
 	public int getCurrentQuantity(String id){
 		int toReturn=0;
 		db.open();
-		Cursor c=db.getHistoryProductbyYear(id, this.getCurrentYear());
+		Cursor c=db.getHistoryProductbyYear(id, this.getCurrentYear(), HttpConnector.farmerId);
 		if(c.moveToFirst()){
 			int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
 			toReturn=c.getInt(quantCol);
@@ -130,7 +134,7 @@ public class Application {
 		int cultivIdCol=c.getColumnIndex(SLKStorage.ProductsMetaData.PRODUCT_CULTIVARID);
 		Product prod;
 
-		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
+		if(c.moveToFirst()){  //se va alla prima entry, il cursore non Ã‹ vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
 				prod=new Product(c.getString(cropIdCol),c.getString(cultivIdCol),c.getString(idCol),c.getString(nameCol),c.getString(varietyCol),c.getDouble(priceCol),c.getString(colCol),c.getString(weightCol),c.getString(sizeCol),c.getString(imgCol),c.getInt(productionLevelCol),c.getInt(listaCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol));
@@ -156,7 +160,7 @@ public class Application {
 	public ArrayList<HistoryProdotto> getHistoryProducts(){
 		db.open();
 		ArrayList<HistoryProdotto> toReturn=new ArrayList<HistoryProdotto>();
-		Cursor c=db.fetchHistoryProducts();
+		Cursor c=db.fetchHistoryProducts(HttpConnector.farmerId);
 
 		int idCol = c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_ID); //columns index
 		int nameCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_NAME); 
@@ -171,7 +175,7 @@ public class Application {
 		int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
 
 		HistoryProdotto prod;
-		if(c.moveToFirst()){  //se va alla prima entry, il cursore non è vuoto
+		if(c.moveToFirst()){  //se va alla prima entry, il cursore non Ã‹ vuoto
 			do {
 				//estrazione dei dati dalla entry del cursor
 				prod=new HistoryProdotto(c.getString(idCol),c.getString(nameCol),c.getString(varietyCol),c.getDouble(priceCol),c.getString(imgCol),c.getInt(coloreCol),c.getInt(annoCol),c.getInt(meseCol),c.getDouble(qVendAnnPreCol),c.getDouble(qPrevAnnCorrCol),c.getDouble(quantCol));
@@ -184,10 +188,10 @@ public class Application {
 
 	}
 
-	//Controlla se nel database c'è un prodotto che è stato coltivato in anno
+	//Controlla se nel database c'Ã‹ un prodotto che Ã‹ stato coltivato in anno
 	public boolean isProductInHistorybyYear(String name,int anno){
 		db.open();
-		if(db.getHistoryProductbyYear(name, anno).getCount()==0){
+		if(db.getHistoryProductbyYear(name, anno, HttpConnector.farmerId).getCount()==0){
 			db.close();
 			return false;}
 		db.close();
@@ -195,28 +199,28 @@ public class Application {
 
 	}
 
-	/*Metodo per inserire o aggiornare la quantità di prodotto nell anno in corso
+	/*Metodo per inserire o aggiornare la quantitâ€¡ di prodotto nell anno in corso
 	 * Se inserisce usa il metodo
 	 * insertProductInHistory(name, price, img, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, stagione, q_prodotta)
-	 * questò avverrà la prima volta che si inserisce il prodotto nella history
-	 * Se invece fa l'update incrementa la quantità di prodotto che l'utente ha previsto di produrre
-	 * Controlla se il prodotto è presente nella history in base al nome del prodotto e all anno tramite il metodo isProductInHistory
+	 * questÃš avverrâ€¡ la prima volta che si inserisce il prodotto nella history
+	 * Se invece fa l'update incrementa la quantitâ€¡ di prodotto che l'utente ha previsto di produrre
+	 * Controlla se il prodotto Ã‹ presente nella history in base al nome del prodotto e all anno tramite il metodo isProductInHistory
 	 * */
 	public void insertOrUpdateProductInHistory(String id, String name,String variety, double price, String imgURL,int colore,int anno,int mese,double q_venduta_anno_prec,double q_prev_anno_corr,double q_prev_utente){
 		db.open();
 
-		Cursor c=db.getHistoryProductbyYear(id, anno);
-		//Se il prodotto è presente gia nella tabella history nell anno preso in considerazione incrementa la quantità preventivata nell'anno dall utente
+		Cursor c=db.getHistoryProductbyYear(id, anno, HttpConnector.farmerId);
+		//Se il prodotto Ã‹ presente gia nella tabella history nell anno preso in considerazione incrementa la quantitâ€¡ preventivata nell'anno dall utente
 		if(c.moveToFirst()){
 			int quantCol=c.getColumnIndex(SLKStorage.HistoryMetaData.PRODUCT_HISTORY_QUANTIT_PRODOTTA);
 			double q_prodotta=c.getDouble(quantCol);
 			q_prodotta=q_prodotta+q_prev_utente;
-			db.updateProductInHistory(id, q_prodotta);
-			db.updateProductColorInHistory(id, colore);
+			db.updateProductInHistory(id, q_prodotta,HttpConnector.farmerId);
+			db.updateProductColorInHistory(id, colore, HttpConnector.farmerId);
 		}
 		else{
 			//Prodotto non presente nell'anno preso in considerazione si aggiungera' una riga riguardante il prodotto
-			db.insertProductInHistory(id, name,variety, price, imgURL, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, q_prev_utente);
+			db.insertProductInHistory(id, name,variety, price, imgURL, colore, anno, mese, q_venduta_anno_prec, q_prev_anno_corr, q_prev_utente, HttpConnector.farmerId);
 		}
 		c.close();
 		db.close();
@@ -248,7 +252,7 @@ public class Application {
 	public void setProducts(){
 		db.open();
 
-		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
+		if(db.fetchProducts().getCount()==0){//inserimento dati, solo se il db Ã‹ vuoto
 			Log.i("SLKApplication", "DB vuoto");
 			/*			db.insertProduct("bananaid","banana","variety", 3.6,"url",1,11,2000,0);
 			db.insertProduct("carrotid","carrot", "variety",2.1,"url",1,1, 1000,0);
@@ -271,11 +275,11 @@ public class Application {
 	 * fare riferimento alla classe SLKStorage nel package com.slk.storage*/
 	public void setHistoryProducts(){
 		db.open();
-		if(db.fetchHistoryProducts().getCount()==0){//inserimento dati, solo se il db è vuoto
+		if(db.fetchHistoryProducts(HttpConnector.farmerId).getCount()==0){//inserimento dati, solo se il db Ã‹ vuoto
 			Log.i("SLKApplication", "DB HISTORY vuoto");
 
-			db.insertProductInHistory("bananaid","banana","variety", 3.5,"url",1, 2010,10,200,500,1000);
-			db.insertProductInHistory("carrotid","carrot", "variety",2.3,"url",2, 2010,03,200,600,500);
+			db.insertProductInHistory("bananaid","banana","variety", 3.5,"url",1, 2010,10,200,500,1000,HttpConnector.farmerId);
+			db.insertProductInHistory("carrotid","carrot", "variety",2.3,"url",2, 2010,03,200,600,500,HttpConnector.farmerId);
 		}
 		db.close();
 	}
@@ -299,7 +303,7 @@ public class Application {
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		if(db.fetchProducts().getCount()==0 || update){//inserimento dati, solo se il db è vuoto
+		if(db.fetchProducts().getCount()==0 || update){//inserimento dati, solo se il db Ã‹ vuoto
 			for(JSONObject obj : products){
 				Log.i("names",""+obj.names());
 				try {
@@ -315,9 +319,9 @@ public class Application {
 						currentProduction = Double.parseDouble(pobjj.getString("currentProduction"));
 					/* */
 					if(update)
-						db.updateProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), currentProduction, objj.getString("cropId"),objj.getString("cultivarId"));
+						db.updateProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("myType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), currentProduction, objj.getString("cropId"),objj.getString("cultivarId"));
 					else
-						db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("cropType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), currentProduction, objj.getString("cropId"),objj.getString("cultivarId"));
+						db.insertProduct(""+objj.getString("cropName")+objj.getString("cultivarName"), objj.getString("cropName"), objj.getString("cultivarName"),0.0,cobjj.getString("color"),cobjj.getString("weight"),cobjj.getString("size"),objj.getString("images"), Application.getListOfProduct((objj.getString("myType"))), Double.parseDouble(pobjj.getString("percentageOfProduction")), Double.parseDouble(pobjj.getString("maxProduction")), currentProduction, objj.getString("cropId"),objj.getString("cultivarId"));
 
 					//download image
 					ImageHandler.downloadImageFromUrl(objj.getString("images"), ""+objj.getString("cropName")+objj.getString("cultivarName"), c);			
@@ -345,6 +349,8 @@ public class Application {
 
 	/*
 	 * support method for give a list of production for a product based on supply level quantity
+	 * 
+	 * NOT USED
 	 */
 	private static int getListOfProduct(int productionLevel){
 		if (productionLevel<=33)
@@ -383,5 +389,23 @@ public class Application {
 		return toReturn;
 	}
 
+	//set the language of the app
+	public static void setLanguage(Context context)
+	{
+		Resources res = context.getResources();
+	    DisplayMetrics dm = res.getDisplayMetrics();
+	    android.content.res.Configuration conf = res.getConfiguration();
+		if (local.equalsIgnoreCase("en"))
+			conf.locale = Locale.getDefault();
+		else 
+			conf.locale = new Locale("si");
+		res.updateConfiguration(conf, dm);
+	}
+
+	public void deleteProductTable() {
+		db.open();
+		db.dropProductTable();
+		db.close();
+	}
 
 }

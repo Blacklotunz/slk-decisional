@@ -28,10 +28,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.slk.R;
+import com.slk.application.Application;
 import com.slk.application.DialogBuilder;
 import com.slk.bean.Farm;
 import com.slk.bean.Farmer;
 import com.slk.http.HttpConnector;
+import com.slk.log.LogHandler;
 import com.slk.storage.SLKStorage;
 
 
@@ -79,9 +81,15 @@ public class Login extends Base implements OnClickListener, Runnable
 	{
 		super.onCreate(savedInstanceState);
 		Log.i("activity","create");
-
-		SLKStorage db = new SLKStorage(this);
-		db.clear();
+		
+		Log.i("local variable -->", Application.local);
+		
+		LogHandler.appendLog(this.toString()+" Login Activity "+"created");
+		
+		Application.setLanguage(this);
+		
+		//SLKStorage db = new SLKStorage(this);
+		//db.clear();
 
 		farmer = new Farmer();
 		setContentView(R.layout.login);
@@ -98,6 +106,7 @@ public class Login extends Base implements OnClickListener, Runnable
 
 	public void onClick(View v) 
 	{
+		LogHandler.appendLog(this.toString()+" Login Activity "+"Login button clicked");
 		if (v.getId() == login.getId())
 		{
 			resultPin = pin.getText().toString();
@@ -309,10 +318,12 @@ public class Login extends Base implements OnClickListener, Runnable
 							//FARM REGISTRATO
 							JSONObject farmerJson = json.getJSONObject("user").getJSONObject("farmer");
 							String secretKey = farmerJson.getString("secretkey");
+							String farmerId = farmerJson.getString("id");
 							Log.i("secretKey", secretKey);
+							Log.i("farmer id", farmerId);
 							
 							HttpConnector.secretkey = secretKey;
-							
+							HttpConnector.farmerId = farmerId;
 							
 							int n = dbAdapter.updateSecretKey(farmer.getId(), secretKey);
 							Log.i("result update", String.valueOf(n));
@@ -387,6 +398,14 @@ public class Login extends Base implements OnClickListener, Runnable
 		Message msg = handler.obtainMessage();
 		msg.obj = message;
 		handler.sendMessage(msg);
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		LogHandler.appendLog(this.toString()+" Login Activity "+"phone number = "+this.resultPhoneNumber);
+		LogHandler.appendLog(this.toString()+" Login Activity "+"pin = "+this.resultPin);
+		LogHandler.appendLog(this.toString()+" Login Activity "+"destroyed");
 	}
 
 

@@ -141,5 +141,6 @@ public class ChoiceSupplyActivity extends Activity {
 	public void onDestroy(){
 		super.onDestroy();
 			LogHandler.appendLog("setProductsFromWS"+" activity "+"destroyed");
+			slk_utility.deleteProductTable();
 	}
 }
