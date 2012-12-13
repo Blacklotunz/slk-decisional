@@ -88,5 +88,9 @@
    <string name="hint4">**e.g., Tomato</string>
    <string name="variety">**variety</string>
    <string name="pergentage">**percentage of production</string>
+   
+   <string name="login">**Login</string>
+    <string name="insertphone">**Insert phone</string>
+   <string name="insertpin">**Insert pin</string>
 
 </resources>
