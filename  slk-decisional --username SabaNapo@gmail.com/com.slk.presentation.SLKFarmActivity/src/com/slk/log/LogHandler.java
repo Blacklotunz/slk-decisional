@@ -21,7 +21,7 @@ import android.util.Log;
 
 public class LogHandler{
 	private static File cacheFile;
-	private static String logg="";
+	//private static String logg="";
 
 	public static void appendLog(String text)
 	{       
@@ -30,11 +30,8 @@ public class LogHandler{
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 			String timestamp = s.format(new Date());
 			String textt = timestamp+" : "+text+" \n";
-			//
-			logg=logg+textt;
-			//
 			FileWriter fw = new FileWriter(cacheFile, true);       
-
+			//logg=logg+textt;
 			fw.append(textt);
 			fw.flush();
 			fw.close();
@@ -44,12 +41,15 @@ public class LogHandler{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+
 	}
 
 	public static void createCachedFile(Context context, String fileName,String content) throws IOException {
-		logg = "";
-		logg = logg+content;
-		cacheFile = new File(CachedFileProvider.CONTENT_URI+fileName);
+		//logg = "";
+		//logg = logg+content;
+		
+		cacheFile = new File(context.getFilesDir() + File.separator+ fileName);
 		Log.v("path",cacheFile.getAbsolutePath()+"");
 		//IF FILE already exist it'll be deleted and create a new copy
 		if(!cacheFile.createNewFile()){
@@ -79,12 +79,13 @@ public class LogHandler{
 		//Add the recipients
 		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { email });
 		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-		//emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, logg);
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
+		//emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, logg);
 		
 		//Add the attachment by specifying a reference to our custom ContentProvider
 		//and the specific file of interest
-		emailIntent.putExtra(Intent.EXTRA_STREAM,CachedFileProvider.CONTENT_URI+fileName);
+		emailIntent.putExtra(Intent.EXTRA_STREAM,Uri.parse("content://" + CachedFileProvider.AUTHORITY + "/"+ fileName));
+Log.v("sadsadasd", Uri.parse("content://" + CachedFileProvider.AUTHORITY + "/"+ fileName)+"");
 		
 		return emailIntent;
 	}

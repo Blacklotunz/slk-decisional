@@ -20,8 +20,6 @@ public class CachedFileProvider extends ContentProvider {
 	private static final String CLASS_NAME = "CachedFileProvider";
 	// The authority is the symbolic name for the provider class
 	public static final String AUTHORITY = "com.slk.provider";
-	//public static final Uri CONTENT_URI = Uri.parse("/data/data/content/files/");
-	public static final Uri CONTENT_URI = Uri.parse("data/data/com.slk/files/");
 	// UriMatcher used to match against incoming requests
 	private UriMatcher uriMatcher;
 
@@ -38,7 +36,7 @@ public class CachedFileProvider extends ContentProvider {
 		// Add a URI to the matcher which will match against the form
 		// '/data/data/content/files/*'
 		// and return 1 in the case that the incoming Uri matches this pattern
-		uriMatcher.addURI(CONTENT_URI.toString(), "*", 1);
+		uriMatcher.addURI(AUTHORITY, "*", 1);
 
 		return true;
 	}
@@ -58,8 +56,6 @@ public class CachedFileProvider extends ContentProvider {
 
 			// The desired file name is specified by the last segment of the
 			// path
-			// E.g.
-			// 'content://com.stephendnicholas.gmailattach.provider/Test.txt'
 			// Take this and build the path to the file in the cache
 			String fileLocation = getContext().getFilesDir() + File.separator + uri.getLastPathSegment();
 
