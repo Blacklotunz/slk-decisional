@@ -272,14 +272,18 @@ public class Login extends Base implements OnClickListener, Runnable
 							{
 								String key = (String) iterator.next();
 								Log.i("key", key);
-								if (key.equalsIgnoreCase("id"))
+								if (key.equalsIgnoreCase("id")){
 									farmer.setId(farmerJson.getInt(key));
+									HttpConnector.farmerId = farmerJson.getString(key);
+								}
 								else if (key.equalsIgnoreCase("firstname"))
 									farmer.setFirstname(farmerJson.getString(key));
 								else if (key.equalsIgnoreCase("lastname"))
 									farmer.setLastname(farmerJson.getString(key));
-								else if (key.equalsIgnoreCase("secretkey"))
+								else if (key.equalsIgnoreCase("secretkey")){
 									farmer.setSecretKey(farmerJson.getString(key));
+									HttpConnector.secretkey = farmerJson.getString(key);
+								}
 								else if (key.equalsIgnoreCase("email"))
 									farmer.setSecretKey(farmerJson.getString(key));
 							}
@@ -299,21 +303,19 @@ public class Login extends Base implements OnClickListener, Runnable
 								f.setFarmerId(farmer.getId());
 								farmList.add(f);
 							}
-
 							//MEMORIZZO FARMER, FARMLIST E NUMERO DI TELEFONO
 							if (dbAdapter.register(farmer, farmList, resultPhoneNumber) != 0)
 							{
-
 								sendHandlerMessage("LOADING_FARM");
 							}
 							else
 							{
-
 								sendHandlerMessage("ERROR_STORAGE");
 							}	
 						}
 						else
 						{
+	
 							Log.i("login", "register");
 							//FARM REGISTRATO
 							JSONObject farmerJson = json.getJSONObject("user").getJSONObject("farmer");
@@ -329,7 +331,6 @@ public class Login extends Base implements OnClickListener, Runnable
 							Log.i("result update", String.valueOf(n));
 							if (n != -1)
 							{
-
 								//UPDATE OK
 								//LISTA DELLE FARM
 								farmer.setSecretKey(secretKey);
@@ -342,7 +343,6 @@ public class Login extends Base implements OnClickListener, Runnable
 								}
 								else
 								{
-
 									sendHandlerMessage("LOADING_FARM");
 								}
 							}
@@ -403,8 +403,9 @@ public class Login extends Base implements OnClickListener, Runnable
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		LogHandler.appendLog(this.toString()+" Login Activity "+"phone number = "+this.resultPhoneNumber);
-		LogHandler.appendLog(this.toString()+" Login Activity "+"pin = "+this.resultPin);
+		LogHandler.appendLog(this.toString()+" Login Activity "+"phone number="+this.resultPhoneNumber+"-"+HttpConnector.num);
+		LogHandler.appendLog(this.toString()+" Login Activity "+"pin="+this.resultPin+"-"+HttpConnector.pin);
+		LogHandler.appendLog(this.toString()+" Login Activity "+"farmerId="+HttpConnector.farmerId);
 		LogHandler.appendLog(this.toString()+" Login Activity "+"destroyed");
 	}
 
