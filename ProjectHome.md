@@ -1,0 +1,1 @@
+decisional part of slkFarmer software for android developed by Napolitano Sabato
